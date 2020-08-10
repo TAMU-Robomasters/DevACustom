@@ -3,11 +3,11 @@
 #include "information/device.h"
 
 /* 
-	Our custom protocols for CAN; heavily inspired by QDU
+	Our custom functions for CAN; heavily inspired by QDU
 */
 
 typedef float float32_t;
-typedef void *osThreadId_t;
+typedef void* osThreadId_t;
 
 /* Fixed-size types, underlying types depend on word size and compiler.  */
 typedef signed char int8_t;
@@ -41,7 +41,7 @@ typedef unsigned int uint32_t;
 
 namespace userCAN {
 
-typedef enum {
+typedef enum motorId_t {
     M3508_M1_ID = 0x201, /* 1 */
     M3508_M2_ID = 0x202, /* 2 */
     M3508_M3_ID = 0x203, /* 3 */
@@ -57,7 +57,7 @@ typedef enum {
 } motorId_t;
 // Initializing motor CAN ID's with their numbers, accessible through type "motorID_t"
 
-typedef struct {
+typedef struct motorFeedback_t {
     uint16_t rotor_angle;
     int16_t rotor_speed;
     int16_t torque_current;
@@ -65,7 +65,7 @@ typedef struct {
 } motorFeedback_t;
 // Types of sensor feedback returnable from DJI Motors; accessible through type "motorFeedback_t"
 
-typedef struct {
+typedef struct device_t {
     osThreadId_t* motor_alert;
     uint8_t motor_alert_len;
 
@@ -82,22 +82,29 @@ typedef struct {
 // Types of motors with CAN data feedback; accessible within the type "device_t"
 
 extern int8_t deviceInit(
-    device_t* can_devices,
-    osThreadId_t* motor_alert,
-    uint8_t motor_alert_len);
+    device_t* can_devices);
 // Initialization of the CAN devices, the CAN filter, and CAN notifications(?)
+
+extern void task();
+// called in freertos.cpp
+
+extern void receive();
+extern void send();
+// !!!
 
 extern device_t* getDevices(void);
 // Getter for "gcan_devices" of "type device_t"
 
 extern int8_t motor_ControlChassis(float32_t m1, float32_t m2, float32_t m3, float32_t m4);
 // Sends message to CAN1 with voltage? values for each motor
-extern int8_t motor_ControlGimbal(float32_t yaw, float32_t pitch);
+extern int8_t motor_ControlGimbFeed(float32_t yaw, float32_t pitch, float32_t feeder);
 // Sends message to CAN1 with voltage? values for yaw and pitch motors
 extern int8_t motor_ControlFeeder(float32_t feeder);
-// Sends message to CAN1 with voltage? value for feeder motor
+// Sends message to CAN1 with current value (-1 to 1) for feeder motor
 
 extern int8_t motor_QuickIdSetMode(void);
 // Starts the ID setting proces of M3508/M2006 motors? dunno tbh
+
+extern void getMessage(void);
 
 } // namespace userCAN

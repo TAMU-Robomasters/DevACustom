@@ -26,12 +26,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "init.hpp"
+
 #include "subsystems/chassis.hpp"
 #include "subsystems/feeder.hpp"
 #include "subsystems/flywheel.hpp"
 #include "subsystems/gimbal.hpp"
 
 #include "information/can_protocol.hpp"
+#include "information/uart_protocol.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,6 +63,8 @@ osThreadId flywheelTaskHandle;
 osThreadId feederTaskHandle;
 osThreadId rcTaskHandle;
 osThreadId sensorTaskHandle;
+osThreadId canTaskHandle;
+osThreadId uartTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -73,6 +78,8 @@ void flywheelTaskFunc(void const* argument);
 void feederTaskFunc(void const* argument);
 void rcTaskFunc(void const* argument);
 void sensorTaskFunc(void const* argument);
+void canTaskFunc(void const* argument);
+void uartTaskFunc(void const* argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -146,6 +153,14 @@ void MX_FREERTOS_Init(void) {
     osThreadDef(sensorTask, sensorTaskFunc, osPriorityNormal, 0, 128);
     sensorTaskHandle = osThreadCreate(osThread(sensorTask), NULL);
 
+    /* definition and creation of canTask */
+    osThreadDef(canTask, canTaskFunc, osPriorityNormal, 0, 128);
+    canTaskHandle = osThreadCreate(osThread(canTask), NULL);
+
+    /* definition and creation of uartTask */
+    osThreadDef(uartTask, uartTaskFunc, osPriorityNormal, 0, 128);
+    uartTaskHandle = osThreadCreate(osThread(uartTask), NULL);
+
     /* USER CODE BEGIN RTOS_THREADS */
     /* add threads, ... */
     /* USER CODE END RTOS_THREADS */
@@ -161,24 +176,34 @@ void MX_FREERTOS_Init(void) {
 void indicatorTaskFunc(void const* argument) {
     /* USER CODE BEGIN indicatorTaskFunc */
     /* Infinite loop */
+    userInit::initialize();
     for (;;) {
         //friendly reminder that "GPIOG" refers to the GPIO port G, and the "LED_A_Pin" directs it to the specific pin under that port
         HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
         osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_C_Pin);
         osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_C_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_D_Pin);
         osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_D_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_E_Pin);
         osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_E_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_F_Pin);
         osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_F_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_G_Pin);
         osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_G_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_H_Pin);
         osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_H_Pin);
+        osDelay(2);
     }
     /* USER CODE END indicatorTaskFunc */
 }
@@ -193,9 +218,7 @@ void indicatorTaskFunc(void const* argument) {
 void chassisTaskFunc(void const* argument) {
     /* USER CODE BEGIN chassisTaskFunc */
     /* Infinite loop */
-    for (;;) {
-        chassis::act();
-    }
+    chassis::task();
     /* USER CODE END chassisTaskFunc */
 }
 
@@ -209,9 +232,7 @@ void chassisTaskFunc(void const* argument) {
 void gimbalTaskFunc(void const* argument) {
     /* USER CODE BEGIN gimbalTaskFunc */
     /* Infinite loop */
-    for (;;) {
-        gimbal::act();
-    }
+    gimbal::task();
     /* USER CODE END gimbalTaskFunc */
 }
 
@@ -225,9 +246,7 @@ void gimbalTaskFunc(void const* argument) {
 void flywheelTaskFunc(void const* argument) {
     /* USER CODE BEGIN flywheelTaskFunc */
     /* Infinite loop */
-    for (;;) {
-        flywheel::act();
-    }
+    flywheel::task();
     /* USER CODE END flywheelTaskFunc */
 }
 
@@ -241,9 +260,7 @@ void flywheelTaskFunc(void const* argument) {
 void feederTaskFunc(void const* argument) {
     /* USER CODE BEGIN feederTaskFunc */
     /* Infinite loop */
-    for (;;) {
-        feeder::act();
-    }
+    feeder::task();
     /* USER CODE END feederTaskFunc */
 }
 
@@ -277,6 +294,34 @@ void sensorTaskFunc(void const* argument) {
         osDelay(1);
     }
     /* USER CODE END sensorTaskFunc */
+}
+
+/* USER CODE BEGIN Header_canTaskFunc */
+/**
+* @brief Function implementing the canTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_canTaskFunc */
+void canTaskFunc(void const* argument) {
+    /* USER CODE BEGIN canTaskFunc */
+    /* Infinite loop */
+    userCAN::task();
+    /* USER CODE END canTaskFunc */
+}
+
+/* USER CODE BEGIN Header_uartTaskFunc */
+/**
+* @brief Function implementing the uartTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_uartTaskFunc */
+void uartTaskFunc(void const* argument) {
+    /* USER CODE BEGIN uartTaskFunc */
+    /* Infinite loop */
+    userUART::task();
+    /* USER CODE END uartTaskFunc */
 }
 
 /* Private application code --------------------------------------------------*/

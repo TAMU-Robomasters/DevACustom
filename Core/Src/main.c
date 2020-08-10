@@ -25,6 +25,7 @@
 #include "rng.h"
 #include "rtc.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -99,20 +100,21 @@ int main(void)
   MX_TIM8_Init();
   MX_RNG_Init();
   MX_RTC_Init();
+  MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
-	
-	// Turn all the LED's off to begin with
-	HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOG, LED_A_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOG, LED_B_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOG, LED_C_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOG, LED_D_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOG, LED_E_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOG, LED_F_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOG, LED_G_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOG, LED_H_Pin, GPIO_PIN_SET);
-	
+
+    // Turn all the LED's off to begin with
+    HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOG, LED_A_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOG, LED_B_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOG, LED_C_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOG, LED_D_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOG, LED_E_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOG, LED_F_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOG, LED_G_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOG, LED_H_Pin, GPIO_PIN_SET);
+
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
@@ -123,15 +125,14 @@ int main(void)
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-		HAL_GPIO_TogglePin(GPIOE, LED_RED_Pin);
-		HAL_Delay(500);
-		// blinking red LED if the kernel isn't started for whatever reason
+    while (1) {
+        HAL_GPIO_TogglePin(GPIOE, LED_RED_Pin);
+        HAL_Delay(500);
+        // blinking red LED if the kernel isn't started for whatever reason
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+    }
   /* USER CODE END 3 */
 }
 
@@ -217,7 +218,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
+    /* User can add his own implementation to report the HAL error return state */
 
   /* USER CODE END Error_Handler_Debug */
 }
@@ -233,7 +234,7 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 { 
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
+    /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
