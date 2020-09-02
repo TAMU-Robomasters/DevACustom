@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "information/can_protocol.hpp"
-#include "information/device.h"
+#include "information/device.hpp"
 
 #include "subsystems/chassis.hpp"
 #include "subsystems/feeder.hpp"
@@ -80,10 +80,10 @@ device_t* getDevices(void) {
 }
 
 int8_t motor_ControlChassis(float32_t m1, float32_t m2, float32_t m3, float32_t m4) {
-    int16_t motor1 = m1 * CAN_M3508_MAX_ABS_VOLT; // scalar describes current cap but is named volt for some reason
-    int16_t motor2 = m2 * CAN_M3508_MAX_ABS_VOLT;
-    int16_t motor3 = m3 * CAN_M3508_MAX_ABS_VOLT;
-    int16_t motor4 = m4 * CAN_M3508_MAX_ABS_VOLT;
+    int16_t motor1 = m1 * M3508_MAX_CURRENT / 100; // scalar describes current cap but is named volt for some reason
+    int16_t motor2 = m2 * M3508_MAX_CURRENT / 100;
+    int16_t motor3 = m3 * M3508_MAX_CURRENT / 100;
+    int16_t motor4 = m4 * M3508_MAX_CURRENT / 100;
 
     CAN_TxHeaderTypeDef tx_header;
 
@@ -110,7 +110,7 @@ int8_t motor_ControlChassis(float32_t m1, float32_t m2, float32_t m3, float32_t 
 int8_t motor_ControlGimbFeed(float32_t yaw, float32_t pitch, float32_t feeder) {
     int16_t yaw_motor = yaw * CAN_GM6020_MAX_ABS_VOLT;
     int16_t pitch_motor = pitch * CAN_GM6020_MAX_ABS_VOLT;
-    int16_t feeder_motor = feeder * CAN_M2006_MAX_ABS_VOLT;
+    int16_t feeder_motor = feeder * M2006_MAX_CURRENT;
 
     CAN_TxHeaderTypeDef tx_header;
 
@@ -134,33 +134,6 @@ int8_t motor_ControlGimbFeed(float32_t yaw, float32_t pitch, float32_t feeder) {
     return DEVICE_OK;
 }
 
-// int8_t motor_ControlFeeder(float32_t feeder) {
-//     int16_t feeder_motor = feeder * CAN_M2006_MAX_ABS_VOLT;
-//     // (input range to this function should be from -1 -> 1, it's scaled up)
-
-//     CAN_TxHeaderTypeDef tx_header;
-
-//     tx_header.StdId = CAN_M3508_M2006_RECEIVE_ID_EXTAND;
-//     // IF ID 1-4, MAKE THIS BASE (0x200) IF ID 5-8, MAKE THIS EXTAND (0x1FF)
-//     tx_header.IDE = CAN_ID_STD;
-//     tx_header.RTR = CAN_RTR_DATA;
-//     tx_header.DLC = 8;
-
-//     uint8_t tx_data[8];
-//     tx_data[0] = feeder_motor >> 8;
-//     tx_data[1] = feeder_motor;
-//     tx_data[2] = 0;
-//     tx_data[3] = 0;
-//     tx_data[4] = 0;
-//     tx_data[5] = 0;
-//     tx_data[6] = 0;
-//     tx_data[7] = 0;
-
-//     HAL_CAN_AddTxMessage(&hcan1, &tx_header, tx_data, (uint32_t*)CAN_TX_MAILBOX0);
-
-//     return DEVICE_OK;
-// }
-
 int8_t motor_QuickIdSetMode(void) {
     CAN_TxHeaderTypeDef tx_header;
 
@@ -183,16 +156,17 @@ void getMessage(/*CAN_HandleTypeDef* hcan*/ void) {
     // uint8_t index;
     switch (rx_header.StdId) {
     case M3508_M1_ID:
-        motor_Decode(&(gcan_devices->chassis_motor_fb[0]), rx_data);
+        // motor_Decode(&(gcan_devices->feeder_fb), rx_data);
+        motor_Decode((chassis::c1Motor.getFeedback()), rx_data);
         break;
     case M3508_M2_ID:
-        motor_Decode(&(gcan_devices->chassis_motor_fb[1]), rx_data);
+        motor_Decode((chassis::c2Motor.getFeedback()), rx_data);
         break;
     case M3508_M3_ID:
-        motor_Decode(&(gcan_devices->chassis_motor_fb[2]), rx_data);
+        motor_Decode((chassis::c3Motor.getFeedback()), rx_data);
         break;
     case M3508_M4_ID:
-        motor_Decode(&(gcan_devices->chassis_motor_fb[3]), rx_data);
+        motor_Decode((chassis::c4Motor.getFeedback()), rx_data);
         break;
 
     case M2006_FEEDER_ID:
@@ -209,11 +183,15 @@ void getMessage(/*CAN_HandleTypeDef* hcan*/ void) {
 
     default:
         unknown_message++;
+        HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
         break;
     }
 }
 
 void task() {
+
+    userInit::canInit();
+
     for (;;) {
         receive();
 
@@ -232,10 +210,12 @@ void receive() {
 }
 
 void send() {
-    userCAN::motor_ControlChassis(chassis::c1Power,
-                                  chassis::c2Power,
-                                  chassis::c3Power,
-                                  chassis::c4Power);
+    if (chassis::ctrlType == chassis::CtrlTypes::CURRENT) {
+        userCAN::motor_ControlChassis(chassis::c1Motor.getPower(),
+                                      chassis::c2Motor.getPower(),
+                                      chassis::c3Motor.getPower(),
+                                      chassis::c4Motor.getPower());
+    }
     userCAN::motor_ControlGimbFeed(gimbal::yawPower,
                                    gimbal::pitchPower,
                                    feeder::feederPower);

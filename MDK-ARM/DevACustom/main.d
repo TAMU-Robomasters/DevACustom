@@ -35,6 +35,7 @@ devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h
 devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+devacustom\main.o: ../Core/Inc/can.h
 devacustom\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 devacustom\main.o: ../Core/Inc/FreeRTOSConfig.h
@@ -49,9 +50,8 @@ devacustom\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 devacustom\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 devacustom\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 devacustom\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
-devacustom\main.o: ../Core/Inc/can.h
+devacustom\main.o: ../Core/Inc/gpio.h
 devacustom\main.o: ../Core/Inc/rng.h
 devacustom\main.o: ../Core/Inc/rtc.h
 devacustom\main.o: ../Core/Inc/tim.h
 devacustom\main.o: ../Core/Inc/usart.h
-devacustom\main.o: ../Core/Inc/gpio.h

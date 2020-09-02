@@ -176,34 +176,51 @@ void MX_FREERTOS_Init(void) {
 void indicatorTaskFunc(void const* argument) {
     /* USER CODE BEGIN indicatorTaskFunc */
     /* Infinite loop */
-    userInit::initialize();
+    HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
     for (;;) {
         //friendly reminder that "GPIOG" refers to the GPIO port G, and the "LED_A_Pin" directs it to the specific pin under that port
         HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_C_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_C_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_D_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_D_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_E_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_E_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_F_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_F_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_G_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_G_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_H_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_H_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_G_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_G_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_F_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_F_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_E_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_E_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_D_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_D_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_C_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_C_Pin);
+        HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
+        osDelay(125);
+        HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
-        HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         osDelay(125);
-        HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
-        HAL_GPIO_TogglePin(GPIOG, LED_C_Pin);
-        osDelay(125);
-        HAL_GPIO_TogglePin(GPIOG, LED_C_Pin);
-        HAL_GPIO_TogglePin(GPIOG, LED_D_Pin);
-        osDelay(125);
-        HAL_GPIO_TogglePin(GPIOG, LED_D_Pin);
-        HAL_GPIO_TogglePin(GPIOG, LED_E_Pin);
-        osDelay(125);
-        HAL_GPIO_TogglePin(GPIOG, LED_E_Pin);
-        HAL_GPIO_TogglePin(GPIOG, LED_F_Pin);
-        osDelay(125);
-        HAL_GPIO_TogglePin(GPIOG, LED_F_Pin);
-        HAL_GPIO_TogglePin(GPIOG, LED_G_Pin);
-        osDelay(125);
-        HAL_GPIO_TogglePin(GPIOG, LED_G_Pin);
-        HAL_GPIO_TogglePin(GPIOG, LED_H_Pin);
-        osDelay(125);
-        HAL_GPIO_TogglePin(GPIOG, LED_H_Pin);
-        osDelay(2);
     }
     /* USER CODE END indicatorTaskFunc */
 }

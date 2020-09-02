@@ -18,4 +18,3 @@ devacustom\flywheel.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr
 devacustom\flywheel.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 devacustom\flywheel.o: ../Core/Inc/init.hpp
 devacustom\flywheel.o: ../Core/Inc/information/can_protocol.hpp
-devacustom\flywheel.o: ../Core/Inc/information/device.h

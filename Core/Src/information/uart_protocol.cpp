@@ -24,7 +24,7 @@ void newlnOut(UART_HandleTypeDef* huart) {
     HAL_UART_Transmit(huart, (uint8_t*)newline, 2, 25);
 }
 
-void motorfeedbackOut(UART_HandleTypeDef* huart, struct userCAN::motorFeedback_t* data) {
+void motorfeedbackOut(UART_HandleTypeDef* huart, userCAN::motorFeedback_t* data) {
 
     uint16_t angle = data->rotor_angle;
     uint16_t speed = data->rotor_speed + 32768;
@@ -54,7 +54,7 @@ void task() {
         send();
         // for sending messages over UART
 
-        osDelay(10);
+        osDelay(20);
     }
 }
 
@@ -62,7 +62,7 @@ void receive() {
 }
 
 void send() {
-    userUART::motorfeedbackOut(&huart6, &canDevice.feeder_fb);
+    userUART::motorfeedbackOut(&huart6, chassis::c1Motor.getFeedback());
 }
 
 } // namespace userUART

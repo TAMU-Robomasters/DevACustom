@@ -18,4 +18,3 @@ devacustom\gimbal.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 devacustom\gimbal.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 devacustom\gimbal.o: ../Core/Inc/init.hpp
 devacustom\gimbal.o: ../Core/Inc/information/can_protocol.hpp
-devacustom\gimbal.o: ../Core/Inc/information/device.h

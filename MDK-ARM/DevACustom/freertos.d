@@ -51,9 +51,11 @@ devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.
 devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 devacustom\freertos.o: ../Core/Inc/init.hpp
 devacustom\freertos.o: ../Core/Inc/information/can_protocol.hpp
-devacustom\freertos.o: ../Core/Inc/information/device.h
 devacustom\freertos.o: ../Core/Inc/subsystems/chassis.hpp
 devacustom\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\freertos.o: ../Core/Inc/information/device.hpp
+devacustom\freertos.o: ../Core/Inc/information/pid.hpp
+devacustom\freertos.o: ../Core/Inc/tim.h
 devacustom\freertos.o: ../Core/Inc/subsystems/feeder.hpp
 devacustom\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\freertos.o: ../Core/Inc/subsystems/flywheel.hpp

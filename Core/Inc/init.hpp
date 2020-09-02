@@ -6,6 +6,6 @@ extern userCAN::device_t canDevice;
 
 namespace userInit {
 
-extern void initialize(); // called in indicatorTaskFunc
+extern void canInit(); // called in indicatorTaskFunc
 
 } // namespace userInit

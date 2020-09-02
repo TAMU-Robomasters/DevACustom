@@ -45,7 +45,7 @@ void act() {
         break;
 
     case running:
-        feederPower = 0.03;
+        feederPower = 0.00;
         // obviously this will change when we have actual intelligent things to put here
         break;
     }

@@ -52,9 +52,12 @@ devacustom\can_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/se
 devacustom\can_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 devacustom\can_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 devacustom\can_protocol.o: ../Core/Inc/information/can_protocol.hpp
-devacustom\can_protocol.o: ../Core/Inc/information/device.h
+devacustom\can_protocol.o: ../Core/Inc/information/device.hpp
 devacustom\can_protocol.o: ../Core/Inc/subsystems/chassis.hpp
 devacustom\can_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\can_protocol.o: ../Core/Inc/information/pid.hpp
+devacustom\can_protocol.o: ../Core/Inc/init.hpp
+devacustom\can_protocol.o: ../Core/Inc/tim.h
 devacustom\can_protocol.o: ../Core/Inc/subsystems/feeder.hpp
 devacustom\can_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\can_protocol.o: ../Core/Inc/subsystems/gimbal.hpp

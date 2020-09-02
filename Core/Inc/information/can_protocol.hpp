@@ -1,6 +1,5 @@
 #pragma once
 //#include "cmsis_os2.h"
-#include "information/device.h"
 
 /* 
 	Our custom functions for CAN; heavily inspired by QDU
@@ -26,10 +25,6 @@ typedef unsigned int uint32_t;
 #define CAN_M3508_M2006_RECEIVE_ID_BASE 0x200
 #define CAN_M3508_M2006_RECEIVE_ID_EXTAND 0x1ff
 #define CAN_M3508_M2006_ID_SETTING_ID 0x700
-
-#define CAN_GM6020_MAX_ABS_VOLT 30000
-#define CAN_M3508_MAX_ABS_VOLT 16384
-#define CAN_M2006_MAX_ABS_VOLT 10000
 
 #define CAN_MOTOR_MAX_NUM 9
 #define CAN_CHASSIS_NUM_MOTOR 4

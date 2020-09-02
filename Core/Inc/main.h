@@ -58,6 +58,13 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define APB1_TIMER_CLOCKS 84000000
+#define PWM_DEFAULT_DUTY 5000
+#define PWM_FREQUENCE 50
+#define PWM_RESOLUTION 10000
+#define TIM_PSC_APB1 ((APB1_TIMER_CLOCKS/PWM_FREQUENCE)/PWM_RESOLUTION -1)
+#define APB2_TIMER_CLOCKS 168000000
+#define TIM_PSC_APB2 ((APB2_TIMER_CLOCKS/PWM_FREQUENCE)/PWM_RESOLUTION -1)
 #define PORT_Y_Pin GPIO_PIN_7
 #define PORT_Y_GPIO_Port GPIOI
 #define PORT_X_Pin GPIO_PIN_6

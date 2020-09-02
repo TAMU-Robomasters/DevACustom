@@ -1,7 +1,6 @@
 devacustom\init.o: ..\Core\Src\init.cpp
 devacustom\init.o: ../Core/Inc/init.hpp
 devacustom\init.o: ../Core/Inc/information/can_protocol.hpp
-devacustom\init.o: ../Core/Inc/information/device.h
 devacustom\init.o: ../Core/Inc/main.h
 devacustom\init.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 devacustom\init.o: ../Core/Inc/stm32f4xx_hal_conf.h
