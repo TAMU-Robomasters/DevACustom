@@ -9,24 +9,14 @@
 
 namespace chassis {
 
-class chassisMotor : public Motor {
+class chassisMotor : public canMotor {
 private:
-    int16_t canID;
-    userCAN::motorFeedback_t canFeedback;
     pidInstance* PID;
 
 public:
-    chassisMotor(int16_t ID, float32_t lC, float32_t uC) : Motor(-M3508_MAX_CURRENT, M3508_MAX_CURRENT), canID(ID) {}
-    chassisMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid) : Motor(-M3508_MAX_CURRENT, M3508_MAX_CURRENT), canID(ID), PID(&pid) {}
-    chassisMotor(int16_t ID, pidInstance& pid) : Motor(-M3508_MAX_CURRENT, M3508_MAX_CURRENT), canID(ID), PID(&pid) {}
-
-    int16_t getID() {
-        return canID;
-    }
-
-    userCAN::motorFeedback_t* getFeedback() {
-        return &canFeedback;
-    }
+    chassisMotor(int16_t ID, float32_t lC, float32_t uC) : canMotor(ID, -100, 100) {}
+    chassisMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid) : canMotor(ID, -100, 100), PID(&pid) {}
+    chassisMotor(int16_t ID, pidInstance& pid) : canMotor(ID, -100, 100), PID(&pid) {}
 
     void setPID(pidInstance& pid) {
         PID = &pid;
@@ -55,5 +45,7 @@ extern void task();
 extern void update();
 
 extern void act();
+
+extern void rcToPower(double angle, double magnitude);
 
 } // namespace chassis

@@ -1,6 +1,7 @@
 devacustom\uart_protocol.o: ..\Core\Src\information\uart_protocol.cpp
 devacustom\uart_protocol.o: ../Core/Inc/information/uart_protocol.hpp
 devacustom\uart_protocol.o: ../Core/Inc/information/can_protocol.hpp
+devacustom\uart_protocol.o: ../Core/Inc/can.h
 devacustom\uart_protocol.o: ../Core/Inc/main.h
 devacustom\uart_protocol.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 devacustom\uart_protocol.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -37,8 +38,6 @@ devacustom\uart_protocol.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rt
 devacustom\uart_protocol.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\uart_protocol.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\uart_protocol.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-devacustom\uart_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-devacustom\uart_protocol.o: ../Core/Inc/usart.h
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 devacustom\uart_protocol.o: ../Core/Inc/FreeRTOSConfig.h
@@ -53,13 +52,18 @@ devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/t
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+devacustom\uart_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+devacustom\uart_protocol.o: ../Core/Inc/usart.h
+devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\uart_protocol.o: ../Core/Inc/init.hpp
 devacustom\uart_protocol.o: ../Core/Inc/subsystems/chassis.hpp
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\uart_protocol.o: ../Core/Inc/information/device.hpp
-devacustom\uart_protocol.o: ../Core/Inc/information/pid.hpp
+devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\uart_protocol.o: ../Core/Inc/tim.h
+devacustom\uart_protocol.o: ../Core/Inc/information/pid.hpp
 devacustom\uart_protocol.o: ../Core/Inc/subsystems/feeder.hpp
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\uart_protocol.o: ../Core/Inc/subsystems/gimbal.hpp
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\uart_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

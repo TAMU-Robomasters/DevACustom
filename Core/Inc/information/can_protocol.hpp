@@ -1,4 +1,9 @@
 #pragma once
+#include "can.h"
+#include "cmsis_os.h"
+#include "main.h"
+#include "stm32f4xx_hal_can.h"
+
 //#include "cmsis_os2.h"
 
 /* 
@@ -19,11 +24,11 @@ typedef unsigned int uint32_t;
 // Motor Constants
 #define CAN_GM6020_FEEDBACK_ID_BASE 0x205
 #define CAN_GM6020_RECEIVE_ID_BASE 0x1ff
-#define CAN_GM6020_RECEIVE_ID_EXTAND 0x2ff
+#define CAN_GM6020_RECEIVE_ID_EXTEND 0x2ff
 
 #define CAN_M3508_M2006_FEEDBACK_ID_BASE 0x201
 #define CAN_M3508_M2006_RECEIVE_ID_BASE 0x200
-#define CAN_M3508_M2006_RECEIVE_ID_EXTAND 0x1ff
+#define CAN_M3508_M2006_RECEIVE_ID_EXTEND 0x1ff
 #define CAN_M3508_M2006_ID_SETTING_ID 0x700
 
 #define CAN_MOTOR_MAX_NUM 9
@@ -88,18 +93,16 @@ extern void send();
 // !!!
 
 extern device_t* getDevices(void);
-// Getter for "gcan_devices" of "type device_t"
+// Getter for "can_devices_ptr" of "type device_t"
 
-extern int8_t motor_ControlChassis(float32_t m1, float32_t m2, float32_t m3, float32_t m4);
-// Sends message to CAN1 with voltage? values for each motor
-extern int8_t motor_ControlGimbFeed(float32_t yaw, float32_t pitch, float32_t feeder);
-// Sends message to CAN1 with voltage? values for yaw and pitch motors
-extern int8_t motor_ControlFeeder(float32_t feeder);
-// Sends message to CAN1 with current value (-1 to 1) for feeder motor
+extern int8_t motor_ControlChassis(float32_t m1, float32_t m2, float32_t m3, float32_t m4, CAN_HandleTypeDef can);
+// Sends message via CAN with current values for each motor
+extern int8_t motor_ControlGimbFeed(float32_t yaw, float32_t pitch, float32_t feeder, CAN_HandleTypeDef can);
+// Sends message via CAN with voltage/current values for yaw and pitch motors
 
 extern int8_t motor_QuickIdSetMode(void);
 // Starts the ID setting proces of M3508/M2006 motors? dunno tbh
 
-extern void getMessage(void);
+extern void getMessage(CAN_HandleTypeDef* hcan);
 
 } // namespace userCAN

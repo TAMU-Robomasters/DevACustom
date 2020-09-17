@@ -17,8 +17,10 @@ devacustom\chassis.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 devacustom\chassis.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 devacustom\chassis.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 devacustom\chassis.o: ../Core/Inc/information/device.hpp
+devacustom\chassis.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\chassis.o: ../Core/Inc/information/can_protocol.hpp
-devacustom\chassis.o: ../Core/Inc/information/pid.hpp
+devacustom\chassis.o: ../Core/Inc/can.h
+devacustom\chassis.o: ../Core/Inc/main.h
 devacustom\chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 devacustom\chassis.o: ../Core/Inc/stm32f4xx_hal_conf.h
 devacustom\chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
@@ -52,8 +54,9 @@ devacustom\chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h
 devacustom\chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-devacustom\chassis.o: ../Core/Inc/init.hpp
+devacustom\chassis.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\chassis.o: ../Core/Inc/tim.h
-devacustom\chassis.o: ../Core/Inc/main.h
+devacustom\chassis.o: ../Core/Inc/information/pid.hpp
+devacustom\chassis.o: ../Core/Inc/init.hpp
 devacustom\chassis.o: ../Core/Inc/information/pwm_protocol.hpp
 devacustom\chassis.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

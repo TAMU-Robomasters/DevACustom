@@ -29,6 +29,7 @@ void motorfeedbackOut(UART_HandleTypeDef* huart, userCAN::motorFeedback_t* data)
     uint16_t angle = data->rotor_angle;
     uint16_t speed = data->rotor_speed + 32768;
     uint16_t current = data->torque_current + 32768;
+    uint16_t sentCurrent = static_cast<int16_t>(gimbal::yawMotor.getPower()) + 32768;
     // adds 32768 to shift int16_t values to uint16_t, shifted back when data processed
     uint8_t temp = data->temp;
 
@@ -38,8 +39,8 @@ void motorfeedbackOut(UART_HandleTypeDef* huart, userCAN::motorFeedback_t* data)
     buffer[2] = (angle);      // makes "low" 8 bit int
     buffer[3] = (speed >> 8);
     buffer[4] = (speed);
-    buffer[5] = (current >> 8);
-    buffer[6] = (current);
+    buffer[5] = (sentCurrent >> 8);
+    buffer[6] = (sentCurrent);
     buffer[7] = (temp);
     buffer[8] = 'Z'; // end byte just for assurance, isn't technically useful right now
 
@@ -62,7 +63,7 @@ void receive() {
 }
 
 void send() {
-    userUART::motorfeedbackOut(&huart6, chassis::c1Motor.getFeedback());
+    userUART::motorfeedbackOut(&huart6, gimbal::yawMotor.getFeedback());
 }
 
 } // namespace userUART

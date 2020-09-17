@@ -1,6 +1,7 @@
 devacustom\init.o: ..\Core\Src\init.cpp
 devacustom\init.o: ../Core/Inc/init.hpp
 devacustom\init.o: ../Core/Inc/information/can_protocol.hpp
+devacustom\init.o: ../Core/Inc/can.h
 devacustom\init.o: ../Core/Inc/main.h
 devacustom\init.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 devacustom\init.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -37,3 +38,17 @@ devacustom\init.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h
 devacustom\init.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\init.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\init.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+devacustom\init.o: ../Core/Inc/FreeRTOSConfig.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+devacustom\init.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
