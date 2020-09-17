@@ -61,9 +61,8 @@ void act() {
 
 double calculateAngleError(double currAngle, double targetAngle) {
     /* Assumes currAngle and targetAngle are 0<=a<2pi */
-		const double pi = 3.14159265358979323846;
     double temp = fabs(currAngle - targetAngle);
-    return fmin(temp, pi * 2 - temp);
+    return fmin(temp, PI * 2 - temp);
 }
 
 } // namespace gimbal
