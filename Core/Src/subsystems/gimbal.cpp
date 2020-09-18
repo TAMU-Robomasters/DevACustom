@@ -57,21 +57,30 @@ void act() {
     }
 }
 
-double calculateAngularPath(double currAngle, double targetAngle) {
-	//Positive is counterclockwise while Negative is clockwise
-    double angleDelta = currAngle - targetAngle;
+double fixAngle(double angle) {
+    /* Fix angle to [0, 2PI) */
+    angle = fmod(angle, 2 * PI);
+    if (angle < 0)
+        return angle + 2 * PI;
+    return angle;
+}
+
+double calculateAngularError(double currAngle, double targetAngle) {
+    /* Positive is counter-clockwise */
+
+    double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
 	
-	if (fabs(angleDelta <= PI)) //Check if within simple case of within 180 degrees
+	if (fabs(angleDelta) <= PI)
 	{
-		return -angleDelta;
+		return angleDelta;
 	}
 	else if(angleDelta > PI)
 	{
-		return targetAngle - 2*PI + currAngle; //Removes the need to do the negative operator since clockwise
+		return -(2 * PI - angleDelta);
 	}
-	else //angleDelta < -PI
+	else // angleDelta < -PI
 	{
-		return currAngle + 2*PI - targetAngle;
+		return (2 * PI + angleDelta);
 	}
 }
 
