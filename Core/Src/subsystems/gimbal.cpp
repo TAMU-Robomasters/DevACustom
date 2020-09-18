@@ -1,5 +1,3 @@
-#include <algorithm>
-
 #include "subsystems/gimbal.hpp"
 #include "init.hpp"
 
@@ -59,11 +57,11 @@ void act() {
     }
 }
 
-double calculateAngleError(double currAngle, double targetAngle) {
-    /* Assumes currAngle and targetAngle are 0<=a<2pi */
+double calculateAngularPath(double currAngle, double targetAngle) {
+	//Positive is counterclockwise while Negative is clockwise
     double angleDelta = currAngle - targetAngle;
 	
-	if (fabs(angleDelta <= PI))
+	if (fabs(angleDelta <= PI)) //Check if within simple case of within 180 degrees
 	{
 		return -angleDelta;
 	}
