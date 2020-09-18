@@ -65,7 +65,7 @@ double fixAngle(double angle) {
     return angle;
 }
 
-double calculateAngularError(double currAngle, double targetAngle) {
+double calculateAngleError(double currAngle, double targetAngle) {
     /* Positive is counter-clockwise */
 
     double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
