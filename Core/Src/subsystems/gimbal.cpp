@@ -61,8 +61,20 @@ void act() {
 
 double calculateAngleError(double currAngle, double targetAngle) {
     /* Assumes currAngle and targetAngle are 0<=a<2pi */
-    double angleDelta = fabs(currAngle - targetAngle);
-    return fmin(angleDelta, PI * 2 - angleDelta);
+    double angleDelta = currAngle - targetAngle;
+	
+	if (fabs(angleDelta <= PI))
+	{
+		return -angleDelta;
+	}
+	else if(angleDelta > PI)
+	{
+		return targetAngle - 2*PI + currAngle; //Removes the need to do the negative operator since clockwise
+	}
+	else //angleDelta < -PI
+	{
+		return currAngle + 2*PI - targetAngle;
+	}
 }
 
 } // namespace gimbal
