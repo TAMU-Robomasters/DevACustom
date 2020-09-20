@@ -63,7 +63,12 @@ double calcSlewDRpm(double currFw1Speed, double currFw2Speed, double targetFw1Sp
         fw1DRPM = targetFw1Speed - currFw1Speed;
     }
     else if(angularAccLimit < abs(targetFw1Speed - currFw1Speed) / 10) {
-        fw1DRPM = velLim;
+        if(targetFw1Speed - currFw1Speed < 0) {
+            fw1DRPM = -velLim;
+        }
+        else if(targetFw1Speed - currFw1Speed > 0) {
+            fw1DRPM = velLim;
+        }
     }
     else {
         fw1DRPM = 0;
@@ -73,7 +78,12 @@ double calcSlewDRpm(double currFw1Speed, double currFw2Speed, double targetFw1Sp
         fw2DRPM = targetFw2Speed - currFw2Speed;
     }
     else if(angularAccLimit < abs(targetFw2Speed - currFw2Speed) / 10) {
-        fw2DRPM = velLim;
+        if(targetFw2Speed - currFw2Speed < 0) {
+            fw2DRPM = -velLim;
+        }
+        else if(targetFw2Speed - currFw2Speed > 0) {
+            fw2DRPM = velLim;
+        }
     }
     else {
         fw2DRPM = 0;
