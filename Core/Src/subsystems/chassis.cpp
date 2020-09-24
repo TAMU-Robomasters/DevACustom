@@ -4,6 +4,8 @@
 #include "information/pwm_protocol.hpp"
 #include "init.hpp"
 #include <math.h>
+#include <iostream.h>
+
 
 namespace chassis {
 
@@ -110,10 +112,27 @@ void rcToPower(double angle, double magnitude) {
         c4Motor -> 100
     (the example was in degrees, please use radians)
     */
-    c1Motor.setPower(magnitude*(cos(angle) + sin(angle)));
-    c2Motor.setPower(magnitude* (cos(angle) - sin(angle)));
-    c3Motor.setPower(magnitude*(cos(angle) - sin(angle)));
-    c4Motor.setPower(magnitude*(cos(angle) + sin(angle)));
+
+    if (magnitude > 100 || magnitude < 100){
+    	std::cout << "Magnitude is not within specified bounds" << std::endl;
+    }
+
+    // Please uncomment this else if block if it is necessary to restrict the angle to 0 and 360.
+    /* 
+    else if(angle < 0 || angle > 360){
+    	std::cout << "Angle is not within specified bounds" << std::endl;
+    }
+    */
+
+    // Computes the appropriate fraction of the wheel's motor power  
+    else{
+    	// Sine and cosine of math.h take angle in radians as input value
+    	c1Motor.setPower(magnitude*sqrt(2)*0.5*(cos(angle) + sin(angle))); 
+	    c2Motor.setPower(magnitude*sqrt(2)*0.5*(sin(angle) - cos(angle)));
+	    c3Motor.setPower(magnitude*sqrt(2)*0.5*(sin(angle) - cos(angle)));
+	    c4Motor.setPower(magnitude*sqrt(2)*0.5*(cos(angle) + sin(angle)));
+	}
+
 
 
 
