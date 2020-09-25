@@ -7,15 +7,15 @@
 
 namespace flywheel {
 
-// class flywheelMotor : public pwmMotor {
-// private:
-//     pidInstance* PID;
+class flywheelMotor : public pwmMotor {
+private:
+    pidInstance* PID;
 
-// public:
-//     flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin, int lR, int uR, float32_t lC, float32_t uC) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, lR, uR, lC, uC);
-//     flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin, int lR, int uR) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, lR, uR, -100, 100);
-//     flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, 533, 1083, -100, 100);
-// };
+public:
+    flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin, int lR, int uR, float32_t lC, float32_t uC) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, lR, uR) {}
+    flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin, int lR, int uR) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, lR, uR) {}
+    flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, 533, 1083) {}
+};
 
 enum flywheelStates {
     notRunning,

@@ -32,8 +32,8 @@ public:
 extern gimbalMotor yawMotor, pitchMotor;
 
 enum gimbalStates {
-    notRunning = 'x',
-    running = 'r'
+    notRunning,
+    running
 };
 extern gimbalStates currState;
 

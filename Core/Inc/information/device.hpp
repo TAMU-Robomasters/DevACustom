@@ -25,7 +25,7 @@
 
 class Motor {
 private:
-    float32_t power = 0;  // input power, usually from -100 to 100
+    float32_t power;  // input power, usually from -100 to 100
     float32_t lowerClamp; // input clamp
     float32_t upperClamp; // input clamp
 
@@ -68,53 +68,67 @@ public:
     }
 };
 
-// class pwmMotor : public Motor {
-// private:
-//     int upperRange = 1083;
-//     int lowerRange = 532;
-//     TIM_HandleTypeDef* tim;
-//     int tim_channel;
-//     GPIO_TypeDef* GPIOx;
-//     int GPIO_Pin;
+class pwmMotor {
+private:
+    float32_t duty;
+    TIM_HandleTypeDef* tim_handle;
+    int tim_channel;
+    GPIO_TypeDef* GPIOx;
+    int GPIO_Pin;
+    int lowerRange;
+    int upperRange;
 
-// public:
-//     pwmMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin, int lR, int uR, float32_t lC, float32_t uC) : Motor(-100, 100) {}
+public:
+    pwmMotor(TIM_HandleTypeDef* tim, int tim_c, GPIO_TypeDef* gpiox, int gpio_pin, int lR, int uR)
+        : tim_handle(tim), tim_channel(tim_c), GPIOx(gpiox), GPIO_Pin(gpio_pin), lowerRange(lR), upperRange(uR) {}
+    
+    float32_t clamp(double p) {
+        if (p < lowerRange) {
+            return lowerRange;
+        }
+        if (p > upperRange) {
+            return upperRange;
+        }
+        return static_cast<float32_t>(p);
+    }
 
-//     void setPower(double p) {
-//         // effective max and min are 1083, 533
-//         int dutyRange = upperRange - lowerRange;
-//         int zeroPoint = (upperRange - lowerRange) / 2;
+    float32_t getPower() {
+        return duty;
+    }
 
-//         //p /= abs(lowerRange - upperRange) / 2;
-//         int duty = int(zeroPoint + p * dutyRange);
+    void setPower(double p) {
+        //p range is from -100 to 100
+        // effective max and min are 1083, 533
+        int dutyRange = upperRange - lowerRange;
+        float32_t midPoint = (upperRange - lowerRange) / 2;
 
-//         //p is from -100 to 100
-//         //need to scale from lowerRange to upperRange
-//         //
+        int unclamped = int(midPoint + (0.01 * p * dutyRange));
 
-//         switch (tim_channel) {
-//         case 1:
-//             tim->Instance->CCR1 = duty;
-//             break;
-//         case 2:
-//             tim->Instance->CCR2 = duty;
-//             break;
-//         case 3:
-//             tim->Instance->CCR3 = duty;
-//             break;
-//         case 4:
-//             tim->Instance->CCR4 = duty;
-//             break;
-//         }
-//     }
+        duty = clamp(unclamped);
 
-//     void initESC() {
-//         // htim2.Instance->CCR1 = 1000;
-//         setPower(tim, tim_channel, 1);
-//         HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
-//         osDelay(1000);
-//         setPower(tim, 1, -.058);
-//         // htim2.Instance->CCR1 = 500;
-//         osDelay(1000);
-//     }
-// };
+        switch (tim_channel) {
+        case 1:
+            tim_handle->Instance->CCR1 = duty;
+            break;
+        case 2:
+            tim_handle->Instance->CCR2 = duty;
+            break;
+        case 3:
+            tim_handle->Instance->CCR3 = duty;
+            break;
+        case 4:
+            tim_handle->Instance->CCR4 = duty;
+            break;
+        }
+    }
+
+    void initESC() {
+        // htim2.Instance->CCR1 = 1000;
+        setPower(100);
+        HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
+        osDelay(1000);
+        setPower(0);
+        // htim2.Instance->CCR1 = 500;
+        osDelay(1000);
+    }
+};

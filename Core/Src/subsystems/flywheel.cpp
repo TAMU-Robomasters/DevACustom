@@ -7,7 +7,7 @@ flywheelStates currState = notRunning;
 
 double angularAccLimit = 0.1; // defined as rpm/10ms^2
 
-// flywheelMotor flyhweel1(&htim2, 1, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
+flywheelMotor flyhweel1(&htim2, 1, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
 
 void task() {
 

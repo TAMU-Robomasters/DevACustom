@@ -19,10 +19,6 @@ chassisMotor c4Motor(userCAN::M3508_M4_ID, velPid);
 
 void task() {
 
-    if (ctrlType == VOLTAGE) {
-        pwmInitialize();
-    }
-
     for (;;) {
         update();
 
@@ -31,14 +27,6 @@ void task() {
 
         osDelay(2);
     }
-}
-
-void pwmInitialize() {
-
-    userPWM::initChannels();
-
-    userPWM::initESC(&htim2, 1, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
-    // if we're using voltage control, we need to initialize the PWM channels and ESC
 }
 
 void update() {
@@ -73,9 +61,6 @@ void act() {
         c2Motor.setPower(power);
         c3Motor.setPower(power);
         c4Motor.setPower(power);
-        if (ctrlType == VOLTAGE) {
-            userPWM::setPower(&htim2, 1, c1Motor.getPower());
-        }
         // if current control, power will be set in the CAN task
         // this will change when we have things to put here
         break;
