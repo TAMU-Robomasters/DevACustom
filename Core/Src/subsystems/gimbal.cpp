@@ -57,19 +57,31 @@ void act() {
     }
 }
 
-double calculateAngleError(double currAngle, double targetAngle) {
-    // IMPLEMENT THIS
-    /* 
-    Given a current angle value (currAngle, in radians) and a target angle value (targetAngle, in radians):
-        - Find and return the shortest angle error in radians with direction.
-    (hint hint use trig functions)
+double fixAngle(double angle) {
+    /* Fix angle to [0, 2PI) */
+    angle = fmod(angle, 2 * PI);
+    if (angle < 0)
+        return angle + 2 * PI;
+    return angle;
+}
 
-    EX: If our current angle is 359 degrees, and the target angle is 2 degrees, this function
-        should return 3 degrees, as the shortest path from the current angle to the target angle
-        will be 3 degrees clockwise.
-        (the example was in degrees, please use radians)
-    */
-    return 0;
+double calculateAngleError(double currAngle, double targetAngle) {
+    /* Positive is counter-clockwise */
+
+    double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
+	
+	if (fabs(angleDelta) <= PI)
+	{
+		return angleDelta;
+	}
+	else if(angleDelta > PI)
+	{
+		return -(2 * PI - angleDelta);
+	}
+	else // angleDelta < -PI
+	{
+		return (2 * PI + angleDelta);
+	}
 }
 
 } // namespace gimbal
