@@ -28,7 +28,7 @@ void motorfeedbackOut(UART_HandleTypeDef* huart, userCAN::motorFeedback_t* data)
 
     uint16_t angle = data->rotor_angle;
     uint16_t speed = data->rotor_speed + 32768;
-    uint16_t current = data->torque_current + 32768;
+    // uint16_t current = data->torque_current + 32768;
     uint16_t sentCurrent = static_cast<int16_t>(gimbal::yawMotor.getPower()) + 32768;
     // adds 32768 to shift int16_t values to uint16_t, shifted back when data processed
     uint8_t temp = data->temp;

@@ -5,12 +5,12 @@ devacustom\stm32f4xx_hal_flash.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_
 devacustom\stm32f4xx_hal_flash.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 devacustom\stm32f4xx_hal_flash.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 devacustom\stm32f4xx_hal_flash.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h
-devacustom\stm32f4xx_hal_flash.o: ../Drivers/CMSIS/Include/core_cm4.h
+devacustom\stm32f4xx_hal_flash.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h
 devacustom\stm32f4xx_hal_flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-devacustom\stm32f4xx_hal_flash.o: ../Drivers/CMSIS/Include/cmsis_version.h
-devacustom\stm32f4xx_hal_flash.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
-devacustom\stm32f4xx_hal_flash.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
-devacustom\stm32f4xx_hal_flash.o: ../Drivers/CMSIS/Include/mpu_armv7.h
+devacustom\stm32f4xx_hal_flash.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h
+devacustom\stm32f4xx_hal_flash.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h
+devacustom\stm32f4xx_hal_flash.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h
+devacustom\stm32f4xx_hal_flash.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h
 devacustom\stm32f4xx_hal_flash.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 devacustom\stm32f4xx_hal_flash.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 devacustom\stm32f4xx_hal_flash.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h

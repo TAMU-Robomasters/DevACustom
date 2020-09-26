@@ -6,8 +6,8 @@ namespace gimbal {
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
 
-pidInstance yawPosPid(pidInstance::type::position, 3.0, 0.0, 0.0);
-pidInstance pitchPosPid(pidInstance::type::position, 0.0, 0.0, 0.0);
+pidInstance yawPosPid(pidType::position, 3.0, 0.0, 0.0);
+pidInstance pitchPosPid(pidType::position, 0.0, 0.0, 0.0);
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid);
 gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid);
@@ -47,8 +47,7 @@ void act() {
 
     case running:
         if (ctrlType == VOLTAGE) {
-            double power = 0;
-            //double power = yawPosPid.loop(input);
+            double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
             yawMotor.setPower(power);
             pitchMotor.setPower(power);
         }

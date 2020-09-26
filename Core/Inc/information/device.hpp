@@ -42,11 +42,11 @@ public:
         return static_cast<float32_t>(p);
     }
 
-    virtual float32_t getPower() {
+    float32_t getPower() {
         return power;
     }
 
-    virtual void setPower(double p) {
+    void setPower(double p) {
         power = clamp(p);
     }
 };

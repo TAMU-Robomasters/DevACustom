@@ -1,4 +1,5 @@
 #include "subsystems/flywheel.hpp"
+#include "arm_math.h"
 #include "init.hpp"
 
 namespace flywheel {
@@ -7,9 +8,13 @@ flywheelStates currState = notRunning;
 
 double angularAccLimit = 0.1; // defined as rpm/10ms^2
 
-flywheelMotor flyhweel1(&htim2, 1, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
+flywheelMotor flywheel1(&htim2, 1, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
+flywheelMotor flywheel2(&htim2, 2, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
 
 void task() {
+
+    flywheel1.initESC();
+    flywheel2.initESC();
 
     for (;;) {
         update();
@@ -30,34 +35,22 @@ void update() {
 
 void act() {
     switch (currState) {
+        flywheel1.setPower(0);
+        flywheel2.setPower(0);
     case notRunning:
         break;
 
     case running:
+        calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 10);
         // obviously this will change when we have actual intelligent things to put here
         break;
     }
 }
 
 double calcSlewDRpm(double currFw1Speed, double currFw2Speed, double targetFw1Speed, double targetFw2Speed) {
-    // IMPLEMENT THIS
-    /* 
-    Given the current speeds (rpm) of both flywheel motors, a target speed, and an angular acceleration cap
-    (globally defined as angularAccLimit on line 8)
-        - Calculate the largest amount the flywheel speed should change by while still
-        adhering to the acceleration constraint.
-        - For now, set your calculated values to fw1DRPM and fw2DRPM.
-
-    EX: If the current speed of the flywheels are 50rpm, and the target speed given is 80rpm, calculate what
-    speed the flywheels should be set to THIS LOOP while adhering to the acceleration limit.
-
-    NOTE: As I write this, I'm realizing this task might be dummy simple. If that's the case, go ahead and have
-    some fun with it, whether that means adding some more kinematic constraints, or allowing us to set a current
-    cap rather than an acceleration cap; idc the sky's the limit. I'll get better at writing these as time goes :/
-    */
     double fw1DRPM;
     double fw2DRPM;
-    double velLim = angularAccLimit * 10
+    double velLim = angularAccLimit * 10;
 
     if(angularAccLimit > abs(targetFw1Speed - currFw1Speed) / 10) {
         fw1DRPM = targetFw1Speed - currFw1Speed;
@@ -88,6 +81,9 @@ double calcSlewDRpm(double currFw1Speed, double currFw2Speed, double targetFw1Sp
     else {
         fw2DRPM = 0;
     }
+
+    flyhweel1.setPower(fw1DRPM);
+    flywheel2.setPower(fw2DRPM);
 
     return 0;
 }

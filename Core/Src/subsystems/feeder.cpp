@@ -18,6 +18,8 @@ int8_t temp = 0;
 
 void task() {
 
+    osDelay(5000);
+
     for (;;) {
         update();
 

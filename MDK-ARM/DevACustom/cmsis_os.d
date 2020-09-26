@@ -16,4 +16,4 @@ devacustom\cmsis_os.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers
 devacustom\cmsis_os.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 devacustom\cmsis_os.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 devacustom\cmsis_os.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
-devacustom\cmsis_os.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
+devacustom\cmsis_os.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h

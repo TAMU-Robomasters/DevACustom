@@ -24,6 +24,10 @@ public:
         PID = &pid;
     }
 
+    double getCurrAngle() {
+        return currAngle;
+    }
+
     void setCurrAngle(double ticks) {
         currAngle = ticks * radsPerTick;
     }
