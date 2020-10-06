@@ -27,9 +27,12 @@ void task() {
 }
 
 void update() {
-    if (true) {
+    // If flywheel switch is on turn on flywheel
+    if (true) {         //FIXME change to switch input
+        currState = running;
+    }
+    else {
         currState = notRunning;
-        // will change later based on RC input and sensor based decision making
     }
 }
 
