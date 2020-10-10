@@ -9,7 +9,7 @@ flywheelStates currState = notRunning;
 double angularAccLimit = 0.1; // defined as rpm/10ms^2
 
 flywheelMotor flywheel1(&htim2, 1, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
-flywheelMotor flywheel2(&htim2, 2, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
+flywheelMotor flywheel2(&htim2, 2, POWER3_CTRL_GPIO_Port, POWER3_CTRL_Pin);
 
 void task() {
 
@@ -35,9 +35,9 @@ void update() {
 
 void act() {
     switch (currState) {
+    case notRunning:
         flywheel1.setPower(0);
         flywheel2.setPower(0);
-    case notRunning:
         break;
 
     case running:
@@ -82,7 +82,7 @@ double calcSlewDRpm(double currFw1Speed, double currFw2Speed, double targetFw1Sp
         fw2DRPM = 0;
     }
 
-    flyhweel1.setPower(fw1DRPM);
+    flywheel1.setPower(fw1DRPM);
     flywheel2.setPower(fw2DRPM);
 
     return 0;

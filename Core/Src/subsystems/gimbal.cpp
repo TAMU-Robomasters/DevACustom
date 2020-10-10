@@ -6,7 +6,7 @@ namespace gimbal {
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
 
-pidInstance yawPosPid(pidType::position, 3.0, 0.0, 0.0);
+pidInstance yawPosPid(pidType::position, 70.0, 0.00, 0.01);
 pidInstance pitchPosPid(pidType::position, 0.0, 0.0, 0.0);
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid);
@@ -46,12 +46,13 @@ void act() {
         break;
 
     case running:
+		double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
         if (ctrlType == VOLTAGE) {
-            double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
-            yawMotor.setPower(power);
-            pitchMotor.setPower(power);
-        }
-        // obviously this will change when we have actual intelligent things to put here
+            yawMotor.setPower(-power);
+            pitchMotor.setPower(-power);
+        } // gimbal motors controlled through voltage, sent messages over CAN
+        
+        // this will change when we have actual intelligent behavior things to put here
         break;
     }
 }
@@ -59,15 +60,18 @@ void act() {
 double fixAngle(double angle) {
     /* Fix angle to [0, 2PI) */
     angle = fmod(angle, 2 * PI);
-    if (angle < 0)
+    if (angle < 0){
         return angle + 2 * PI;
+		}
     return angle;
 }
 
 double calculateAngleError(double currAngle, double targetAngle) {
-    /* Positive is counter-clockwise */
+  /* Positive is counter-clockwise */
 
-    double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
+  double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
+	
+	//return atan2(sin(targetAngle-currAngle), cos(targetAngle-currAngle));
 	
 	if (fabs(angleDelta) <= PI)
 	{
@@ -81,6 +85,7 @@ double calculateAngleError(double currAngle, double targetAngle) {
 	{
 		return (2 * PI + angleDelta);
 	}
+	
 }
 
 } // namespace gimbal
