@@ -28,7 +28,7 @@ void task() {
 
 void update() {
     // If flywheel switch is on turn on flywheel
-    if (true) {         //FIXME change to switch input
+    if (true) {  // FIXME change to switch input
         currState = running;
     }
     else {
