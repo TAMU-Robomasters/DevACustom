@@ -1,0 +1,11 @@
+*.d
+*.o
+*.crf
+*.lst
+*.uvguix*
+*.hex
+*.dep
+*.axf
+**/MDK-ARM/**/*.htm*
+**/MDK-ARM/**/*.uvoptx
+*.map
