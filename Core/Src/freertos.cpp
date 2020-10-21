@@ -35,6 +35,7 @@
 
 #include "information/can_protocol.hpp"
 #include "information/uart_protocol.hpp"
+#include "information/rc_protocol.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -291,7 +292,6 @@ void feederTaskFunc(void const* argument) {
 void rcTaskFunc(void const* argument) {
     /* USER CODE BEGIN rcTaskFunc */
     /* Infinite loop */
-    userRC::remote_control_init();
     for (;;) {
         osDelay(1);
     }
