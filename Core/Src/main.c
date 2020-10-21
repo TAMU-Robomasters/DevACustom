@@ -106,7 +106,6 @@ int main(void)
   MX_CAN2_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  remote_control_init();
 
   // Turn all the LED's off to begin with
   HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_SET);

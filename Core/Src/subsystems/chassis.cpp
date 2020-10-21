@@ -40,7 +40,9 @@ void update() {
     userRC::RC_ctrl_t* rcData = userRC::getRCData();
     float rcSomething = static_cast<float>(rcData->rc.ch[0]);
 
-    velPid.setTarget(200);
+    rcSomething = ((rcSomething - 364) / 13.2) / 2;
+
+    velPid.setTarget(rcSomething);
     // if button pressed on controller, change state to "followgimbal" or something
 }
 
