@@ -25,8 +25,8 @@ void task() {
 }
 
 void update() {
-    yawMotor.setCurrAngle(static_cast<double>(yawMotor.getFeedback()->rotor_angle));
-    pitchMotor.setCurrAngle(static_cast<double>(pitchMotor.getFeedback()->rotor_angle));
+    yawMotor.setCurrAngle(-static_cast<double>(yawMotor.getFeedback()->rotor_angle));
+    pitchMotor.setCurrAngle(-static_cast<double>(pitchMotor.getFeedback()->rotor_angle));
 
     if (true) {
         currState = running;
@@ -48,8 +48,8 @@ void act() {
     case running:
 		double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
         if (ctrlType == VOLTAGE) {
-            yawMotor.setPower(-power);
-            pitchMotor.setPower(-power);
+            yawMotor.setPower(power);
+            pitchMotor.setPower(power);
         } // gimbal motors controlled through voltage, sent messages over CAN
         
         // this will change when we have actual intelligent behavior things to put here

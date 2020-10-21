@@ -1,16 +1,13 @@
 #include "subsystems/chassis.hpp"
-#include "arm_math.h"
+#include <arm_math.h>
 #include "information/can_protocol.hpp"
 #include "information/pid.hpp"
 #include "information/pwm_protocol.hpp"
 #include "init.hpp"
+#include "information/rc_protocol.hpp"
 
 namespace chassis {
 
-/*
-Task Assignment: Given an angle from front of the robot (0-360) and a Power(0, 100), calculate the power for each chassis motor to move in that current direction 
-Due: Wednesday the 23rd by 11:59Pm
-*/
 chassisStates currState = notRunning;
 CtrlTypes ctrlType = CURRENT;
 // i don't really like this but do i care enough to change it?
@@ -39,6 +36,10 @@ void update() {
         currState = notRunning;
         // will change later based on RC input and sensor based decision making
     }
+
+    userRC::RC_ctrl_t* rcData = userRC::getRCData();
+    float rcSomething = static_cast<float>(rcData->rc.ch[0]);
+
     velPid.setTarget(200);
     // if button pressed on controller, change state to "followgimbal" or something
 }

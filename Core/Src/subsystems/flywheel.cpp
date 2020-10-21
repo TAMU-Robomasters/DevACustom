@@ -1,5 +1,5 @@
 #include "subsystems/flywheel.hpp"
-#include "arm_math.h"
+#include <arm_math.h>
 #include "init.hpp"
 
 namespace flywheel {

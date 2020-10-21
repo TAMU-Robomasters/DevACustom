@@ -127,6 +127,7 @@ void Error_Handler(void);
 #define LED_GREEN_GPIO_Port GPIOF
 /* USER CODE BEGIN Private defines */
 // #define USE_HAL_CAN_REGISTER_CALLBACKS = 1
+#define ARM_MATH_CM4
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

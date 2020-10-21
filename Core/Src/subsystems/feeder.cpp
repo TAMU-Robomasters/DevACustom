@@ -18,7 +18,7 @@ int8_t temp = 0;
 
 void task() {
 
-    osDelay(5000);
+    //osDelay(5000);
 
     for (;;) {
         update();
@@ -47,7 +47,7 @@ void act() {
         break;
 
     case running:
-        feederPower = 0.00;
+        feederPower = 0.9;
         // obviously this will change when we have actual intelligent things to put here
         break;
     }
