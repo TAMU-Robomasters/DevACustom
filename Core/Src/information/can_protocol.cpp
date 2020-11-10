@@ -226,7 +226,7 @@ void send() {
                                       chassis::c4Motor.getPower(),
                                       hcan1);
     }
-    userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(),
+    userCAN::motor_ControlGimbFeed(/*gimbal::yawMotor.getPower()*/0,
                                    gimbal::pitchMotor.getPower(),
                                    feeder::feederPower,
                                    hcan1);

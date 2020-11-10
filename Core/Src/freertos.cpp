@@ -34,8 +34,8 @@
 #include "subsystems/gimbal.hpp"
 
 #include "information/can_protocol.hpp"
+#include "information/rc_protocol.h"
 #include "information/uart_protocol.hpp"
-#include "information/rc_protocol.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -290,10 +290,10 @@ void feederTaskFunc(void const* argument) {
 */
 /* USER CODE END Header_rcTaskFunc */
 void rcTaskFunc(void const* argument) {
-    /* USER CODE BEGIN rcTaskFunc */
+    RCInit();
     /* Infinite loop */
     for (;;) {
-        osDelay(1);
+        osDelay(1000);
     }
     /* USER CODE END rcTaskFunc */
 }

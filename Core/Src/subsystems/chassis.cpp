@@ -1,10 +1,10 @@
 #include "subsystems/chassis.hpp"
-#include <arm_math.h>
 #include "information/can_protocol.hpp"
 #include "information/pid.hpp"
 #include "information/pwm_protocol.hpp"
+#include "information/rc_protocol.h"
 #include "init.hpp"
-#include "information/rc_protocol.hpp"
+#include <arm_math.h>
 
 namespace chassis {
 
@@ -37,10 +37,10 @@ void update() {
         // will change later based on RC input and sensor based decision making
     }
 
-    userRC::RC_ctrl_t* rcData = userRC::getRCData();
-    float rcSomething = static_cast<float>(rcData->rc.ch[0]);
+    float rcSomething = static_cast<float>(rcDataStruct.rc.ch[0]);
 
-    rcSomething = ((rcSomething - 364) / 13.2) / 2;
+    rcSomething = rcSomething / 1320 * 100;
+    // divide by total range and scale to -100, 100
 
     velPid.setTarget(rcSomething);
     // if button pressed on controller, change state to "followgimbal" or something

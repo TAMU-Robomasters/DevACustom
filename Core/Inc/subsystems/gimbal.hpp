@@ -5,7 +5,7 @@
 #include "information/pid.hpp"
 #include <math.h>
 
-#define rotor_angle_max 8091;
+#define rotor_angle_max 8191;
 #define radsPerTick (2 * PI) / rotor_angle_max;
 
 namespace gimbal {
@@ -35,6 +35,8 @@ public:
 
 extern gimbalMotor yawMotor, pitchMotor;
 
+extern pidInstance yawPosPid, pitchPosPid;
+
 enum gimbalStates {
     notRunning,
     running
@@ -57,3 +59,6 @@ extern void act();
 extern double calculateAngleError(double currAngle, double targetAngle);
 
 } // namespace gimbal
+
+extern double radToDeg(double angle);
+extern double degToRad(double angle);

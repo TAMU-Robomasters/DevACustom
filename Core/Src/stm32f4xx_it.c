@@ -25,6 +25,7 @@
 #include "task.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "information/rc_protocol.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,7 +45,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-
+extern uint8_t *dmaData;
+extern uint8_t **dmaRxBuffer;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,8 +61,8 @@
 
 /* External variables --------------------------------------------------------*/
 extern CAN_HandleTypeDef hcan1;
-extern DMA_HandleTypeDef hdma_usart3_rx;
-extern UART_HandleTypeDef huart3;
+extern DMA_HandleTypeDef hdma_usart1_rx;
+extern UART_HandleTypeDef huart1;
 extern TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN EV */
@@ -164,20 +166,6 @@ void DebugMon_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles DMA1 stream1 global interrupt.
-  */
-void DMA1_Stream1_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Stream1_IRQn 0 */
-
-  /* USER CODE END DMA1_Stream1_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_usart3_rx);
-  /* USER CODE BEGIN DMA1_Stream1_IRQn 1 */
-
-  /* USER CODE END DMA1_Stream1_IRQn 1 */
-}
-
-/**
   * @brief This function handles CAN1 TX interrupts.
   */
 void CAN1_TX_IRQHandler(void)
@@ -206,17 +194,78 @@ void CAN1_RX0_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles USART3 global interrupt.
+  * @brief This function handles USART1 global interrupt.
   */
-void USART3_IRQHandler(void)
-{
-  /* USER CODE BEGIN USART3_IRQn 0 */
+void USART1_IRQHandler(void) {
+    /* USER CODE BEGIN USART1_IRQn 0 */
 
-  /* USER CODE END USART3_IRQn 0 */
-  HAL_UART_IRQHandler(&huart3);
-  /* USER CODE BEGIN USART3_IRQn 1 */
+    /* USER CODE END USART1_IRQn 0 */
+    
+    HAL_UART_IRQHandler(&huart1);
 
-  /* USER CODE END USART3_IRQn 1 */
+    /* USER CODE BEGIN USART1_IRQn 1 */
+    if(huart1.Instance->SR & UART_FLAG_RXNE)//���յ�����
+    {
+        __HAL_UART_CLEAR_PEFLAG(&huart1);
+    }
+    else if(USART1->SR & UART_FLAG_IDLE)
+    {
+        static uint16_t this_time_rx_len = 0;
+
+        __HAL_UART_CLEAR_PEFLAG(&huart1);
+
+        if ((hdma_usart1_rx.Instance->CR & DMA_SxCR_CT) == RESET)
+        {
+          /* Current memory buffer used is Memory 0 */
+
+          //disable DMA            
+          __HAL_DMA_DISABLE(&hdma_usart1_rx);
+
+          //get receive data length, length = set_data_length - remain_length            
+          this_time_rx_len = 36 - hdma_usart1_rx.Instance->NDTR;
+
+          //reset set_data_length            
+          hdma_usart1_rx.Instance->NDTR = 36;
+
+          //set memory buffer 1            
+          hdma_usart1_rx.Instance->CR |= DMA_SxCR_CT;
+          
+          //enable DMA            
+          __HAL_DMA_ENABLE(&hdma_usart1_rx);
+        
+          if (this_time_rx_len == 18) {
+            dmaData = dmaRxBuffer[0];
+            processDMAData();
+          }
+
+        }
+        else
+        {
+          /* Current memory buffer used is Memory 1 */
+          //disable DMA            
+          __HAL_DMA_DISABLE(&hdma_usart1_rx);
+
+          //get receive data length, length = set_data_length - remain_length            
+          this_time_rx_len = 36 - hdma_usart1_rx.Instance->NDTR;
+
+          //reset set_data_lenght            
+          hdma_usart1_rx.Instance->NDTR = 36;
+
+          //set memory buffer 0            
+          DMA2_Stream2->CR &= ~(DMA_SxCR_CT);
+          
+          //enable DMA            
+          __HAL_DMA_ENABLE(&hdma_usart1_rx);
+          
+          if (this_time_rx_len == 18) {
+            dmaData = dmaRxBuffer[1];
+            processDMAData();
+          }
+            
+        }
+    }
+    
+  /* USER CODE END USART1_IRQn 1 */
 }
 
 /**
@@ -231,6 +280,19 @@ void TIM7_IRQHandler(void)
   /* USER CODE BEGIN TIM7_IRQn 1 */
 
   /* USER CODE END TIM7_IRQn 1 */
+}
+
+/**
+  * @brief This function handles DMA2 stream2 global interrupt.
+  */
+void DMA2_Stream2_IRQHandler(void) {
+    /* USER CODE BEGIN DMA2_Stream2_IRQn 0 */
+
+    /* USER CODE END DMA2_Stream2_IRQn 0 */
+    HAL_DMA_IRQHandler(&hdma_usart1_rx);
+    /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
+
+    /* USER CODE END DMA2_Stream2_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

@@ -6,7 +6,8 @@ namespace gimbal {
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
 
-pidInstance yawPosPid(pidType::position, 70.0, 0.00, 0.01);
+// pidInstance yawPosPid(pidType::position, 70.0, 0.00, 0.01);
+pidInstance yawPosPid(pidType::position, .1, 0.00, 0.0);
 pidInstance pitchPosPid(pidType::position, 0.0, 0.0, 0.0);
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid);
@@ -25,8 +26,8 @@ void task() {
 }
 
 void update() {
-    yawMotor.setCurrAngle(-static_cast<double>(yawMotor.getFeedback()->rotor_angle));
-    pitchMotor.setCurrAngle(-static_cast<double>(pitchMotor.getFeedback()->rotor_angle));
+    yawMotor.setCurrAngle(static_cast<double>(yawMotor.getFeedback()->rotor_angle));
+    pitchMotor.setCurrAngle(static_cast<double>(pitchMotor.getFeedback()->rotor_angle));
 
     if (true) {
         currState = running;
@@ -46,7 +47,7 @@ void act() {
         break;
 
     case running:
-		double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
+        double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), degToRad(10)));
         if (ctrlType == VOLTAGE) {
             yawMotor.setPower(power);
             pitchMotor.setPower(power);
@@ -69,23 +70,33 @@ double fixAngle(double angle) {
 double calculateAngleError(double currAngle, double targetAngle) {
   /* Positive is counter-clockwise */
 
-  double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
-	
-	//return atan2(sin(targetAngle-currAngle), cos(targetAngle-currAngle));
-	
-	if (fabs(angleDelta) <= PI)
-	{
-		return angleDelta;
-	}
-	else if(angleDelta > PI)
-	{
-		return -(2 * PI - angleDelta);
-	}
-	else // angleDelta < -PI
-	{
-		return (2 * PI + angleDelta);
-	}
+// 	return atan2(sin(targetAngle-currAngle), cos(targetAngle-currAngle));
+
+//   double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
+
+// 	if (fabs(angleDelta) <= PI)
+// 	{
+// 		return angleDelta;
+// 	}
+// 	else if(angleDelta > PI)
+// 	{
+// 		return -(2 * PI - angleDelta);
+// 	}
+// 	else // angleDelta < -PI
+// 	{
+// 		return (2 * PI + angleDelta);
+// 	}
+
+    return 69;
 	
 }
 
 } // namespace gimbal
+
+double radToDeg(double angle) {
+    return (angle * 180) / PI;
+}
+
+double degToRad(double angle) {
+    return (angle * PI) / 180;
+}

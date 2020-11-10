@@ -19,7 +19,7 @@ extern void stringOut(UART_HandleTypeDef* huart, char buffer[]);
 extern void newlnOut(UART_HandleTypeDef* huart);
 // helper function that might be useful later
 
-extern void motorfeedbackOut(UART_HandleTypeDef* huart, struct userCAN::motorFeedback_t* data);
+extern void motorFeedbackOut(UART_HandleTypeDef* huart, struct userCAN::motorFeedback_t* data);
 // function used to output motor feedback info over UART
 
 extern void task();

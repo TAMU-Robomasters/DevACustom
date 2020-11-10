@@ -15,32 +15,38 @@ private:
     double lastError;
     double integral;
     double target;
+    double currVal;
 
 public:
     pidInstance(double p = 0, double i = 0, double d = 0) : kP(p), kI(i), kD(d), lastLoopTime(0) {}
     pidInstance(pidType pT = pidType::velocity, double p = 0, double i = 0, double d = 0) : type(pT), kP(p), kI(i), kD(d), lastLoopTime(0) {}
 
-    double loop(double current) {
-    double currTime = HAL_GetTick();
-    double error = target - current;
-    double dT = (lastLoopTime == 0) ? 0 : (currTime - lastLoopTime);
+    double loop(double curr) {
+        currVal = curr;
+        double currTime = HAL_GetTick();
+        double error = target - currVal;
+        double dT = (lastLoopTime == 0) ? 0 : (currTime - lastLoopTime);
 
-    double derivative = (dT == 0) ? 0 : (lastError - error) / (dT);
-    integral += error * dT;
+        double derivative = (dT == 0) ? 0 : (lastError - error) / (dT);
+        integral += error * dT;
 
-    double output = (kP * error) + (kI * integral) + (kD * derivative);
+        double output = (kP * error) + (kI * integral) + (kD * derivative);
 
-    lastLoopTime = currTime;
-    lastError = error;
+        lastLoopTime = currTime;
+        lastError = error;
 
-    return output;
-        }
+        return output;
+    }
 
-        double getTarget() {
-            return target;
-        }
+    double getTarget() {
+        return target;
+    }
 
-        void setTarget(double t) {
-            target = t;
-        }
+    void setTarget(double t) {
+        target = t;
+    }
+
+    double getCurrVal() {
+        return currVal;
+    }
 };

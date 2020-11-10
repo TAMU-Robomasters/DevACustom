@@ -39,12 +39,13 @@
 #define KEY_PRESSED_OFFSET_V ((uint16_t)1 << 14)
 #define KEY_PRESSED_OFFSET_B ((uint16_t)1 << 15)
 
-namespace userRC {
+#define GET_BIT(a, b) (a >> b & 1)
+// shifts input (b) to right by (a) digits and does bitwise AND with 1
 
 typedef __packed struct {
     __packed struct {
-        int16_t ch[5];
-        char s[2];
+        int16_t ch[5]; // analog joysticks
+        char s[2];     // three stage switches
     } rc;
     __packed struct {
         int16_t x;
@@ -59,12 +60,35 @@ typedef __packed struct {
 
 } RC_ctrl_t;
 
-extern RC_ctrl_t rc_data;
+typedef enum {
+    btnW = 0,
+    btnS = 1,
+    btnA = 2,
+    btnD = 3,
+    btnShift = 4,
+    btnCtrl = 5,
+    btnQ = 6,
+    btnE = 7,
+    btnR = 8,
+    btnF = 9,
+    btnG = 10,
+    btnZ = 11,
+    btnX = 12,
+    btnC = 13,
+    btnV = 14,
+    btnB = 15,
+    btnMouseL,
+    btnMouseR,
+} btnType;
 
-extern void remote_control_init(void);
+extern RC_ctrl_t rcDataStruct;
+extern RC_ctrl_t lastRcDataStruct;
+
+extern bool btnIsRising(btnType btn);
+extern bool btnIsFalling(btnType btn);
 
 extern RC_ctrl_t* getRCData();
 
-extern void RC_init(uint8_t* rx1_buf, uint8_t* rx2_buf, uint16_t dma_buf_num);
+extern void processDMAData();
 
-} // namespace userRC
+extern void RCInit();
