@@ -28,10 +28,21 @@ void update() {
     yawMotor.setCurrAngle(static_cast<double>(yawMotor.getFeedback()->rotor_angle));
     pitchMotor.setCurrAngle(static_cast<double>(pitchMotor.getFeedback()->rotor_angle));
 
-    if (true) {
-        currState = running;
-        // will change later based on RC input and sensor based decision making
+    int t = 0;
+    bool looped = false;
+    if (t < 1000 && looped == false) {      //Arbitrary number of 2 seconds for loops   
+        currState = patrol;
+        t++;
     }
+    else {
+        currState = notRunning;
+        looped = true;
+        t--;
+    }
+    if (t == 0) {
+        looped = false;
+    }
+    // Update encoders
 
     yawPosPid.setTarget(0);
     pitchPosPid.setTarget(0);
@@ -52,6 +63,29 @@ void act() {
             pitchMotor.setPower(power);
         }
         // obviously this will change when we have actual intelligent things to put here
+        break;
+    case patrol: 
+        bool patrolLoop = false;
+        if (true) {     //FIXME: ENCODERS       if (encoders == ticksToEndOfRotation) within a tolerance
+            patrolLoop = true;
+        }
+        else if (false) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
+            patrolLoop = false;
+        }
+        if (patrolLoop == false) {
+            if (ctrlType == VOLTAGE) {
+                double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
+                yawMotor.setPower(power);
+                pitchMotor.setPower(power);
+            }
+        }
+        if (patrolLoop == true) {
+            if (ctrlType == VOLTAGE) {
+                double power = -yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
+                yawMotor.setPower(power);
+                pitchMotor.setPower(power);
+            }
+        }
         break;
     }
 }

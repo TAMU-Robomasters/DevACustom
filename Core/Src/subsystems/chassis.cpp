@@ -11,6 +11,7 @@ namespace chassis {
 Task Assignment: Given an angle from front of the robot (0-360) and a Power(0, 100), calculate the power for each chassis motor to move in that current direction 
 Due: Wednesday the 23rd by 11:59Pm
 */
+
 chassisStates currState = notRunning;
 CtrlTypes ctrlType = CURRENT;
 // i don't really like this but do i care enough to change it?
@@ -35,10 +36,21 @@ void task() {
 }
 
 void update() {
-    if (true) {
-        currState = notRunning;
-        // will change later based on RC input and sensor based decision making
+    int t = 0;
+    bool looped = false;
+    if (t < 1000 && looped == false) {      //Arbitrary number of 2 seconds for loops   
+        currState = patrol;
+        t++;
     }
+    else {
+        currState = notRunning;
+        looped = true;
+        t--;
+    }
+    if (t == 0) {
+        looped = false;
+    }
+    // Update encoders
     velPid.setTarget(200);
     // if button pressed on controller, change state to "followgimbal" or something
 }
@@ -68,6 +80,29 @@ void act() {
         c4Motor.setPower(power);
         // if current control, power will be set in the CAN task
         // this will change when we have things to put here
+        break;
+    case patrol:
+        bool patrolLoop = false;
+        if (true) {     //FIXME: ENCODERS       if (encoders == ticksToEndOfRail) within a tolerance
+            patrolLoop = true;
+        }
+        else if (false) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
+            patrolLoop = false;
+        }
+        if (patrolLoop == false) { 
+            double power = velPid.loop(static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0);
+            c1Motor.setPower(power);
+            c2Motor.setPower(power);
+            c3Motor.setPower(power);
+            c4Motor.setPower(power);
+        }
+        else if (patrolLoop == true) {
+            double power = -velPid.loop(static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0);
+            c1Motor.setPower(power);
+            c2Motor.setPower(power);
+            c3Motor.setPower(power);
+            c4Motor.setPower(power);
+        }
         break;
     }
 }

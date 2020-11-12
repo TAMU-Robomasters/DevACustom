@@ -877,14 +877,14 @@ ARM Macro Assembler    Page 14
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend=devacustom\startup_stm32f427xx.d -odevacustom\startup_stm32f
-427xx.o -I..\Core\Inc -I.\RTE\_DevACustom -IC:\Users\s2sid\AppData\Local\Arm\Pa
-cks\ARM\CMSIS\5.7.0\CMSIS\Core\Include -IC:\Users\s2sid\AppData\Local\Arm\Packs
-\ARM\CMSIS\5.7.0\CMSIS\DSP\Include -IC:\Users\s2sid\AppData\Local\Arm\Packs\ARM
-\CMSIS\5.7.0\CMSIS\DSP\PrivateInclude -IC:\Users\s2sid\AppData\Local\Arm\Packs\
+427xx.o -I..\Core\Inc -I.\RTE\_DevACustom -IC:\Users\CRNic\AppData\Local\Arm\Pa
+cks\ARM\CMSIS\5.7.0\CMSIS\Core\Include -IC:\Users\CRNic\AppData\Local\Arm\Packs
+\ARM\CMSIS\5.7.0\CMSIS\DSP\Include -IC:\Users\CRNic\AppData\Local\Arm\Packs\ARM
+\CMSIS\5.7.0\CMSIS\DSP\PrivateInclude -IC:\Users\CRNic\AppData\Local\Arm\Packs\
 Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefine
-="__UVISION_VERSION SETA 531" --predefine="_RTE_ SETA 1" --predefine="STM32F427
-xx SETA 1" --predefine="_RTE_ SETA 1" --list=startup_stm32f427xx.lst startup_st
-m32f427xx.s
+="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 531" --predefine="_RTE_ SE
+TA 1" --predefine="STM32F427xx SETA 1" --predefine="_RTE_ SETA 1" --list=startu
+p_stm32f427xx.lst startup_stm32f427xx.s
 
 
 
@@ -2057,4 +2057,4 @@ Symbol: __use_two_region_memory
       None
 Comment: __use_two_region_memory unused
 3 symbols
-455 symbols in table
+456 symbols in table

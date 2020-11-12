@@ -82,7 +82,7 @@ double calcSlewDRpm(double currFw1Speed, double currFw2Speed, double targetFw1Sp
         fw2DRPM = 0;
     }
 
-    flyhweel1.setPower(fw1DRPM);
+    flywheel1.setPower(fw1DRPM);
     flywheel2.setPower(fw2DRPM);
 
     return 0;

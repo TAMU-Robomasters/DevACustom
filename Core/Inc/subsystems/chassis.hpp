@@ -28,7 +28,8 @@ extern chassisMotor c1Motor, c2Motor, c3Motor, c4Motor;
 enum chassisStates {
     notRunning,
     followGimbal,
-    manual
+    manual, 
+    patrol
 };
 
 enum CtrlTypes {

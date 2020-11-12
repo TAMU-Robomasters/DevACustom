@@ -1,0 +1,14 @@
+devacustom\commontables.o: C:\Users\CRNic\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\Source\CommonTables\CommonTables.c
+devacustom\commontables.o: C:\Users\CRNic\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\Source\CommonTables\arm_common_tables.c
+devacustom\commontables.o: C:\Users\CRNic\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\Include\arm_math.h
+devacustom\commontables.o: C:\Users\CRNic\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h
+devacustom\commontables.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+devacustom\commontables.o: C:\Users\CRNic\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h
+devacustom\commontables.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+devacustom\commontables.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+devacustom\commontables.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
+devacustom\commontables.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+devacustom\commontables.o: C:\Users\CRNic\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\Include\arm_common_tables.h
+devacustom\commontables.o: C:\Users\CRNic\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\Source\CommonTables\arm_const_structs.c
+devacustom\commontables.o: C:\Users\CRNic\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\Include\arm_const_structs.h
+devacustom\commontables.o: C:\Users\CRNic\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\DSP\Source\CommonTables\arm_mve_tables.c
