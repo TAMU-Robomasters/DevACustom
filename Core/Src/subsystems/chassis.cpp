@@ -83,10 +83,11 @@ void act() {
         break;
     case patrol:
         bool patrolLoop = false;
-        if (true) {     //FIXME: ENCODERS       if (encoders == ticksToEndOfRail) within a tolerance
+        double ticksToEndOfRail = 180;      //FIXME: Actual Value
+        if (ticksToEndOfRail - static_cast<double>(c1Motor.getFeedback()->rotor_angle)<= .1) {     //FIXME: ENCODERS       if (encoders == ticksToEndOfRail) within a tolerance
             patrolLoop = true;
         }
-        else if (false) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
+        else if (static_cast<double>(c1Motor.getFeedback()->rotor_angle) <= .1) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
             patrolLoop = false;
         }
         if (patrolLoop == false) { 

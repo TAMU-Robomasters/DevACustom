@@ -65,21 +65,42 @@ void act() {
         // obviously this will change when we have actual intelligent things to put here
         break;
     case patrol: 
-        bool patrolLoop = false;
-        if (true) {     //FIXME: ENCODERS       if (encoders == ticksToEndOfRotation) within a tolerance
-            patrolLoop = true;
+        bool patrolLoopYaw = false;
+        bool patrolLoopPitch = false;
+        if (180 - static_cast<double>(yawMotor.getFeedback()->rotor_angle < .1) {     //FIXME: is yaw or pitch 180, TOL
+            patrolLoopYaw = true;
         }
-        else if (false) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
-            patrolLoop = false;
+        else if (static_cast<double>(yawMotor.getFeedback()->rotor_angle < .1) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
+            patrolLoopYaw = false;
         }
-        if (patrolLoop == false) {
+        if (180 - static_cast<double>(pitchMotor.getFeedback()->rotor_angle < .1) {     //FIXME: is yaw or pitch 180, TOL
+            patrolLoopPitch = true;
+        }
+        else if (static_cast<double>(pitchMotor.getFeedback()->rotor_angle < .1) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
+            patrolLoopPitch = false;
+        }
+        if (patrolLoopYaw == false && patrolLoopPitch == false) {
             if (ctrlType == VOLTAGE) {
                 double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
                 yawMotor.setPower(power);
                 pitchMotor.setPower(power);
             }
         }
-        if (patrolLoop == true) {
+        if (patrolLoopYaw == false && patrolLoopPitch == true) {
+            if (ctrlType == VOLTAGE) {
+                double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
+                yawMotor.setPower(power);
+                pitchMotor.setPower(-power);
+            }
+        }
+        if (patrolLoopYaw == true && patrolLoopPitch == false) {
+            if (ctrlType == VOLTAGE) {
+                double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
+                yawMotor.setPower(-power);
+                pitchMotor.setPower(power);
+            }
+        }
+        if (patrolLoop == true && patrolLoopPitch == true) {
             if (ctrlType == VOLTAGE) {
                 double power = -yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
                 yawMotor.setPower(power);
