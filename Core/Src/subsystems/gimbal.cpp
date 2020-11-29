@@ -67,16 +67,16 @@ void act() {
     case patrol: 
         bool patrolLoopYaw = false;
         bool patrolLoopPitch = false;
-        if (180 - static_cast<double>(yawMotor.getFeedback()->rotor_angle < .1) {     //FIXME: is yaw or pitch 180, TOL
+        if (180 - static_cast<double>(yawMotor.getFeedback()->rotor_angle < .1)) {     //FIXME: is yaw or pitch 180, TOL
             patrolLoopYaw = true;
         }
-        else if (static_cast<double>(yawMotor.getFeedback()->rotor_angle < .1) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
+        else if (static_cast<double>(yawMotor.getFeedback()->rotor_angle < .1)) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
             patrolLoopYaw = false;
         }
-        if (180 - static_cast<double>(pitchMotor.getFeedback()->rotor_angle < .1) {     //FIXME: is yaw or pitch 180, TOL
+        if (180 - static_cast<double>(pitchMotor.getFeedback()->rotor_angle < .1)) {     //FIXME: is yaw or pitch 180, TOL
             patrolLoopPitch = true;
         }
-        else if (static_cast<double>(pitchMotor.getFeedback()->rotor_angle < .1) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
+        else if (static_cast<double>(pitchMotor.getFeedback()->rotor_angle < .1)) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
             patrolLoopPitch = false;
         }
         if (patrolLoopYaw == false && patrolLoopPitch == false) {
@@ -100,7 +100,7 @@ void act() {
                 pitchMotor.setPower(power);
             }
         }
-        if (patrolLoop == true && patrolLoopPitch == true) {
+        if (patrolLoopYaw == true && patrolLoopPitch == true) {
             if (ctrlType == VOLTAGE) {
                 double power = -yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
                 yawMotor.setPower(power);
