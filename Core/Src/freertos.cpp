@@ -82,6 +82,8 @@ void sensorTaskFunc(void const* argument);
 void canTaskFunc(void const* argument);
 void uartTaskFunc(void const* argument);
 
+int counter1 = 0;
+
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
@@ -222,6 +224,7 @@ void indicatorTaskFunc(void const* argument) {
         HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
         osDelay(125);
+				counter1++;
     }
     /* USER CODE END indicatorTaskFunc */
 }

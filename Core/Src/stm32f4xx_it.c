@@ -46,7 +46,7 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 extern uint8_t *dmaData;
-extern uint8_t **dmaRxBuffer;
+extern uint8_t dmaRxBuffer[2][18];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -207,9 +207,7 @@ void USART1_IRQHandler(void) {
     if(huart1.Instance->SR & UART_FLAG_RXNE)//���յ�����
     {
         __HAL_UART_CLEAR_PEFLAG(&huart1);
-    }
-    else if(USART1->SR & UART_FLAG_IDLE)
-    {
+    } else if (USART3->SR & UART_FLAG_IDLE) {
         static uint16_t this_time_rx_len = 0;
 
         __HAL_UART_CLEAR_PEFLAG(&huart1);
@@ -221,7 +219,7 @@ void USART1_IRQHandler(void) {
           //disable DMA            
           __HAL_DMA_DISABLE(&hdma_usart1_rx);
 
-          //get receive data length, length = set_data_length - remain_length            
+          //get receive data length, length = set_data_length - remain_length
           this_time_rx_len = 36 - hdma_usart1_rx.Instance->NDTR;
 
           //reset set_data_length            
@@ -264,7 +262,7 @@ void USART1_IRQHandler(void) {
             
         }
     }
-    
+
   /* USER CODE END USART1_IRQn 1 */
 }
 

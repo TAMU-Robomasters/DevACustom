@@ -6,7 +6,7 @@
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "tim.h"
-/* 
+/*
     Referee System Abstractions?
     Taken from QDU (used in CAN protocol)
 */
@@ -102,7 +102,7 @@ public:
         int dutyRange = upperRange - lowerRange;
         float32_t midPoint = (upperRange - lowerRange) / 2;
 
-        int unclamped = int(midPoint + (0.01 * p * dutyRange));
+        int unclamped = int(midPoint + (0.01 * p * dutyRange / 2));
 
         duty = clamp(unclamped);
 

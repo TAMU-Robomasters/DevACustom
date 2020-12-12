@@ -1,6 +1,8 @@
 #include "subsystems/gimbal.hpp"
 #include "init.hpp"
 
+float32_t bung = 0;
+
 namespace gimbal {
 
 gimbalStates currState = notRunning;
@@ -33,7 +35,6 @@ void update() {
         currState = running;
         // will change later based on RC input and sensor based decision making
     }
-
     yawPosPid.setTarget(0);
     pitchPosPid.setTarget(0);
     // if button pressed on controller, change state to "followgimbal" or something
@@ -51,6 +52,7 @@ void act() {
         if (ctrlType == VOLTAGE) {
             yawMotor.setPower(power);
             pitchMotor.setPower(power);
+						bung = yawMotor.getPower();
         } // gimbal motors controlled through voltage, sent messages over CAN
         
         // this will change when we have actual intelligent behavior things to put here

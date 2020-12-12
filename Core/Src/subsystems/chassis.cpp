@@ -6,6 +6,11 @@
 #include "init.hpp"
 #include <arm_math.h>
 
+float ch0 = static_cast<float>(rcDataStruct.rc.ch[0]);
+float ch1 = static_cast<float>(rcDataStruct.rc.ch[1]);
+float ch2 = static_cast<float>(rcDataStruct.rc.ch[2]);
+float ch3 = static_cast<float>(rcDataStruct.rc.ch[3]);
+
 namespace chassis {
 
 chassisStates currState = notRunning;
@@ -39,10 +44,10 @@ void update() {
 
     float rcSomething = static_cast<float>(rcDataStruct.rc.ch[0]);
 
-    rcSomething = rcSomething / 1320 * 100;
+    // rcSomething = rcSomething / 1320 * 100;
     // divide by total range and scale to -100, 100
 
-    velPid.setTarget(rcSomething);
+    // velPid.setTarget(rcSomething);
     // if button pressed on controller, change state to "followgimbal" or something
 }
 
@@ -79,7 +84,7 @@ void rcToPower(double angle, double magnitude) {
     // Computes the appropriate fraction of the wheel's motor power
 
     // Sine and cosine of math.h take angle in radians as input value
-    c1Motor.setPower(magnitude * sqrt(2.0) * 0.5 * (cos(angle) + sin(angle)));
+    c1Motor.setPower(magnitude * sqrt(2.0) * 0.5 * (cos(angle) + sin(angle))); // 
     c2Motor.setPower(magnitude * sqrt(2.0) * 0.5 * (sin(angle) - cos(angle)));
     c3Motor.setPower(magnitude * sqrt(2.0) * 0.5 * (sin(angle) - cos(angle)));
     c4Motor.setPower(magnitude * sqrt(2.0) * 0.5 * (cos(angle) + sin(angle)));

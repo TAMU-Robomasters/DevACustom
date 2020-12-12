@@ -8,7 +8,7 @@
 extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 
-uint8_t dmaData[18];
+uint8_t* dmaData;
 uint8_t dmaRxBuffer[2][18];
 RC_ctrl_t rcDataStruct;
 RC_ctrl_t lastRcDataStruct;
