@@ -1,7 +1,7 @@
 #include "main.h"
 #include "information/rc_protocol.h"
 
-/* 
+/*
 	Code heavily taken from DJI
 */
 

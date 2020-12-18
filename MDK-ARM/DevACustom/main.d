@@ -56,4 +56,4 @@ devacustom\main.o: ../Core/Inc/rtc.h
 devacustom\main.o: ../Core/Inc/tim.h
 devacustom\main.o: ../Core/Inc/usart.h
 devacustom\main.o: ../Core/Inc/gpio.h
-devacustom\main.o: ../Core/Inc/information/rc_protocol.hpp
+devacustom\main.o: ../Core/Inc/information/rc_protocol.h

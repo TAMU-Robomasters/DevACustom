@@ -35,4 +35,4 @@ devacustom\rc_protocol.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_
 devacustom\rc_protocol.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\rc_protocol.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\rc_protocol.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-devacustom\rc_protocol.o: ../Core/Inc/information/rc_protocol.hpp
+devacustom\rc_protocol.o: ../Core/Inc/information/rc_protocol.h

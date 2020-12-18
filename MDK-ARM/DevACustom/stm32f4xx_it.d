@@ -45,3 +45,4 @@ devacustom\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/R
 devacustom\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 devacustom\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 devacustom\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+devacustom\stm32f4xx_it.o: ../Core/Inc/information/rc_protocol.h

@@ -196,14 +196,13 @@ void CAN1_RX0_IRQHandler(void)
 /**
   * @brief This function handles USART1 global interrupt.
   */
-void USART1_IRQHandler(void) {
-    /* USER CODE BEGIN USART1_IRQn 0 */
+void USART1_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART1_IRQn 0 */
 
-    /* USER CODE END USART1_IRQn 0 */
-    
-    HAL_UART_IRQHandler(&huart1);
-
-    /* USER CODE BEGIN USART1_IRQn 1 */
+  /* USER CODE END USART1_IRQn 0 */
+  HAL_UART_IRQHandler(&huart1);
+  /* USER CODE BEGIN USART1_IRQn 1 */
     if(huart1.Instance->SR & UART_FLAG_RXNE)//���յ�����
     {
         __HAL_UART_CLEAR_PEFLAG(&huart1);
@@ -283,14 +282,15 @@ void TIM7_IRQHandler(void)
 /**
   * @brief This function handles DMA2 stream2 global interrupt.
   */
-void DMA2_Stream2_IRQHandler(void) {
-    /* USER CODE BEGIN DMA2_Stream2_IRQn 0 */
+void DMA2_Stream2_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA2_Stream2_IRQn 0 */
 
-    /* USER CODE END DMA2_Stream2_IRQn 0 */
-    HAL_DMA_IRQHandler(&hdma_usart1_rx);
-    /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
+  /* USER CODE END DMA2_Stream2_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart1_rx);
+  /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
 
-    /* USER CODE END DMA2_Stream2_IRQn 1 */
+  /* USER CODE END DMA2_Stream2_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
