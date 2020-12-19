@@ -45,8 +45,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-extern uint8_t *dmaData;
-extern uint8_t dmaRxBuffer[2][18];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -199,68 +197,10 @@ void CAN1_RX0_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-
+  uart_receive_handler(&huart1);
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
-    if(huart1.Instance->SR & UART_FLAG_RXNE)//���յ�����
-    {
-        __HAL_UART_CLEAR_PEFLAG(&huart1);
-    } else if (USART3->SR & UART_FLAG_IDLE) {
-        static uint16_t this_time_rx_len = 0;
-
-        __HAL_UART_CLEAR_PEFLAG(&huart1);
-
-        if ((hdma_usart1_rx.Instance->CR & DMA_SxCR_CT) == RESET)
-        {
-          /* Current memory buffer used is Memory 0 */
-
-          //disable DMA            
-          __HAL_DMA_DISABLE(&hdma_usart1_rx);
-
-          //get receive data length, length = set_data_length - remain_length
-          this_time_rx_len = 36 - hdma_usart1_rx.Instance->NDTR;
-
-          //reset set_data_length            
-          hdma_usart1_rx.Instance->NDTR = 36;
-
-          //set memory buffer 1            
-          hdma_usart1_rx.Instance->CR |= DMA_SxCR_CT;
-          
-          //enable DMA            
-          __HAL_DMA_ENABLE(&hdma_usart1_rx);
-        
-          if (this_time_rx_len == 18) {
-            dmaData = dmaRxBuffer[0];
-            processDMAData();
-          }
-
-        }
-        else
-        {
-          /* Current memory buffer used is Memory 1 */
-          //disable DMA            
-          __HAL_DMA_DISABLE(&hdma_usart1_rx);
-
-          //get receive data length, length = set_data_length - remain_length            
-          this_time_rx_len = 36 - hdma_usart1_rx.Instance->NDTR;
-
-          //reset set_data_lenght            
-          hdma_usart1_rx.Instance->NDTR = 36;
-
-          //set memory buffer 0            
-          DMA2_Stream2->CR &= ~(DMA_SxCR_CT);
-          
-          //enable DMA            
-          __HAL_DMA_ENABLE(&hdma_usart1_rx);
-          
-          if (this_time_rx_len == 18) {
-            dmaData = dmaRxBuffer[1];
-            processDMAData();
-          }
-            
-        }
-    }
 
   /* USER CODE END USART1_IRQn 1 */
 }

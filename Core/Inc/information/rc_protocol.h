@@ -1,14 +1,15 @@
 #pragma once
 //#include "bsp_rc.h"
 //#include "struct_typedef.h"
+#include "usart.h"
 #include "main.h"
 /* 
 	Code heavily taken from DJI
 */
-
-#define SBUS_RX_BUF_NUM 36u
-
-#define RC_FRAME_LENGTH 18u
+#define UART_RX_DMA_SIZE (1024)
+#define DBUS_MAX_LEN (50)
+#define DBUS_BUFLEN (18)
+#define DBUS_HUART huart1 /* for dji remote controler reciever */
 
 #define RC_CH_VALUE_MIN ((uint16_t)364)
 #define RC_CH_VALUE_OFFSET ((uint16_t)1024)
@@ -45,7 +46,7 @@
 typedef __packed struct {
     __packed struct {
         int16_t ch[5]; // analog joysticks
-        char s[2];     // three stage switches
+        uint8_t s[2];  // three stage switches
     } rc;
     __packed struct {
         int16_t x;
@@ -90,5 +91,7 @@ extern bool btnIsFalling(btnType btn);
 extern RC_ctrl_t* getRCData();
 
 extern void processDMAData();
+
+void uart_receive_handler(UART_HandleTypeDef* huart);
 
 extern void RCInit();

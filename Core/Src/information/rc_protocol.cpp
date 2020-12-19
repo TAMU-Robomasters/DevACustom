@@ -5,11 +5,7 @@
 	Code heavily taken from DJI
 */
 
-extern UART_HandleTypeDef huart1;
-extern DMA_HandleTypeDef hdma_usart1_rx;
-
-uint8_t* dmaData;
-uint8_t dmaRxBuffer[2][18];
+uint8_t dmaData[DBUS_BUFLEN];
 RC_ctrl_t rcDataStruct;
 RC_ctrl_t lastRcDataStruct;
 
@@ -43,34 +39,95 @@ void processDMAData(){
     rcDataStruct.rc.ch[4] -= RC_CH_VALUE_OFFSET;
 }
 
-//receive data, 18 bytes one frame, but set 36 bytes
+uint16_t dma_current_data_counter(DMA_Stream_TypeDef* dma_stream) {
+    /* Return the number of remaining data units for DMAy Streamx */
+    return ((uint16_t)(dma_stream->NDTR));
+}
 
-void RCInit() {
-    //enable the DMA transfer for the receiver request
-    SET_BIT(huart1.Instance->CR3, USART_CR3_DMAR);
+/**
+  * @brief      enable global uart it and do not use DMA transfer done it
+  * @param[in]  huart: uart IRQHandler id
+  * @param[in]  pData: receive buff 
+  * @param[in]  Size:  buff size
+  * @retval     set success or fail
+  */
+static int uart_receive_dma_no_it(UART_HandleTypeDef* huart, uint8_t* pData, uint32_t Size) {
+    uint32_t tmp1 = 0;
 
-    //enable idle interrupt
-    __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+    tmp1 = huart->RxState;
 
-    //disable DMA
-    __HAL_DMA_DISABLE(&hdma_usart1_rx);
+    if (tmp1 == HAL_UART_STATE_READY) {
+        if ((pData == NULL) || (Size == 0)) {
+            return HAL_ERROR;
+        }
 
-    while (hdma_usart1_rx.Instance->CR & DMA_SxCR_EN) {
-        __HAL_DMA_DISABLE(&hdma_usart1_rx);
+        huart->pRxBuffPtr = pData;
+        huart->RxXferSize = Size;
+        huart->ErrorCode = HAL_UART_ERROR_NONE;
+
+        /* Enable the DMA Stream */
+        HAL_DMA_Start(huart->hdmarx, (uint32_t)&huart->Instance->DR, (uint32_t)pData, Size);
+
+        /*
+		 * Enable the DMA transfer for the receiver request by setting the DMAR bit
+		 * in the UART CR3 register 
+		 */
+        SET_BIT(huart->Instance->CR3, USART_CR3_DMAR);
+
+        return HAL_OK;
+    } else {
+        return HAL_BUSY;
     }
+}
 
-	hdma_usart1_rx.Instance->PAR = (uint32_t) & (USART1->DR);
-    //memory buffer 1
-	hdma_usart1_rx.Instance->M0AR = (uint32_t) dmaRxBuffer[0];
-    //memory buffer 2
-	hdma_usart1_rx.Instance->M1AR = (uint32_t) dmaRxBuffer[1];
-    //data length
-	hdma_usart1_rx.Instance->NDTR = 36;
-    //enable double memory buffer
-    SET_BIT(hdma_usart1_rx.Instance->CR, DMA_SxCR_DBM);
+/**
+  * @brief      clear idle it flag after uart receive a frame data
+  * @param[in]  huart: uart IRQHandler id
+  * @retval
+  */
+static void uart_rx_idle_callback(UART_HandleTypeDef* huart) {
+    /* clear idle it flag avoid idle interrupt all the time */
+    __HAL_UART_CLEAR_IDLEFLAG(huart);
 
-    //enable DMA
-    __HAL_DMA_ENABLE(&hdma_usart1_rx);
+    /* handle received data in idle interrupt */
+    if (huart == &DBUS_HUART) {
+        /* clear DMA transfer complete flag */
+        __HAL_DMA_DISABLE(huart->hdmarx);
+
+        /* handle dbus data dbus_buf from DMA */
+        if ((DBUS_MAX_LEN - dma_current_data_counter(huart->hdmarx->Instance)) == DBUS_BUFLEN) {
+            processDMAData();
+        }
+
+        /* restart dma transmission */
+        __HAL_DMA_SET_COUNTER(huart->hdmarx, DBUS_MAX_LEN);
+        __HAL_DMA_ENABLE(huart->hdmarx);
+    }
+}
+
+/**
+  * @brief      callback this function when uart interrupt
+  * @param[in]  huart: uart IRQHandler id
+  * @retval
+  */
+void uart_receive_handler(UART_HandleTypeDef* huart) {
+    if (__HAL_UART_GET_FLAG(huart, UART_FLAG_IDLE) &&
+        __HAL_UART_GET_IT_SOURCE(huart, UART_IT_IDLE)) {
+        uart_rx_idle_callback(huart);
+    }
+}
+
+/**
+  * @brief   initialize dbus uart device 
+  * @param   
+  * @retval  
+  */
+void RCInit() {
+    /* open uart idle it */
+    __HAL_UART_CLEAR_IDLEFLAG(&huart1);
+    __HAL_UART_ENABLE_IT(&DBUS_HUART, UART_IT_IDLE);
+
+    uart_receive_dma_no_it(&DBUS_HUART, dmaData, DBUS_MAX_LEN);
 }
 
 bool btnIsRising(btnType btn){

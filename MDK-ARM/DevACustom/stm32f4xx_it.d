@@ -46,3 +46,4 @@ devacustom\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mp
 devacustom\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 devacustom\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 devacustom\stm32f4xx_it.o: ../Core/Inc/information/rc_protocol.h
+devacustom\stm32f4xx_it.o: ../Core/Inc/usart.h

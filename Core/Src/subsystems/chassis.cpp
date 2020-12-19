@@ -6,10 +6,10 @@
 #include "init.hpp"
 #include <arm_math.h>
 
-float ch0 = static_cast<float>(rcDataStruct.rc.ch[0]);
-float ch1 = static_cast<float>(rcDataStruct.rc.ch[1]);
-float ch2 = static_cast<float>(rcDataStruct.rc.ch[2]);
-float ch3 = static_cast<float>(rcDataStruct.rc.ch[3]);
+int16_t rightX;
+int16_t rightY;
+int16_t leftX;
+int16_t leftY;
 
 namespace chassis {
 
@@ -41,13 +41,22 @@ void update() {
         currState = notRunning;
         // will change later based on RC input and sensor based decision making
     }
+    
+    rightX = (rcDataStruct.rc.ch[0]);
+    rightY = (rcDataStruct.rc.ch[1]);
+    leftX = (rcDataStruct.rc.ch[2]);
+    leftY = (rcDataStruct.rc.ch[3]);
 
-    float rcSomething = static_cast<float>(rcDataStruct.rc.ch[0]);
+		//float rcSomething = leftX;
+		float rcSomething = /*(abs(leftX) <= 30) ? 0 :*/ leftX;
 
-    // rcSomething = rcSomething / 1320 * 100;
+    rcSomething = rcSomething / 1320 * 100;
     // divide by total range and scale to -100, 100
 
-    // velPid.setTarget(rcSomething);
+		//velPidC1.setTarget(rcSomething); // back left
+		//velPidC2.setTarget(rcSomething); // front left
+		//velPidC3.setTarget(-rcSomething); // front right
+    //velPidC4.setTarget(-rcSomething); // back right
     // if button pressed on controller, change state to "followgimbal" or something
 }
 

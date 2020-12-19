@@ -67,6 +67,6 @@ devacustom\freertos.o: ../Core/Inc/subsystems/gimbal.hpp
 devacustom\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 devacustom\freertos.o: ../Core/Inc/information/rc_protocol.h
+devacustom\freertos.o: ../Core/Inc/usart.h
 devacustom\freertos.o: ../Core/Inc/information/uart_protocol.hpp
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-devacustom\freertos.o: ../Core/Inc/usart.h
