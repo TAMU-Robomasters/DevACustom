@@ -4,6 +4,8 @@
 
 namespace userPWM {
 
+// DEPRECATED FUNCTIONS, DON'T USE
+
 void setPower(TIM_HandleTypeDef* tim, int tim_channel, float power) {
     // effective max and min are 1083, 533
     int upperRange = 1083;

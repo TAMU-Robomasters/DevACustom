@@ -62,26 +62,21 @@ void update() {
     leftX = static_cast<float>(rcDataStruct.rc.ch[2]) / 660;
     leftY = static_cast<float>(rcDataStruct.rc.ch[3]) / 660;
 		
-		switch1 = (rcDataStruct.rc.s[0]);
+    switch1 = (rcDataStruct.rc.s[0]);
 		switch2 = (rcDataStruct.rc.s[1]);
 
-		
-		angle = atan2(leftY, leftX);
-		angleOutput = angle / PI * 180;
+    angle = atan2(leftY, leftX);
+		angleOutput = (angle / (float)PI) * 180;
 		
 		magnitude = sqrt(pow(leftY, 2) + pow(leftX, 2));
-		
-		
-		
-		
-		c1Output = static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0;
-		
-    // divide by total range and scale to -100, 100
 
-		//velPidC1.setTarget(rcSomething); // back left
-		//velPidC2.setTarget(rcSomething); // front left
-		//velPidC3.setTarget(-rcSomething); // front right
-    //velPidC4.setTarget(-rcSomething); // back right
+    c1Output = static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0;
+
+    velPidC1.setCurrInput(static_cast<float>(c1Motor.getFeedback()->rotor_speed) / 19);
+    velPidC2.setCurrInput(static_cast<float>(c2Motor.getFeedback()->rotor_speed) / 19);
+    velPidC3.setCurrInput(static_cast<float>(c3Motor.getFeedback()->rotor_speed) / 19);
+    velPidC4.setCurrInput(static_cast<float>(c4Motor.getFeedback()->rotor_speed) / 19);
+
     // if button pressed on controller, change state to "followgimbal" or something
 }
 
@@ -103,15 +98,19 @@ void act() {
         break;
 
     case manual:
-				rcToPower(angle, magnitude, rightX);
-        double power1 = velPidC1.loop(static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0);
-				double power2 = velPidC2.loop(static_cast<double>(c2Motor.getFeedback()->rotor_speed) / 19.0);
-				double power3 = velPidC3.loop(static_cast<double>(c3Motor.getFeedback()->rotor_speed) / 19.0);
-				double power4 = velPidC4.loop(static_cast<double>(c4Motor.getFeedback()->rotor_speed) / 19.0);
-				c1Motor.setPower(power1);
-        c2Motor.setPower(power2);
-        c3Motor.setPower(power3);
-        c4Motor.setPower(power4);
+        rcToPower(angle, magnitude, rightX);
+        velPidC1.loop();
+        velPidC2.loop();
+        velPidC3.loop();
+        velPidC4.loop();
+        // double power1 = velPidC1.getTarget();
+        // double power2 = velPidC2.getTarget();
+        // double power3 = velPidC3.getTarget();
+        // double power4 = velPidC4.getTarget();
+        c1Motor.setPower(velPidC1.getTarget());
+        c2Motor.setPower(velPidC2.getTarget());
+        c3Motor.setPower(velPidC3.getTarget());
+        c4Motor.setPower(velPidC4.getTarget());
         // if current control, power will be set in the CAN task
         // this will change when we have things to put here
         break;
@@ -122,39 +121,38 @@ void rcToPower(double angle, double magnitude, double yaw) {
     // Computes the appropriate fraction of the wheel's motor power
 
     // Sine and cosine of math.h take angle in radians as input value
-		// motor 1 back left
-		// motor 2 front left
-		// motor 3 front right
-		// motor 4 back right
-		float turnScalar = 0.6;
-	
-		disp = ((abs(magnitude) + abs(yaw)) == 0) ? 0 : abs(magnitude) / (abs(magnitude) + turnScalar*abs(yaw));
-		turning = ((abs(magnitude) + abs(yaw)) == 0) ? 0 : turnScalar*abs(yaw) / (abs(magnitude) + turnScalar*abs(yaw));
-		//disp = 1 - abs(turning);
-		// disp and turning represent the percentage of how much the user wants to displace or turn
-		// displacement takes priority here
-	
-		float motor1Turn = yaw;
-		float motor2Turn = yaw;
-		float motor3Turn = yaw;
-		float motor4Turn = yaw;
-	
-		float motor1Disp = (magnitude * (sin(angle) - cos(angle))) * 1;
-		float motor2Disp = (magnitude * (cos(angle) + sin(angle))) * 1;
-		float motor3Disp = (magnitude * (sin(angle) - cos(angle))) * -1;
-		float motor4Disp = (magnitude * (cos(angle) + sin(angle))) * -1;
-	
-		motor1P = (turning * motor1Turn) + (disp * motor1Disp);
-		motor2P = (turning * motor2Turn) + (disp * motor2Disp);
-		motor3P = (turning * motor3Turn) + (disp * motor3Disp);
-		motor4P = (turning * motor4Turn) + (disp * motor4Disp);
+    // motor 1 back left
+    // motor 2 front left
+    // motor 3 front right
+    // motor 4 back right
+    float turnScalar = 0.6;
+
+    disp = ((abs(magnitude) + abs(yaw)) == 0) ? 0 : abs(magnitude) / (abs(magnitude) + turnScalar*abs(yaw));
+    turning = ((abs(magnitude) + abs(yaw)) == 0) ? 0 : turnScalar*abs(yaw) / (abs(magnitude) + turnScalar*abs(yaw));
+    //disp = 1 - abs(turning);
+    // disp and turning represent the percentage of how much the user wants to displace or turn
+    // displacement takes priority here
+
+    float motor1Turn = yaw;
+    float motor2Turn = yaw;
+    float motor3Turn = yaw;
+    float motor4Turn = yaw;
+
+    float motor1Disp = (magnitude * (sin(angle) - cos(angle))) * 1;
+    float motor2Disp = (magnitude * (cos(angle) + sin(angle))) * 1;
+    float motor3Disp = (magnitude * (sin(angle) - cos(angle))) * -1;
+    float motor4Disp = (magnitude * (cos(angle) + sin(angle))) * -1;
+
+    motor1P = (turning * motor1Turn) + (disp * motor1Disp);
+    motor2P = (turning * motor2Turn) + (disp * motor2Disp);
+    motor3P = (turning * motor3Turn) + (disp * motor3Disp);
+    motor4P = (turning * motor4Turn) + (disp * motor4Disp);
 	
     velPidC1.setTarget(motor1P * 200);
     velPidC2.setTarget(motor2P * 200);
     velPidC3.setTarget(motor3P * 200);
     velPidC4.setTarget(motor4P * 200);
-		// scaling speed up to 200 rpm, can be set up to 482rpm
-		
+    // scaling max speed up to 200 rpm, can be set up to 482rpm
 }
 
 } // namespace chassis

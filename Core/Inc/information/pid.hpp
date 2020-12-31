@@ -10,43 +10,59 @@ class pidInstance {
 
 private:
     pidType type;
-    double kP, kI, kD;
-    double lastLoopTime;
-    double lastError;
-    double integral;
-    double target;
-    double currVal;
+    float kP, kI, kD;
+    float lastLoopTime;
+    float lastError;
+    float errorSum;
+    float target;
+    float currInput;
+    float lastInput;
+    float output;
+    float dtTimeout;
 
 public:
-    pidInstance(double p = 0, double i = 0, double d = 0) : kP(p), kI(i), kD(d), lastLoopTime(0) {}
-    pidInstance(pidType pT = pidType::velocity, double p = 0, double i = 0, double d = 0) : type(pT), kP(p), kI(i), kD(d), lastLoopTime(0) {}
+    pidInstance(float p = 0, float i = 0, float d = 0) : kP(p), kI(i), kD(d), lastLoopTime(0), dtTimeout(250) {}
+    pidInstance(pidType pT = pidType::velocity, float p = 0, float i = 0, float d = 0) : type(pT), kP(p), kI(i), kD(d), lastLoopTime(0) {}
 
-    double loop(double curr) {
-        currVal = curr;
-        double currTime = HAL_GetTick();
-        double error = target - currVal;
-        double dT = (lastLoopTime == 0) ? 0 : (currTime - lastLoopTime);
+    void loop() {
 
-        double derivative = (dT == 0) ? 0 : (lastError - error) / (dT);
-        integral += error * dT;
+        float currTime = HAL_GetTick();
+        float error = target - currInput;
+        float dT = (lastLoopTime == 0) ? 0 : (currTime - lastLoopTime);
+        if (dT > dtTimeout) {
+            dT = 0;
+        }
 
-        double output = (kP * error) + (kI * integral) + (kD * derivative);
+        float derivative = (dT == 0) ? 0 : (-1 * (lastInput - currInput)) / (dT);
+        /* instead of using lastError - error, we use -(lastInput - currInput) to minimize output spikes when the target changes*/
+        errorSum += error * dT;
+
+        float output = (kP * error) + (kI * errorSum) + (kD * derivative);
 
         lastLoopTime = currTime;
         lastError = error;
+        lastInput = currInput;
 
-        return output;
+        this->output = output;
     }
 
-    double getTarget() {
-        return target;
+    float getTarget() {
+        return this->target;
     }
 
     void setTarget(double t) {
-        target = t;
+        this->target = t;
     }
 
-    double getCurrVal() {
-        return currVal;
+    float getCurrInput() {
+        return this->currInput;
+    }
+
+    void setCurrInput(float in) {
+        this->currInput = in;
+    }
+
+    float getOutput() {
+        return this->output;
     }
 };

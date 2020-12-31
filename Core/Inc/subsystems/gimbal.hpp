@@ -59,6 +59,3 @@ extern void act();
 extern double calculateAngleError(double currAngle, double targetAngle);
 
 } // namespace gimbal
-
-extern double radToDeg(double angle);
-extern double degToRad(double angle);

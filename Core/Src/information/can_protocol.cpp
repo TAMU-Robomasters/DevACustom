@@ -53,8 +53,8 @@ void canFilterInit() {
         // indicator here
     }
 
-    can_filter_st.SlaveStartFilterBank = 14;
-    can_filter_st.FilterBank = 14;
+    can_filter_st.SlaveStartFilterBank = 15;
+    can_filter_st.FilterBank = 17;
     HAL_CAN_ConfigFilter(&hcan2, &can_filter_st);
     HAL_CAN_Start(&hcan2);
 }
@@ -226,7 +226,7 @@ void send() {
                                       chassis::c4Motor.getPower(),
                                       hcan1);
     }
-    userCAN::motor_ControlGimbFeed(/*gimbal::yawMotor.getPower()*/0,
+    userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(),
                                    gimbal::pitchMotor.getPower(),
                                    feeder::feederPower,
                                    hcan1);

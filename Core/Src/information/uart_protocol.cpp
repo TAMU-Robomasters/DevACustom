@@ -53,7 +53,7 @@ void yawInfoOut(UART_HandleTypeDef* huart, userCAN::motorFeedback_t* data) {
     // uint16_t current = data->torque_current + 32768;
     uint16_t sentPower = static_cast<int16_t>(gimbal::yawMotor.getPower()) + 32768;
     uint16_t currAngle = static_cast<int16_t>(radToDeg(gimbal::yawMotor.getCurrAngle())) + 32768;
-    uint16_t PIDError = static_cast<int16_t>(radToDeg(gimbal::yawPosPid.getTarget() - gimbal::yawPosPid.getCurrVal())) + 32768;
+    uint16_t PIDError = static_cast<int16_t>(radToDeg(gimbal::yawPosPid.getTarget() - gimbal::yawPosPid.getCurrInput())) + 32768;
     // adds 32768 to shift int16_t values to uint16_t, shifted back when data processed
     uint8_t temp = data->temp;
 
