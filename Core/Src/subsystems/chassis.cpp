@@ -53,7 +53,7 @@ void task() {
 
 void update() {
     if (true) {
-        currState = manual;
+        currState = notRunning;
         // will change later based on RC input and sensor based decision making
     }
     

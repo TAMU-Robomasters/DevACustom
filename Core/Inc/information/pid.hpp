@@ -34,7 +34,7 @@ public:
         }
 
         float derivative = (dT == 0) ? 0 : (-1 * (lastInput - currInput)) / (dT);
-        /* instead of using lastError - error, we use -(lastInput - currInput) to minimize output spikes when the target changes*/
+        //instead of using lastError - error, we use -(lastInput - currInput) to minimize output spikes when the target changes
         errorSum += error * dT;
 
         float output = (kP * error) + (kI * errorSum) + (kD * derivative);

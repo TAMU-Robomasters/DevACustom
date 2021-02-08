@@ -15,8 +15,8 @@ gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
 
 // pidInstance yawPosPid(pidType::position, 70.0, 0.00, 0.01);
-pidInstance yawPosPid(pidType::position, 60.0, 0.00, 0.00);
-pidInstance pitchPosPid(pidType::position, 0.0, 0.0, 0.0);
+pidInstance yawPosPid(pidType::position, 80.0, 0.00, 0.00);
+pidInstance pitchPosPid(pidType::position, 140.0, 0.0, 0.01);
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid);
 gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid);
@@ -38,7 +38,7 @@ void update() {
     pitchMotor.setCurrAngle(static_cast<float>(pitchMotor.getFeedback()->rotor_angle));
 
     if (true) {
-        currState = running;
+        currState = notRunning;
         // will change later based on RC input and sensor based decision making
     }
     yawPosPid.setTarget(0);
@@ -48,10 +48,10 @@ void update() {
 		float pitchAngle = pitchMotor.getCurrAngle();
     yawAngleShow = radToDeg(yawAngle);
 		pitchAngleShow = radToDeg(pitchAngle);
-		
-    float yawTarget = degToRad(400.0); // make sure this is inputted as float
-		float pitchTarget = degToRad(0.0); // make sure this is inputted as float
-		float yawError = calculateAngleError(yawAngle, yawTarget);
+
+        float yawTarget = degToRad(207.0);   // make sure this is inputted as float
+        float pitchTarget = degToRad(309.0); // make sure this is inputted as float
+        float yawError = calculateAngleError(yawAngle, yawTarget);
 		float pitchError = calculateAngleError(pitchAngle, pitchTarget);
 		
 		yawErrorShow = radToDeg(yawError);
@@ -81,8 +81,6 @@ void act() {
             yawMotor.setPower(yawPosPid.getOutput());
             pitchMotor.setPower(pitchPosPid.getOutput());
         } // gimbal motors controlled through voltage, sent messages over CAN
-        
-        // this will change when we have actual intelligent behavior things to put here
         break;
     }
 }

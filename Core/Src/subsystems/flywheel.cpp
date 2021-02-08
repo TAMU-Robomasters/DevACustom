@@ -16,7 +16,9 @@ void task() {
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+    osDelay(500);
     flywheel1.initESC();
+    osDelay(1000);
     flywheel2.initESC();
 
     for (;;) {
@@ -44,9 +46,9 @@ void act() {
         break;
 
     case running:
-        flywheel1.setPower(15);
-        flywheel2.setPower(15);
-        // calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 10);
+        flywheel1.setPower(30);
+        flywheel2.setPower(20);
+        //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
         // obviously this will change when we have actual intelligent things to put here
         break;
     }

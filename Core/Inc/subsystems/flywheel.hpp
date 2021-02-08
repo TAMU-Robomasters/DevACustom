@@ -8,8 +8,6 @@
 namespace flywheel {
 
 class flywheelMotor : public pwmMotor {
-private:
-    PIDController* PID;
 
 public:
     flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin, int lR, int uR, float32_t lC, float32_t uC) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, lR, uR) {}

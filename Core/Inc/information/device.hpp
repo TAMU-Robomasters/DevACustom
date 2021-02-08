@@ -24,15 +24,15 @@
 #define PI 3.14159265358979323846
 
 template <typename T>
-T radToDeg(T r) {
+float radToDeg(T r) {
     const T pi = PI;
-    return (r / pi) * 180;
+    return (float)((r / pi) * 180);
 }
 
 template <typename T>
-T degToRad(T d) {
+float degToRad(T d) {
     const T pi = PI;
-    return (d / 180) * pi;
+    return (float)((d / 180) * pi);
 }
 
 class Motor {

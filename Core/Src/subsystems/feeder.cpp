@@ -36,7 +36,7 @@ void update() {
     torque_current = canDevice.feeder_fb.torque_current;
 
     if (true) {
-        currState = running;
+        currState = notRunning;
     }
 }
 
