@@ -53,8 +53,8 @@ void canFilterInit() {
         // indicator here
     }
 
-    can_filter_st.SlaveStartFilterBank = 14;
-    can_filter_st.FilterBank = 14;
+    can_filter_st.SlaveStartFilterBank = 15;
+    can_filter_st.FilterBank = 17;
     HAL_CAN_ConfigFilter(&hcan2, &can_filter_st);
     HAL_CAN_Start(&hcan2);
 }

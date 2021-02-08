@@ -46,6 +46,6 @@ extern void update();
 
 extern void act();
 
-extern void rcToPower(double angle, double magnitude);
+extern void rcToPower(double angle, double magnitude, double yaw);
 
 } // namespace chassis

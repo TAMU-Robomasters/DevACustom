@@ -8,13 +8,11 @@
 namespace flywheel {
 
 class flywheelMotor : public pwmMotor {
-private:
-    pidInstance* PID;
 
 public:
     flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin, int lR, int uR, float32_t lC, float32_t uC) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, lR, uR) {}
     flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin, int lR, int uR) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, lR, uR) {}
-    flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, 533, 1083) {}
+    flywheelMotor(TIM_HandleTypeDef* tim, int tim_channel, GPIO_TypeDef* GPIOx, int GPIO_Pin) : pwmMotor(tim, tim_channel, GPIOx, GPIO_Pin, 484, 1000) {}
 };
 
 enum flywheelStates {

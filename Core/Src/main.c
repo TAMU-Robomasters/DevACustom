@@ -22,6 +22,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "can.h"
+#include "dma.h"
 #include "rng.h"
 #include "rtc.h"
 #include "tim.h"
@@ -30,7 +31,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "information/rc_protocol.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,6 +94,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_CAN1_Init();
   MX_TIM2_Init();
   MX_TIM4_Init();
@@ -102,19 +104,20 @@ int main(void)
   MX_RTC_Init();
   MX_USART6_UART_Init();
   MX_CAN2_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-    // Turn all the LED's off to begin with
-    HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOG, LED_A_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOG, LED_B_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOG, LED_C_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOG, LED_D_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOG, LED_E_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOG, LED_F_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOG, LED_G_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOG, LED_H_Pin, GPIO_PIN_SET);
+  // Turn all the LED's off to begin with
+  HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LED_A_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LED_B_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LED_C_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LED_D_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LED_E_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LED_F_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LED_G_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LED_H_Pin, GPIO_PIN_SET);
 
   /* USER CODE END 2 */
 

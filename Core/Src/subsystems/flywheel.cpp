@@ -1,5 +1,5 @@
 #include "subsystems/flywheel.hpp"
-#include "arm_math.h"
+#include <arm_math.h>
 #include "init.hpp"
 
 namespace flywheel {
@@ -12,8 +12,13 @@ flywheelMotor flywheel1(&htim2, 1, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
 flywheelMotor flywheel2(&htim2, 2, POWER3_CTRL_GPIO_Port, POWER3_CTRL_Pin);
 
 void task() {
-
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+    osDelay(500);
     flywheel1.initESC();
+    osDelay(1000);
     flywheel2.initESC();
 
     for (;;) {
@@ -41,7 +46,9 @@ void act() {
         break;
 
     case running:
-        calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 10);
+        flywheel1.setPower(30);
+        flywheel2.setPower(20);
+        //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
         // obviously this will change when we have actual intelligent things to put here
         break;
     }
@@ -87,5 +94,4 @@ double calcSlewDRpm(double currFw1Speed, double currFw2Speed, double targetFw1Sp
 
     return 0;
 }
-
 } // namespace flywheel

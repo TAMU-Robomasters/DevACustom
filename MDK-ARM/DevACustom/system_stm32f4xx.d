@@ -1,12 +1,12 @@
 devacustom\system_stm32f4xx.o: ../Core/Src/system_stm32f4xx.c
 devacustom\system_stm32f4xx.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 devacustom\system_stm32f4xx.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h
-devacustom\system_stm32f4xx.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h
+devacustom\system_stm32f4xx.o: ../Drivers/CMSIS/Include/core_cm4.h
 devacustom\system_stm32f4xx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-devacustom\system_stm32f4xx.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h
-devacustom\system_stm32f4xx.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h
-devacustom\system_stm32f4xx.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h
-devacustom\system_stm32f4xx.o: C:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h
+devacustom\system_stm32f4xx.o: ../Drivers/CMSIS/Include/cmsis_version.h
+devacustom\system_stm32f4xx.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
+devacustom\system_stm32f4xx.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
+devacustom\system_stm32f4xx.o: ../Drivers/CMSIS/Include/mpu_armv7.h
 devacustom\system_stm32f4xx.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 devacustom\system_stm32f4xx.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 devacustom\system_stm32f4xx.o: ../Core/Inc/stm32f4xx_hal_conf.h

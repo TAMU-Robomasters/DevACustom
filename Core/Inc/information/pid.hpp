@@ -10,37 +10,59 @@ class pidInstance {
 
 private:
     pidType type;
-    double kP, kI, kD;
-    double lastLoopTime;
-    double lastError;
-    double integral;
-    double target;
+    float kP, kI, kD;
+    float lastLoopTime;
+    float lastError;
+    float errorSum;
+    float target;
+    float currInput;
+    float lastInput;
+    float output;
+    float dtTimeout;
 
 public:
-    pidInstance(double p = 0, double i = 0, double d = 0) : kP(p), kI(i), kD(d), lastLoopTime(0) {}
-    pidInstance(pidType pT = pidType::velocity, double p = 0, double i = 0, double d = 0) : type(pT), kP(p), kI(i), kD(d), lastLoopTime(0) {}
+    pidInstance(float p = 0, float i = 0, float d = 0) : kP(p), kI(i), kD(d), lastLoopTime(0), dtTimeout(250) {}
+    pidInstance(pidType pT = pidType::velocity, float p = 0, float i = 0, float d = 0) : type(pT), kP(p), kI(i), kD(d), lastLoopTime(0) {}
 
-    double loop(double current) {
-    double currTime = HAL_GetTick();
-    double error = target - current;
-    double dT = (lastLoopTime == 0) ? 0 : (currTime - lastLoopTime);
+    void loop() {
 
-    double derivative = (dT == 0) ? 0 : (lastError - error) / (dT);
-    integral += error * dT;
-
-    double output = (kP * error) + (kI * integral) + (kD * derivative);
-
-    lastLoopTime = currTime;
-    lastError = error;
-
-    return output;
+        float currTime = HAL_GetTick();
+        float error = target - currInput;
+        float dT = (lastLoopTime == 0) ? 0 : (currTime - lastLoopTime);
+        if (dT > dtTimeout) {
+            dT = 0;
         }
 
-        double getTarget() {
-            return target;
-        }
+        float derivative = (dT == 0) ? 0 : (-1 * (lastInput - currInput)) / (dT);
+        //instead of using lastError - error, we use -(lastInput - currInput) to minimize output spikes when the target changes
+        errorSum += error * dT;
 
-        void setTarget(double t) {
-            target = t;
-        }
+        float output = (kP * error) + (kI * errorSum) + (kD * derivative);
+
+        lastLoopTime = currTime;
+        lastError = error;
+        lastInput = currInput;
+
+        this->output = output;
+    }
+
+    float getTarget() {
+        return this->target;
+    }
+
+    void setTarget(double t) {
+        this->target = t;
+    }
+
+    float getCurrInput() {
+        return this->currInput;
+    }
+
+    void setCurrInput(float in) {
+        this->currInput = in;
+    }
+
+    float getOutput() {
+        return this->output;
+    }
 };

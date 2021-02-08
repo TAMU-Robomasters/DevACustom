@@ -34,6 +34,7 @@
 #include "subsystems/gimbal.hpp"
 
 #include "information/can_protocol.hpp"
+#include "information/rc_protocol.h"
 #include "information/uart_protocol.hpp"
 /* USER CODE END Includes */
 
@@ -80,6 +81,8 @@ void rcTaskFunc(void const* argument);
 void sensorTaskFunc(void const* argument);
 void canTaskFunc(void const* argument);
 void uartTaskFunc(void const* argument);
+
+int counter1 = 0;
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -221,6 +224,7 @@ void indicatorTaskFunc(void const* argument) {
         HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
         osDelay(125);
+				counter1++;
     }
     /* USER CODE END indicatorTaskFunc */
 }
@@ -289,10 +293,10 @@ void feederTaskFunc(void const* argument) {
 */
 /* USER CODE END Header_rcTaskFunc */
 void rcTaskFunc(void const* argument) {
-    /* USER CODE BEGIN rcTaskFunc */
+    RCInit();
     /* Infinite loop */
     for (;;) {
-        osDelay(1);
+        osDelay(1000);
     }
     /* USER CODE END rcTaskFunc */
 }

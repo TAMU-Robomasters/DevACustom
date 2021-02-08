@@ -6,7 +6,7 @@
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "tim.h"
-/* 
+/*
     Referee System Abstractions?
     Taken from QDU (used in CAN protocol)
 */
@@ -23,14 +23,27 @@
 
 #define PI 3.14159265358979323846
 
+template <typename T>
+float radToDeg(T r) {
+    const T pi = PI;
+    return (float)((r / pi) * 180);
+}
+
+template <typename T>
+float degToRad(T d) {
+    const T pi = PI;
+    return (float)((d / 180) * pi);
+}
+
 class Motor {
 private:
-    float32_t power;  // input power, usually from -100 to 100
+    float32_t power; // input power, usually from -100 to 100
+        // This is instantiated to 0 in Motor, if 0 is not safety for the particular motor then change that in the subclass
     float32_t lowerClamp; // input clamp
     float32_t upperClamp; // input clamp
 
 public:
-    Motor(float32_t lC, float32_t uC) : lowerClamp(lC), upperClamp(uC) {}
+    Motor(float32_t lC, float32_t uC) : power(0), lowerClamp(lC), upperClamp(uC) {}
 
     float32_t clamp(double p) {
         if (p < lowerClamp) {
@@ -80,8 +93,10 @@ private:
 
 public:
     pwmMotor(TIM_HandleTypeDef* tim, int tim_c, GPIO_TypeDef* gpiox, int gpio_pin, int lR, int uR)
-        : tim_handle(tim), tim_channel(tim_c), GPIOx(gpiox), GPIO_Pin(gpio_pin), lowerRange(lR), upperRange(uR) {}
-    
+        : tim_handle(tim), tim_channel(tim_c), GPIOx(gpiox), GPIO_Pin(gpio_pin), lowerRange(lR), upperRange(uR) {
+        setPower(0);
+    }
+
     float32_t clamp(double p) {
         if (p < lowerRange) {
             return lowerRange;
@@ -100,9 +115,8 @@ public:
         //p range is from -100 to 100
         // effective max and min are 1083, 533
         int dutyRange = upperRange - lowerRange;
-        float32_t midPoint = (upperRange - lowerRange) / 2;
 
-        int unclamped = int(midPoint + (0.01 * p * dutyRange));
+        int unclamped = int(lowerRange + (0.01 * p * dutyRange));
 
         duty = clamp(unclamped);
 
@@ -124,11 +138,12 @@ public:
 
     void initESC() {
         // htim2.Instance->CCR1 = 1000;
-        setPower(100);
+        setPower(0);
         HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
         osDelay(1000);
         setPower(0);
         // htim2.Instance->CCR1 = 500;
         osDelay(1000);
+        setPower(0);
     }
 };
