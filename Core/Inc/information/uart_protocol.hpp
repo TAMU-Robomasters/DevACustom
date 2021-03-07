@@ -5,22 +5,25 @@
 #include "usart.h"
 #include <memory>
 
+const int max_serial_value_size = 1024;
+const int serial_buffer_size = (max_serial_value_size * 2) * 2;
+
 namespace userUART {
 
 template <int maxSize, typename T = uint8_t>
-class serialBuffer{
+class circularBuffer{
 
 	private:
 		T buffer[maxSize];
 		int head = 0;
 		int tail = 0;
-		T delimiter = '\n';
-		T* lastWord = NULL;
+    T delimiter;
+    T* lastWord = NULL;
 		// vector<T> lastWord;
 		int lastWordSize = 0;
 
 	public:
-		serialBuffer<maxSize, T>(T delimiter = '\n') : delimiter(delimiter){};
+		circularBuffer<maxSize, T>(T delimiter = '\n') : delimiter(delimiter){};
 
 		bool isFull(){
 			return head == (tail + 1) % maxSize;
@@ -115,6 +118,8 @@ class serialBuffer{
 		}
 
 };
+
+extern circularBuffer<serial_buffer_size, uint8_t> serialBuffer6;
 
 extern void motorFeedbackOut(UART_HandleTypeDef* huart, struct userCAN::motorFeedback_t* data);
 // function used to output motor feedback info over UART

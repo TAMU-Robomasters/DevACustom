@@ -29,7 +29,7 @@ void task() {
 void update() {
 
     if (true) {
-        currState = running;
+        currState = notRunning;
     }
 
     velPidF1.setTarget(100);

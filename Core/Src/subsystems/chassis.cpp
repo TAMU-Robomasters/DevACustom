@@ -22,6 +22,10 @@ float motor1P;
 float motor2P;
 float motor3P;
 float motor4P;
+float currTime;
+float c1SentPower;
+
+//INCLUDE userDebugFiles/chassis1DisplayValues.ini
 
 namespace chassis {
 
@@ -29,7 +33,7 @@ chassisStates currState = notRunning;
 CtrlTypes ctrlType = CURRENT;
 // i don't really like this but do i care enough to change it?
 
-pidInstance velPidC1(pidType::velocity, 0.7, 0.0, 0.0);
+pidInstance velPidC1(pidType::velocity, 0.25, 0.01, 0.0);
 pidInstance velPidC2(pidType::velocity, 0.7, 0.0, 0.0);
 pidInstance velPidC3(pidType::velocity, 0.7, 0.0, 0.0);
 pidInstance velPidC4(pidType::velocity, 0.7, 0.0, 0.0);
@@ -47,13 +51,13 @@ void task() {
         act();
         // set power to global variable here, message is actually sent with the others in the CAN task
 
-        osDelay(1);
+        osDelay(10);
     }
 }
 
 void update() {
     if (true) {
-        currState = notRunning;
+        currState = followGimbal;
         // will change later based on RC input and sensor based decision making
     }
 
@@ -70,9 +74,10 @@ void update() {
 
     magnitude = sqrt(pow(leftY, 2) + pow(leftX, 2));
 
+		currTime = HAL_GetTick();
     c1Output = c1Motor.getSpeed();
 
-    velPidC1.setTarget(50);
+    velPidC1.setTarget(100);
 
     // if button pressed on controller, change state to "followgimbal" or something
 }
@@ -87,7 +92,7 @@ void act() {
         break;
 
     case followGimbal:
-        c1Motor.setPower(2);
+        c1Motor.setPower(3);
         c2Motor.setPower(0);
         c3Motor.setPower(0);
         c4Motor.setPower(0);
@@ -97,6 +102,7 @@ void act() {
     case manual:
         //rcToPower(angle, magnitude, rightX);
         c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
+				c1SentPower = (c1Motor.getPower() * 16384.0) / 100.0;
         c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
         c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
         c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));

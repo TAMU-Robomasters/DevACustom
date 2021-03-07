@@ -14,8 +14,7 @@ namespace gimbal {
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
 
-// pidInstance yawPosPid(pidType::position, 70.0, 0.00, 0.01);
-pidInstance yawPosPid(pidType::position, 80.0, 0.00, 0.00);
+pidInstance yawPosPid(pidType::position, 80.0, 0.00, 1.00);
 pidInstance pitchPosPid(pidType::position, 140.0, 0.0, 0.01);
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid);

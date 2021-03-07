@@ -123,7 +123,7 @@ int8_t motor_ControlGimbFeed(float32_t yaw, float32_t pitch, float32_t feeder, C
 
     CAN_TxHeaderTypeDef tx_header;
 
-    tx_header.StdId = CAN_GM6020_RECEIVE_ID_BASE;
+    tx_header.StdId = CAN_GM6020_RECEIVE_ID_EXTEND;
     tx_header.IDE = CAN_ID_STD;
     tx_header.RTR = CAN_RTR_DATA;
     tx_header.DLC = 8;
@@ -207,7 +207,7 @@ void task() {
         send();
         // for sending messages over CAN to motors
 
-        osDelay(10);
+        osDelay(1);
     }
 }
 
