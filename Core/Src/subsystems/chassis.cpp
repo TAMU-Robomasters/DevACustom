@@ -33,7 +33,7 @@ pidInstance velPidC1(pidType::velocity, 0.7, 0.0, 0.0);
 pidInstance velPidC2(pidType::velocity, 0.7, 0.0, 0.0);
 pidInstance velPidC3(pidType::velocity, 0.7, 0.0, 0.0);
 pidInstance velPidC4(pidType::velocity, 0.7, 0.0, 0.0);
-	
+
 chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1);
 chassisMotor c2Motor(userCAN::M3508_M2_ID, velPidC2);
 chassisMotor c3Motor(userCAN::M3508_M3_ID, velPidC3);
@@ -47,7 +47,7 @@ void task() {
         act();
         // set power to global variable here, message is actually sent with the others in the CAN task
 
-        osDelay(2);
+        osDelay(1);
     }
 }
 
@@ -56,26 +56,23 @@ void update() {
         currState = notRunning;
         // will change later based on RC input and sensor based decision making
     }
-    
-    rightX = static_cast<float>(rcDataStruct.rc.ch[0]) / 660;
-    rightY = static_cast<float>(rcDataStruct.rc.ch[1]) / 660;
-    leftX = static_cast<float>(rcDataStruct.rc.ch[2]) / 660;
-    leftY = static_cast<float>(rcDataStruct.rc.ch[3]) / 660;
-		
+
+    rightX = rcDataStruct.rc.ch[0] / 660.0;
+    rightY = rcDataStruct.rc.ch[1] / 660.0;
+    leftX = rcDataStruct.rc.ch[2] / 660.0;
+    leftY = rcDataStruct.rc.ch[3] / 660.0;
+
     switch1 = (rcDataStruct.rc.s[0]);
-		switch2 = (rcDataStruct.rc.s[1]);
+	switch2 = (rcDataStruct.rc.s[1]);
 
     angle = atan2(leftY, leftX);
-		angleOutput = (angle / (float)PI) * 180;
-		
-		magnitude = sqrt(pow(leftY, 2) + pow(leftX, 2));
+    angleOutput = radToDeg(angle);
 
-    c1Output = static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0;
+    magnitude = sqrt(pow(leftY, 2) + pow(leftX, 2));
 
-    velPidC1.setCurrInput(static_cast<float>(c1Motor.getFeedback()->rotor_speed) / 19);
-    velPidC2.setCurrInput(static_cast<float>(c2Motor.getFeedback()->rotor_speed) / 19);
-    velPidC3.setCurrInput(static_cast<float>(c3Motor.getFeedback()->rotor_speed) / 19);
-    velPidC4.setCurrInput(static_cast<float>(c4Motor.getFeedback()->rotor_speed) / 19);
+    c1Output = c1Motor.getSpeed();
+
+    velPidC1.setTarget(50);
 
     // if button pressed on controller, change state to "followgimbal" or something
 }
@@ -90,7 +87,7 @@ void act() {
         break;
 
     case followGimbal:
-        c1Motor.setPower(0);
+        c1Motor.setPower(2);
         c2Motor.setPower(0);
         c3Motor.setPower(0);
         c4Motor.setPower(0);
@@ -98,19 +95,11 @@ void act() {
         break;
 
     case manual:
-        rcToPower(angle, magnitude, rightX);
-        velPidC1.loop();
-        velPidC2.loop();
-        velPidC3.loop();
-        velPidC4.loop();
-        // double power1 = velPidC1.getTarget();
-        // double power2 = velPidC2.getTarget();
-        // double power3 = velPidC3.getTarget();
-        // double power4 = velPidC4.getTarget();
-        c1Motor.setPower(velPidC1.getTarget());
-        c2Motor.setPower(velPidC2.getTarget());
-        c3Motor.setPower(velPidC3.getTarget());
-        c4Motor.setPower(velPidC4.getTarget());
+        //rcToPower(angle, magnitude, rightX);
+        c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
+        c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
+        c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
+        c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));
         // if current control, power will be set in the CAN task
         // this will change when we have things to put here
         break;

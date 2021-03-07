@@ -14,9 +14,9 @@ private:
     pidInstance* PID;
 
 public:
-    chassisMotor(int16_t ID, float32_t lC, float32_t uC) : canMotor(ID, -100, 100) {}
-    chassisMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid) : canMotor(ID, -100, 100), PID(&pid) {}
-    chassisMotor(int16_t ID, pidInstance& pid) : canMotor(ID, -100, 100), PID(&pid) {}
+    chassisMotor(int16_t ID, float32_t lC, float32_t uC) : canMotor(ID, -100, 100, 8191, 19) {}
+    chassisMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid) : canMotor(ID, -100, 100, 8191, 19), PID(&pid) {}
+    chassisMotor(int16_t ID, pidInstance& pid) : canMotor(ID, -100, 100, 8191, 19), PID(&pid) {}
 
     void setPID(pidInstance& pid) {
         PID = &pid;

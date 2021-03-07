@@ -51,7 +51,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+// int rxCallbackCounter2 = 0;
+// uint8_t readBuf[1];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,7 +64,18 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+// void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
+//     rxCallbackCounter2++;
+//     // if (readBuf[0] == 'r') {
+//     // 	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+//     // 	HAL_UART_Transmit(&huart6, txString, sizeof(txString), timeout);
+//     // }
+//     // else if (readBuf[0] == 's') {
+//     // 	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+//     // 	HAL_UART_Transmit(&huart6, txString1, sizeof(txString1), timeout);
+//     // }
+//     HAL_UART_Receive_IT(&huart6, (uint8_t*)readBuf, 1);
+// }
 /* USER CODE END 0 */
 
 /**
@@ -105,7 +117,11 @@ int main(void)
   MX_USART6_UART_Init();
   MX_CAN2_Init();
   MX_USART1_UART_Init();
+  MX_UART7_Init();
+  MX_UART8_Init();
   /* USER CODE BEGIN 2 */
+
+  //HAL_UART_Receive_IT(&huart6, (uint8_t*)readBuf, 1);
 
   // Turn all the LED's off to begin with
   HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_SET);

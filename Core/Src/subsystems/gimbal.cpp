@@ -34,31 +34,24 @@ void task() {
 }
 
 void update() {
-    yawMotor.setCurrAngle(static_cast<float>(yawMotor.getFeedback()->rotor_angle));
-    pitchMotor.setCurrAngle(static_cast<float>(pitchMotor.getFeedback()->rotor_angle));
-
     if (true) {
         currState = notRunning;
         // will change later based on RC input and sensor based decision making
     }
-    yawPosPid.setTarget(0);
-    pitchPosPid.setTarget(0);
 
-    float yawAngle = yawMotor.getCurrAngle();
-		float pitchAngle = pitchMotor.getCurrAngle();
+    float yawAngle = yawMotor.getAngle();
+    float pitchAngle = pitchMotor.getAngle();
     yawAngleShow = radToDeg(yawAngle);
 		pitchAngleShow = radToDeg(pitchAngle);
 
-        float yawTarget = degToRad(207.0);   // make sure this is inputted as float
-        float pitchTarget = degToRad(309.0); // make sure this is inputted as float
+        float yawTarget = degToRad(207.0);
+        float pitchTarget = degToRad(309.0);
         float yawError = calculateAngleError(yawAngle, yawTarget);
 		float pitchError = calculateAngleError(pitchAngle, pitchTarget);
 		
 		yawErrorShow = radToDeg(yawError);
-		pitchErrorShow = radToDeg(pitchError);
-		yawPosPid.setCurrInput(-yawError);
-		pitchPosPid.setCurrInput(-pitchError);
-    // if button pressed on controller, change state to "followgimbal" or something
+        pitchErrorShow = radToDeg(pitchError);
+        // if button pressed on controller, change state to "followgimbal" or something
 }
 
 void act() {
@@ -70,16 +63,14 @@ void act() {
 
     case running:
 				yawPosPid.setTarget(0.0);
-				pitchPosPid.setTarget(0.0);
-        yawPosPid.loop();
-        pitchPosPid.loop();
-        // float yawPower = yawPosPid.getOutput();
-        // float pitchPower = pitchPosPid.getOutput();
-        if (ctrlType == VOLTAGE) {
-						yawPidShow = yawPosPid.getOutput();
-						pitchPidShow = pitchPosPid.getOutput();
-            yawMotor.setPower(yawPosPid.getOutput());
-            pitchMotor.setPower(pitchPosPid.getOutput());
+                pitchPosPid.setTarget(0.0);
+                // float yawPower = yawPosPid.getOutput();
+                // float pitchPower = pitchPosPid.getOutput();
+                if (ctrlType == VOLTAGE) {
+                    yawPidShow = yawPosPid.getOutput();
+                    pitchPidShow = pitchPosPid.getOutput();
+                    yawMotor.setPower(yawPosPid.loop(-calculateAngleError(yawMotor.getAngle(), degToRad(207.0))));
+                    pitchMotor.setPower(pitchPosPid.loop(-calculateAngleError(pitchMotor.getAngle(), degToRad(309.0))));
         } // gimbal motors controlled through voltage, sent messages over CAN
         break;
     }

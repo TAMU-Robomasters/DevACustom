@@ -24,16 +24,17 @@ public:
     pidInstance(float p = 0, float i = 0, float d = 0) : kP(p), kI(i), kD(d), lastLoopTime(0), dtTimeout(250) {}
     pidInstance(pidType pT = pidType::velocity, float p = 0, float i = 0, float d = 0) : type(pT), kP(p), kI(i), kD(d), lastLoopTime(0) {}
 
-    void loop() {
+    float loop(float currInput) {
+        this->currInput = currInput;
 
         float currTime = HAL_GetTick();
         float error = target - currInput;
         float dT = (lastLoopTime == 0) ? 0 : (currTime - lastLoopTime);
-        if (dT > dtTimeout) {
-            dT = 0;
-        }
+        // if (dT > dtTimeout) {
+        //     dT = 0;
+        // }
 
-        float derivative = (dT == 0) ? 0 : (-1 * (lastInput - currInput)) / (dT);
+        float derivative = (dT == 0) ? 0 : currInput - lastInput / (dT);
         //instead of using lastError - error, we use -(lastInput - currInput) to minimize output spikes when the target changes
         errorSum += error * dT;
 
@@ -44,6 +45,7 @@ public:
         lastInput = currInput;
 
         this->output = output;
+        return output;
     }
 
     float getTarget() {
@@ -58,9 +60,9 @@ public:
         return this->currInput;
     }
 
-    void setCurrInput(float in) {
-        this->currInput = in;
-    }
+    // void setCurrInput(float in) {
+    //     this->currInput = in;
+    // }
 
     float getOutput() {
         return this->output;

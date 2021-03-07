@@ -25,13 +25,13 @@
 
 template <typename T>
 float radToDeg(T r) {
-    const T pi = PI;
+    const float pi = PI;
     return (float)((r / pi) * 180);
 }
 
 template <typename T>
 float degToRad(T d) {
-    const T pi = PI;
+    const float pi = PI;
     return (float)((d / 180) * pi);
 }
 
@@ -68,9 +68,11 @@ class canMotor : public Motor {
 private:
     int16_t canID;
     userCAN::motorFeedback_t canFeedback;
+    float radsPerTick;
+    float motorGearing;
 
 public:
-    canMotor(int16_t ID, float32_t lC, float32_t uC) : Motor(lC, uC), canID(ID) {}
+    canMotor(int16_t ID, float32_t lC, float32_t uC, float angleTicksMax = (2 * PI), float motorGearing = 1) : Motor(lC, uC), canID(ID), radsPerTick((2 * PI) / angleTicksMax), motorGearing(motorGearing) {}
 
     int16_t getID() {
         return canID;
@@ -78,6 +80,22 @@ public:
 
     userCAN::motorFeedback_t* getFeedback() {
         return &canFeedback;
+    }
+
+    float getSpeed() {
+        return static_cast<float>(canFeedback.rotor_speed) / motorGearing; // in rpm
+    }
+
+    float getAngle() {
+        return static_cast<float>(canFeedback.rotor_angle * radsPerTick); // in radians
+    }
+
+    float getCurrent() {
+        return static_cast<float>(canFeedback.torque_current);
+    }
+
+    float getTemp() {
+        return static_cast<float>(canFeedback.temp); // in C
     }
 };
 
