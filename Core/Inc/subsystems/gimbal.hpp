@@ -16,9 +16,9 @@ private:
     double currAngle; //RADIANS
 
 public:
-    gimbalMotor(int16_t ID, float32_t lC, float32_t uC) : canMotor(ID, -100, 100, 8191, 1) {}
-    gimbalMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid) : canMotor(ID, -100, 100, 8191, 1), PID(&pid) {}
-    gimbalMotor(int16_t ID, pidInstance& pid) : canMotor(ID, -100, 100, 8191, 1), PID(&pid) {}
+    gimbalMotor(int16_t ID, float32_t lC, float32_t uC, filter::Kalman filter) : canMotor(ID, -100, 100, filter, 8191, 1) {}
+    gimbalMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid, filter::Kalman filter) : canMotor(ID, -100, 100, filter, 8191, 1), PID(&pid) {}
+    gimbalMotor(int16_t ID, pidInstance& pid, filter::Kalman filter) : canMotor(ID, -100, 100, filter, 8191, 1), PID(&pid) {}
 
     void setPID(pidInstance& pid) {
         PID = &pid;

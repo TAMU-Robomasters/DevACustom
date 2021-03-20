@@ -55,6 +55,7 @@ devacustom\gimbal.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\gimbal.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\gimbal.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 devacustom\gimbal.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\gimbal.o: ../Core/Inc/information/filters.hpp
 devacustom\gimbal.o: ../Core/Inc/tim.h
 devacustom\gimbal.o: ../Core/Inc/information/pid.hpp
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

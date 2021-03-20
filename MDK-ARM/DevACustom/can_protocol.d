@@ -55,6 +55,7 @@ devacustom\can_protocol.o: ../Core/Inc/information/can_protocol.hpp
 devacustom\can_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\can_protocol.o: ../Core/Inc/information/device.hpp
 devacustom\can_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\can_protocol.o: ../Core/Inc/information/filters.hpp
 devacustom\can_protocol.o: ../Core/Inc/tim.h
 devacustom\can_protocol.o: ../Core/Inc/subsystems/chassis.hpp
 devacustom\can_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

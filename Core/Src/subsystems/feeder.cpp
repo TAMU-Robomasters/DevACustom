@@ -10,10 +10,12 @@ float f1Output;
 namespace feeder {
 
 feederStates currState = notRunning;
+	
+filter::Kalman feederVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance velPidF1(pidType::velocity, 0.4, 0.0, 0.0);
+pidInstance velPidF1(pidType::velocity, 0.2, 0.001, 0.01);
 
-feederMotor f1Motor(userCAN::M2006_FEEDER_ID, velPidF1);
+feederMotor f1Motor(userCAN::M2006_FEEDER_ID, velPidF1, feederVelFilter);
 
 void task() {
 

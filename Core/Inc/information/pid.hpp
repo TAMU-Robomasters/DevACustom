@@ -1,5 +1,6 @@
 #pragma once
 
+#include "information/filters.hpp"
 #include "stm32f4xx_hal.h"
 #include <math.h>
 
@@ -25,6 +26,7 @@ private:
     float lastInput;
     float output;
     float iWindupBound;
+    float derivative;
 
 public:
     pidInstance(float p = 0, float i = 0, float d = 0) : kP(p), kI(i), kD(d), lastLoopTime(0), iWindupBound(100) {}
@@ -43,14 +45,14 @@ public:
         float error = target - currInput;
         float dT = (lastLoopTime == 0) ? 0 : (currTime - lastLoopTime);
 
-        float derivative = (dT == 0) ? 0 : currInput - lastInput / (dT);
+        derivative = (dT == 0) ? 0 : ((currInput - lastInput) / (dT));
         //instead of using lastError - error, we use -(lastInput - currInput) to minimize output spikes when the target changes
-        errorSum += error * dT;
+        errorSum += error * dT * kI;
         if (std::abs(errorSum) > iWindupBound){
             errorSum = std::copysign(iWindupBound, errorSum);
         }
 
-        float output = (kP * error) + (kI * errorSum) + (kD * derivative);
+        float output = (kP * error) + (errorSum) + (kD * derivative);
 
         lastLoopTime = currTime;
         lastError = error;
@@ -163,6 +165,10 @@ public:
     // void setCurrInput(float in) {
     //     this->currInput = in;
     // }
+
+    float getDerivative() {
+        return this->derivative;
+    }
 
     float getOutput() {
         return this->output;

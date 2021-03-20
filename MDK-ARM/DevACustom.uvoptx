@@ -325,6 +325,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>c1SentPower</ItemText>
         </Ww>
+        <Ww>
+          <count>34</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>word6</ItemText>
+        </Ww>
+        <Ww>
+          <count>35</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>c1Derivative</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

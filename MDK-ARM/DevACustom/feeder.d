@@ -55,6 +55,7 @@ devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 devacustom\feeder.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\feeder.o: ../Core/Inc/information/filters.hpp
 devacustom\feeder.o: ../Core/Inc/tim.h
 devacustom\feeder.o: ../Core/Inc/information/pid.hpp
 devacustom\feeder.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

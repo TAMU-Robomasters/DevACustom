@@ -1,5 +1,6 @@
 #include "subsystems/chassis.hpp"
 #include "information/can_protocol.hpp"
+#include "information/filters.hpp"
 #include "information/pid.hpp"
 #include "information/pwm_protocol.hpp"
 #include "information/rc_protocol.h"
@@ -24,6 +25,7 @@ float motor3P;
 float motor4P;
 float currTime;
 float c1SentPower;
+float c1Derivative;
 
 //INCLUDE userDebugFiles/chassis1DisplayValues.ini
 
@@ -33,17 +35,21 @@ chassisStates currState = notRunning;
 CtrlTypes ctrlType = CURRENT;
 // i don't really like this but do i care enough to change it?
 
-pidInstance velPidC1(pidType::velocity, 0.25, 0.01, 0.0);
+filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
+
+pidInstance velPidC1(pidType::velocity, 0.2, 0.001, 0.01);
 pidInstance velPidC2(pidType::velocity, 0.7, 0.0, 0.0);
 pidInstance velPidC3(pidType::velocity, 0.7, 0.0, 0.0);
 pidInstance velPidC4(pidType::velocity, 0.7, 0.0, 0.0);
 
-chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1);
-chassisMotor c2Motor(userCAN::M3508_M2_ID, velPidC2);
-chassisMotor c3Motor(userCAN::M3508_M3_ID, velPidC3);
-chassisMotor c4Motor(userCAN::M3508_M4_ID, velPidC4);
+chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);
+chassisMotor c2Motor(userCAN::M3508_M2_ID, velPidC2, chassisVelFilter);
+chassisMotor c3Motor(userCAN::M3508_M3_ID, velPidC3, chassisVelFilter);
+chassisMotor c4Motor(userCAN::M3508_M4_ID, velPidC4, chassisVelFilter);
 
 void task() {
+	
+		osDelay(500);
 
     for (;;) {
         update();
@@ -57,7 +63,7 @@ void task() {
 
 void update() {
     if (true) {
-        currState = followGimbal;
+        currState = notRunning;
         // will change later based on RC input and sensor based decision making
     }
 
@@ -67,7 +73,7 @@ void update() {
     leftY = rcDataStruct.rc.ch[3] / 660.0;
 
     switch1 = (rcDataStruct.rc.s[0]);
-	switch2 = (rcDataStruct.rc.s[1]);
+		switch2 = (rcDataStruct.rc.s[1]);
 
     angle = atan2(leftY, leftX);
     angleOutput = radToDeg(angle);
@@ -77,7 +83,7 @@ void update() {
 		currTime = HAL_GetTick();
     c1Output = c1Motor.getSpeed();
 
-    velPidC1.setTarget(100);
+    //velPidC1.setTarget(100);
 
     // if button pressed on controller, change state to "followgimbal" or something
 }
@@ -100,9 +106,10 @@ void act() {
         break;
 
     case manual:
-        //rcToPower(angle, magnitude, rightX);
+        rcToPower(angle, magnitude, rightX);
         c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
 				c1SentPower = (c1Motor.getPower() * 16384.0) / 100.0;
+        c1Derivative = velPidC1.getDerivative();
         c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
         c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
         c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));

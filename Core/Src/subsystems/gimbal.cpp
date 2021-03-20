@@ -13,12 +13,14 @@ namespace gimbal {
 
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
+	
+filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 pidInstance yawPosPid(pidType::position, 80.0, 0.00, 1.00);
 pidInstance pitchPosPid(pidType::position, 140.0, 0.0, 0.01);
 
-gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid);
-gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid);
+gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
+gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid, gimbalVelFilter);
 
 void task() {
 
@@ -43,9 +45,9 @@ void update() {
     yawAngleShow = radToDeg(yawAngle);
 		pitchAngleShow = radToDeg(pitchAngle);
 
-        float yawTarget = degToRad(207.0);
-        float pitchTarget = degToRad(309.0);
-        float yawError = calculateAngleError(yawAngle, yawTarget);
+    float yawTarget = degToRad(207.0);
+    float pitchTarget = degToRad(309.0);
+    float yawError = calculateAngleError(yawAngle, yawTarget);
 		float pitchError = calculateAngleError(pitchAngle, pitchTarget);
 		
 		yawErrorShow = radToDeg(yawError);
