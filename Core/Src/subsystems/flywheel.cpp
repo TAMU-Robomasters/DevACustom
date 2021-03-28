@@ -7,6 +7,8 @@ namespace flywheel {
 flywheelStates currState = notRunning;
 
 double angularAccLimit = 0.1; // defined as rpm/10ms^2
+int heat = 0;
+int heatLimit;
 
 flywheelMotor flywheel1(&htim2, 1, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
 flywheelMotor flywheel2(&htim2, 2, POWER3_CTRL_GPIO_Port, POWER3_CTRL_Pin);
@@ -52,6 +54,29 @@ void act() {
         // obviously this will change when we have actual intelligent things to put here
         break;
     }
+}
+
+int incrementHeatPerShot(bool is17mm) {
+    if(is17mm){
+        heat += 10;
+    }
+    else{
+        heat += 100;
+    }
+    if(heat > 2*heatLimit){
+        heat = heatLimit;
+    }
+    return heat;
+}
+
+int coolBarrel(int coolingValue) {
+    if(heat > heatLimit){
+        heat -= coolingValue/10;
+        if(heat < 0){
+            heat = 0;
+        }
+    }
+    return heat;
 }
 
 double calcSlewDRpm(double currFw1Speed, double currFw2Speed, double targetFw1Speed, double targetFw2Speed) {
