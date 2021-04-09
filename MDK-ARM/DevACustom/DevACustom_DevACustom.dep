@@ -65,7 +65,7 @@ I (../Core/Inc/subsystems/flywheel.hpp)(0x5FED34F5)
 I (../Core/Inc/subsystems/gimbal.hpp)(0x604752AD)
 I (../Core/Inc/information/rc_protocol.h)(0x5FDD7542)
 I (../Core/Inc/usart.h)(0x603471B1)
-I (../Core/Inc/information/uart_protocol.hpp)(0x604554A9)
+I (../Core/Inc/information/uart_protocol.hpp)(0x606CEB90)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5EC848F4)
 I (C:\Keil_v5\ARM\ARMCC\include\memory)(0x5EC848EC)
 I (C:\Keil_v5\ARM\ARMCC\include\new)(0x5EC848EC)
@@ -1446,7 +1446,7 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h)(0x5F168FED)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x5F168FED)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x5F168FED)
-F (..\Core\Src\subsystems\chassis.cpp)(0x605664A8)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Drivers/CMSIS/DSP/Include/ -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Core/Inc/subsystems -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Drivers/CMSIS/Device/Include -I ../Drivers/CMSIS/Include --cpp11 --cpp11-I.\RTE\_DevACustom-IC:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\s2sid\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="531" -D_RTE_ -DSTM32F427xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F427xx-o devacustom\chassis.o --omf_browse devacustom\chassis.crf --depend devacustom\chassis.d)
+F (..\Core\Src\subsystems\chassis.cpp)(0x606BB499)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Drivers/CMSIS/DSP/Include/ -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Core/Inc/subsystems -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Drivers/CMSIS/Device/Include -I ../Drivers/CMSIS/Include --cpp11 --cpp11-I.\RTE\_DevACustom-IC:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\s2sid\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="531" -D_RTE_ -DSTM32F427xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F427xx-o devacustom\chassis.o --omf_browse devacustom\chassis.crf --depend devacustom\chassis.d)
 I (../Core/Inc/subsystems/chassis.hpp)(0x604751CC)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x5F168FED)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x5F168FED)
@@ -1568,7 +1568,7 @@ I (../Core/Inc/information/filters.hpp)(0x60474E82)
 I (../Core/Inc/tim.h)(0x603471B0)
 I (../Core/Inc/information/pid.hpp)(0x604E726F)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5EC848F4)
-I (../Core/Inc/information/uart_protocol.hpp)(0x604554A9)
+I (../Core/Inc/information/uart_protocol.hpp)(0x606CEB90)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5EC848F4)
 I (../Core/Inc/usart.h)(0x603471B1)
 I (C:\Keil_v5\ARM\ARMCC\include\memory)(0x5EC848EC)
@@ -1765,8 +1765,8 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5EC848F4)
 I (../Core/Inc/init.hpp)(0x5FDD7540)
 I (../Core/Inc/subsystems/feeder.hpp)(0x60475252)
 I (../Core/Inc/subsystems/gimbal.hpp)(0x604752AD)
-F (..\Core\Src\information\uart_protocol.cpp)(0x604E618F)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Drivers/CMSIS/DSP/Include/ -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Core/Inc/subsystems -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Drivers/CMSIS/Device/Include -I ../Drivers/CMSIS/Include --cpp11 --cpp11-I.\RTE\_DevACustom-IC:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\s2sid\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="531" -D_RTE_ -DSTM32F427xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F427xx-o devacustom\uart_protocol.o --omf_browse devacustom\uart_protocol.crf --depend devacustom\uart_protocol.d)
-I (../Core/Inc/information/uart_protocol.hpp)(0x604554A9)
+F (..\Core\Src\information\uart_protocol.cpp)(0x606D2D2C)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ../Drivers/CMSIS/DSP/Include/ -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Core/Inc/subsystems -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Drivers/CMSIS/Device/Include -I ../Drivers/CMSIS/Include --cpp11 --cpp11-I.\RTE\_DevACustom-IC:\Users\s2sid\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\s2sid\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="531" -D_RTE_ -DSTM32F427xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F427xx-o devacustom\uart_protocol.o --omf_browse devacustom\uart_protocol.crf --depend devacustom\uart_protocol.d)
+I (../Core/Inc/information/uart_protocol.hpp)(0x606CEB90)
 I (../Core/Inc/information/can_protocol.hpp)(0x5FDD7542)
 I (../Core/Inc/can.h)(0x603471AE)
 I (../Core/Inc/main.h)(0x603471B3)
@@ -1831,6 +1831,8 @@ I (C:\Keil_v5\ARM\ARMCC\include\rw\_iterbase.h)(0x5EC848E4)
 I (C:\Keil_v5\ARM\ARMCC\include\cstddef)(0x5EC848EC)
 I (C:\Keil_v5\ARM\ARMCC\include\rw\_mutex.h)(0x5EC848E4)
 I (C:\Keil_v5\ARM\ARMCC\include\cstring)(0x5EC848EC)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5EC848EC)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5EC848EC)
 I (../Core/Inc/init.hpp)(0x5FDD7540)
 I (../Core/Inc/subsystems/chassis.hpp)(0x604751CC)
 I (../Core/Inc/information/device.hpp)(0x60566606)

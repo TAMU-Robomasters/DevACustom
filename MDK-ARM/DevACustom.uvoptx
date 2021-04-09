@@ -120,7 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>d</Name>
+          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -334,6 +334,11 @@
           <count>35</count>
           <WinNumber>1</WinNumber>
           <ItemText>c1Derivative</ItemText>
+        </Ww>
+        <Ww>
+          <count>36</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>word6</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

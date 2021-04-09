@@ -1,6 +1,7 @@
 #include "subsystems/feeder.hpp"
 #include "can.h"
 #include "information/can_protocol.hpp"
+#include "information/rc_protocol.h"
 #include "information/uart_protocol.hpp"
 #include "init.hpp"
 #include "main.h"
@@ -29,24 +30,24 @@ void task() {
 }
 
 void update() {
-
-    if (true) {
-        currState = notRunning;
+    currState = notRunning;
+    if (getSwitch(switchType::right) == switchPosition::up) {
+        currState = running;
     }
 
     velPidF1.setTarget(100);
-		f1Output = f1Motor.getSpeed();
+	f1Output = f1Motor.getSpeed();
 }
 
 void act() {
     switch (currState) {
     case notRunning:
-        // feederPower = 0;
+        f1Motor.setPower(0);
         break;
 
     case running:
-        f1Motor.setPower(velPidF1.loop(f1Motor.getSpeed()));
-				//f1Motor.setPower(5);
+        // f1Motor.setPower(velPidF1.loop(f1Motor.getSpeed()));
+        f1Motor.setPower(20);
         // obviously this will change when we have actual intelligent things to put here
         break;
     }

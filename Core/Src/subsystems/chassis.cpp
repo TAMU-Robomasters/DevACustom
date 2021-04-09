@@ -48,8 +48,8 @@ chassisMotor c3Motor(userCAN::M3508_M3_ID, velPidC3, chassisVelFilter);
 chassisMotor c4Motor(userCAN::M3508_M4_ID, velPidC4, chassisVelFilter);
 
 void task() {
-	
-		osDelay(500);
+
+    // osDelay(500);
 
     for (;;) {
         update();
@@ -63,7 +63,7 @@ void task() {
 
 void update() {
     if (true) {
-        currState = notRunning;
+        currState = manual;
         // will change later based on RC input and sensor based decision making
     }
 
@@ -73,14 +73,14 @@ void update() {
     leftY = rcDataStruct.rc.ch[3] / 660.0;
 
     switch1 = (rcDataStruct.rc.s[0]);
-		switch2 = (rcDataStruct.rc.s[1]);
+	switch2 = (rcDataStruct.rc.s[1]);
 
     angle = atan2(leftY, leftX);
     angleOutput = radToDeg(angle);
 
     magnitude = sqrt(pow(leftY, 2) + pow(leftX, 2));
 
-		currTime = HAL_GetTick();
+	currTime = HAL_GetTick();
     c1Output = c1Motor.getSpeed();
 
     //velPidC1.setTarget(100);
@@ -108,11 +108,12 @@ void act() {
     case manual:
         rcToPower(angle, magnitude, rightX);
         c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
-				c1SentPower = (c1Motor.getPower() * 16384.0) / 100.0;
+        c1SentPower = (c1Motor.getPower() * 16384.0) / 100.0;
         c1Derivative = velPidC1.getDerivative();
-        c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
-        c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
-        c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));
+        // c1Motor.setPower(velPidC1.getTarget());
+        // c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
+        // c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
+        // c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));
         // if current control, power will be set in the CAN task
         // this will change when we have things to put here
         break;

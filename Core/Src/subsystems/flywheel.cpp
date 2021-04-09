@@ -1,6 +1,7 @@
 #include "subsystems/flywheel.hpp"
-#include <arm_math.h>
 #include "init.hpp"
+#include "information/rc_protocol.h"
+#include <arm_math.h>
 
 namespace flywheel {
 
@@ -32,9 +33,9 @@ void task() {
 }
 
 void update() {
-    if (true) {
-        currState = notRunning;
-        // will change later based on RC input and sensor based decision making
+    currState = notRunning;
+    if (getSwitch(switchType::left) == switchPosition::up) {
+        currState = running;
     }
 }
 
@@ -46,8 +47,8 @@ void act() {
         break;
 
     case running:
-        flywheel1.setPower(30);
-        flywheel2.setPower(20);
+        flywheel1.setPower(10);
+        flywheel2.setPower(10);
         //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
         // obviously this will change when we have actual intelligent things to put here
         break;

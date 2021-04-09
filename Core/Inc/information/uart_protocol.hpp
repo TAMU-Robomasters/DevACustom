@@ -17,7 +17,7 @@ class circularBuffer{
 		T buffer[maxSize];
 		int head = 0;
 		int tail = 0;
-    T delimiter;
+		T delimiter;
     T* lastWord = NULL;
 		// vector<T> lastWord;
 		int lastWordSize = 0;
@@ -97,26 +97,30 @@ class circularBuffer{
 			}
 			return 0;
 		}
-		
-		void reset(){
-			delete[] lastWord;
+
+    void reset() {
 			// lastWord.clear();
 			int sz = getSize();
 			//vector<T> wordation (sz);
 			// lastWord = vector<T>(sz);
 			// lastWord.reserve(sz);
+			if (lastWord != NULL) {
+				delete[] lastWord;
+			}
 			lastWord = new T[sz];
-			// lastWordSize = sz;
-			
-			for (int i = 0; i < sz; i++)
-			{
+      lastWordSize = sz;
+
+      for (int i = 0; i < sz; i++){
 				lastWord[i] = dequeue();
 				// lastWord.push_back(dequeue());
 			}
 			
 			head = tail;
-		}
+    }
 
+    ~circularBuffer() {
+			delete[] lastWord;
+    }
 };
 
 extern circularBuffer<serial_buffer_size, uint8_t> serialBuffer6;
