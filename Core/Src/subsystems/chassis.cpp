@@ -7,10 +7,10 @@
 #include "init.hpp"
 #include <arm_math.h>
 
-float rightX;
-float rightY;
-float leftX;
-float leftY;
+float rX;
+float rY;
+float lX;
+float lY;
 float switch1;
 float switch2;
 float angle;
@@ -67,20 +67,15 @@ void update() {
         // will change later based on RC input and sensor based decision making
     }
 
-    rightX = rcDataStruct.rc.ch[0] / 660.0;
-    rightY = rcDataStruct.rc.ch[1] / 660.0;
-    leftX = rcDataStruct.rc.ch[2] / 660.0;
-    leftY = rcDataStruct.rc.ch[3] / 660.0;
-
     switch1 = (rcDataStruct.rc.s[0]);
-	switch2 = (rcDataStruct.rc.s[1]);
+		switch2 = (rcDataStruct.rc.s[1]);
 
-    angle = atan2(leftY, leftX);
+    angle = atan2(getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
     angleOutput = radToDeg(angle);
 
-    magnitude = sqrt(pow(leftY, 2) + pow(leftX, 2));
+    magnitude = sqrt(pow(getJoystick(joystickAxis::leftY), 2) + pow(getJoystick(joystickAxis::leftX), 2));
 
-	currTime = HAL_GetTick();
+    currTime = HAL_GetTick();
     c1Output = c1Motor.getSpeed();
 
     //velPidC1.setTarget(100);
@@ -106,7 +101,7 @@ void act() {
         break;
 
     case manual:
-        rcToPower(angle, magnitude, rightX);
+        rcToPower(angle, magnitude, getJoystick(joystickAxis::rightX));
         c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
         c1SentPower = (c1Motor.getPower() * 16384.0) / 100.0;
         c1Derivative = velPidC1.getDerivative();

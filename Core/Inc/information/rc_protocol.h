@@ -106,8 +106,8 @@ extern RC_ctrl_t lastRcDataStruct;
 extern bool btnIsRising(btnType btn);
 extern bool btnIsFalling(btnType btn);
 
-extern uint8_t getSwitch(int sw);
-extern int16_t getJoystick(joystickAxis joy);
+extern uint8_t getSwitch(switchType sw);
+extern float getJoystick(joystickAxis joy);
 
 extern RC_ctrl_t* getRCData();
 

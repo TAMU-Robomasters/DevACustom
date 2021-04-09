@@ -174,10 +174,10 @@ bool btnIsFalling(btnType btn){
     return last-curr == 1;
 }
 
-switchPosition getSwitch(switchType sw) {
+uint8_t getSwitch(switchType sw) {
     return rcDataStruct.rc.s[sw];
 }
 
-int16_t getJoystick(joystickAxis joy) {
-    return rcDataStruct.rc.ch[joy];
+float getJoystick(joystickAxis joy) {
+    return static_cast<float>(rcDataStruct.rc.ch[joy]) / 660.0;
 }
