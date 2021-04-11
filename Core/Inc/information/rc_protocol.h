@@ -62,6 +62,24 @@ typedef __packed struct {
 } RC_ctrl_t;
 
 typedef enum {
+    rightX = 0,
+    rightY = 1,
+    leftX = 2,
+    leftY = 3,
+} joystickAxis;
+
+typedef enum {
+    right = 0,
+    left = 1,
+} switchType;
+
+typedef enum {
+    up = 1,
+    mid = 3,
+    down = 2,
+} switchPosition;
+
+typedef enum {
     btnW = 0,
     btnS = 1,
     btnA = 2,
@@ -87,6 +105,9 @@ extern RC_ctrl_t lastRcDataStruct;
 
 extern bool btnIsRising(btnType btn);
 extern bool btnIsFalling(btnType btn);
+
+extern uint8_t getSwitch(switchType sw);
+extern float getJoystick(joystickAxis joy);
 
 extern RC_ctrl_t* getRCData();
 

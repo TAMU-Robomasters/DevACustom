@@ -119,11 +119,11 @@ int8_t motor_ControlChassis(float32_t m1, float32_t m2, float32_t m3, float32_t 
 int8_t motor_ControlGimbFeed(float32_t yaw, float32_t pitch, float32_t feeder, CAN_HandleTypeDef can) {
     int16_t yawMotor = static_cast<int16_t>((yaw * CAN_GM6020_MAX_ABS_VOLT) / 100);
     int16_t pitchMotor = static_cast<int16_t>((pitch * CAN_GM6020_MAX_ABS_VOLT) / 100);
-    int16_t feederMotor = feeder * M2006_MAX_CURRENT;
+    int16_t feederMotor = static_cast<int16_t>((feeder * M2006_MAX_CURRENT) / 100);
 
     CAN_TxHeaderTypeDef tx_header;
 
-    tx_header.StdId = CAN_GM6020_RECEIVE_ID_EXTEND;
+    tx_header.StdId = CAN_M3508_M2006_RECEIVE_ID_EXTEND;
     tx_header.IDE = CAN_ID_STD;
     tx_header.RTR = CAN_RTR_DATA;
     tx_header.DLC = 8;
@@ -179,7 +179,7 @@ void getMessage(CAN_HandleTypeDef* can) {
         break;
 
     case M2006_FEEDER_ID:
-        motor_Decode(&(can_devices_ptr->feeder_fb), rx_data);
+        motor_Decode(feeder::f1Motor.getFeedback(), rx_data);
         break;
 
     case GM6020_YAW_ID:
@@ -228,7 +228,7 @@ void send() {
     }
     userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(),
                                    gimbal::pitchMotor.getPower(),
-                                   feeder::feederPower,
+                                   feeder::f1Motor.getPower(),
                                    hcan1);
 }
 

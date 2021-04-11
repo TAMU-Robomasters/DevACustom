@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -30,6 +30,8 @@
 
 /* USER CODE END Includes */
 
+extern UART_HandleTypeDef huart7;
+extern UART_HandleTypeDef huart8;
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart6;
 
@@ -37,6 +39,8 @@ extern UART_HandleTypeDef huart6;
 
 /* USER CODE END Private defines */
 
+void MX_UART7_Init(void);
+void MX_UART8_Init(void);
 void MX_USART1_UART_Init(void);
 void MX_USART6_UART_Init(void);
 

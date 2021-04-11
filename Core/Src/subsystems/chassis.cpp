@@ -1,15 +1,16 @@
 #include "subsystems/chassis.hpp"
 #include "information/can_protocol.hpp"
+#include "information/filters.hpp"
 #include "information/pid.hpp"
 #include "information/pwm_protocol.hpp"
 #include "information/rc_protocol.h"
 #include "init.hpp"
 #include <arm_math.h>
 
-float rightX;
-float rightY;
-float leftX;
-float leftY;
+float rX;
+float rY;
+float lX;
+float lY;
 float switch1;
 float switch2;
 float angle;
@@ -22,6 +23,11 @@ float motor1P;
 float motor2P;
 float motor3P;
 float motor4P;
+float currTime;
+float c1SentPower;
+float c1Derivative;
+
+//INCLUDE userDebugFiles/chassis1DisplayValues.ini
 
 namespace chassis {
 
@@ -29,17 +35,21 @@ chassisStates currState = notRunning;
 CtrlTypes ctrlType = CURRENT;
 // i don't really like this but do i care enough to change it?
 
-pidInstance velPidC1(pidType::velocity, 0.7, 0.0, 0.0);
-pidInstance velPidC2(pidType::velocity, 0.7, 0.0, 0.0);
-pidInstance velPidC3(pidType::velocity, 0.7, 0.0, 0.0);
-pidInstance velPidC4(pidType::velocity, 0.7, 0.0, 0.0);
-	
-chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1);
-chassisMotor c2Motor(userCAN::M3508_M2_ID, velPidC2);
-chassisMotor c3Motor(userCAN::M3508_M3_ID, velPidC3);
-chassisMotor c4Motor(userCAN::M3508_M4_ID, velPidC4);
+filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
+
+pidInstance velPidC1(pidType::velocity, 0.2, 0.000, 0.000);
+pidInstance velPidC2(pidType::velocity, 0.2, 0.000, 0.000);
+pidInstance velPidC3(pidType::velocity, 0.2, 0.000, 0.000);
+pidInstance velPidC4(pidType::velocity, 0.2, 0.000, 0.000);
+
+chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);
+chassisMotor c2Motor(userCAN::M3508_M2_ID, velPidC2, chassisVelFilter);
+chassisMotor c3Motor(userCAN::M3508_M3_ID, velPidC3, chassisVelFilter);
+chassisMotor c4Motor(userCAN::M3508_M4_ID, velPidC4, chassisVelFilter);
 
 void task() {
+
+    // osDelay(500);
 
     for (;;) {
         update();
@@ -47,35 +57,28 @@ void task() {
         act();
         // set power to global variable here, message is actually sent with the others in the CAN task
 
-        osDelay(2);
+        osDelay(10);
     }
 }
 
 void update() {
     if (true) {
-        currState = notRunning;
+        currState = manual;
         // will change later based on RC input and sensor based decision making
     }
-    
-    rightX = static_cast<float>(rcDataStruct.rc.ch[0]) / 660;
-    rightY = static_cast<float>(rcDataStruct.rc.ch[1]) / 660;
-    leftX = static_cast<float>(rcDataStruct.rc.ch[2]) / 660;
-    leftY = static_cast<float>(rcDataStruct.rc.ch[3]) / 660;
-		
+
     switch1 = (rcDataStruct.rc.s[0]);
 		switch2 = (rcDataStruct.rc.s[1]);
 
-    angle = atan2(leftY, leftX);
-		angleOutput = (angle / (float)PI) * 180;
-		
-		magnitude = sqrt(pow(leftY, 2) + pow(leftX, 2));
+    angle = atan2(getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
+    angleOutput = radToDeg(angle);
 
-    c1Output = static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0;
+    magnitude = sqrt(pow(getJoystick(joystickAxis::leftY), 2) + pow(getJoystick(joystickAxis::leftX), 2));
 
-    velPidC1.setCurrInput(static_cast<float>(c1Motor.getFeedback()->rotor_speed) / 19);
-    velPidC2.setCurrInput(static_cast<float>(c2Motor.getFeedback()->rotor_speed) / 19);
-    velPidC3.setCurrInput(static_cast<float>(c3Motor.getFeedback()->rotor_speed) / 19);
-    velPidC4.setCurrInput(static_cast<float>(c4Motor.getFeedback()->rotor_speed) / 19);
+    currTime = HAL_GetTick();
+    c1Output = c1Motor.getSpeed();
+
+    //velPidC1.setTarget(100);
 
     // if button pressed on controller, change state to "followgimbal" or something
 }
@@ -90,7 +93,7 @@ void act() {
         break;
 
     case followGimbal:
-        c1Motor.setPower(0);
+        c1Motor.setPower(3);
         c2Motor.setPower(0);
         c3Motor.setPower(0);
         c4Motor.setPower(0);
@@ -98,19 +101,14 @@ void act() {
         break;
 
     case manual:
-        rcToPower(angle, magnitude, rightX);
-        velPidC1.loop();
-        velPidC2.loop();
-        velPidC3.loop();
-        velPidC4.loop();
-        // double power1 = velPidC1.getTarget();
-        // double power2 = velPidC2.getTarget();
-        // double power3 = velPidC3.getTarget();
-        // double power4 = velPidC4.getTarget();
-        c1Motor.setPower(velPidC1.getTarget());
-        c2Motor.setPower(velPidC2.getTarget());
-        c3Motor.setPower(velPidC3.getTarget());
-        c4Motor.setPower(velPidC4.getTarget());
+        rcToPower(angle, magnitude, getJoystick(joystickAxis::rightX));
+        c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
+        c1SentPower = (c1Motor.getPower() * 16384.0) / 100.0;
+        c1Derivative = velPidC1.getDerivative();
+        // c1Motor.setPower(velPidC1.getTarget());
+        c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
+        c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
+        c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));
         // if current control, power will be set in the CAN task
         // this will change when we have things to put here
         break;

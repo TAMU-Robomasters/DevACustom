@@ -55,8 +55,10 @@ devacustom\chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 devacustom\chassis.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\chassis.o: ../Core/Inc/information/filters.hpp
 devacustom\chassis.o: ../Core/Inc/tim.h
 devacustom\chassis.o: ../Core/Inc/information/pid.hpp
+devacustom\chassis.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 devacustom\chassis.o: ../Core/Inc/init.hpp
 devacustom\chassis.o: ../Core/Inc/information/pwm_protocol.hpp
 devacustom\chassis.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
@@ -65,4 +67,3 @@ devacustom\chassis.o: ../Core/Inc/usart.h
 devacustom\chassis.o: ../Drivers/CMSIS/DSP/Include/arm_math.h
 devacustom\chassis.o: ../Drivers/CMSIS/Include/core_cm4.h
 devacustom\chassis.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-devacustom\chassis.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

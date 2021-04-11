@@ -3,6 +3,7 @@
 
 #include "cmsis_os.h"
 #include "information/can_protocol.hpp"
+#include "information/filters.hpp"
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "tim.h"
@@ -25,14 +26,23 @@
 
 template <typename T>
 float radToDeg(T r) {
-    const T pi = PI;
+    const float pi = PI;
     return (float)((r / pi) * 180);
 }
 
 template <typename T>
 float degToRad(T d) {
-    const T pi = PI;
+    const float pi = PI;
     return (float)((d / 180) * pi);
+}
+
+template <typename T>
+bool neg(T n) {
+    if (n < 0)
+        return true;
+    if (n > 0) // 0 is positive
+        return false;
+		return false;
 }
 
 class Motor {
@@ -68,9 +78,12 @@ class canMotor : public Motor {
 private:
     int16_t canID;
     userCAN::motorFeedback_t canFeedback;
+    filter::Kalman velFilter;
+    float radsPerTick;
+    float gearRatio;
 
 public:
-    canMotor(int16_t ID, float32_t lC, float32_t uC) : Motor(lC, uC), canID(ID) {}
+    canMotor(int16_t ID, float32_t lC, float32_t uC, filter::Kalman filter, float angleTicksMax = (2 * PI), float gearRatio = 1) : Motor(lC, uC), canID(ID), velFilter(filter), radsPerTick((2 * PI) / angleTicksMax), gearRatio(gearRatio) {}
 
     int16_t getID() {
         return canID;
@@ -78,6 +91,22 @@ public:
 
     userCAN::motorFeedback_t* getFeedback() {
         return &canFeedback;
+    }
+
+    float getSpeed() {
+        return velFilter.step(static_cast<double>(canFeedback.rotor_speed)) / gearRatio; // in rpm
+    }
+
+    float getAngle() {
+        return static_cast<float>(canFeedback.rotor_angle * radsPerTick); // in radians
+    }
+
+    float getCurrent() {
+        return static_cast<float>(canFeedback.torque_current);
+    }
+
+    float getTemp() {
+        return static_cast<float>(canFeedback.temp); // in C
     }
 };
 

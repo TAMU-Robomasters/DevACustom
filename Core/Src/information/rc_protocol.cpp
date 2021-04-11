@@ -173,3 +173,11 @@ bool btnIsFalling(btnType btn){
     }
     return last-curr == 1;
 }
+
+uint8_t getSwitch(switchType sw) {
+    return rcDataStruct.rc.s[sw];
+}
+
+float getJoystick(joystickAxis joy) {
+    return static_cast<float>(rcDataStruct.rc.ch[joy]) / 660.0;
+}
