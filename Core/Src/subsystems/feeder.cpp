@@ -35,7 +35,7 @@ void update() {
         currState = running;
     }
 
-		velPidF1.setTarget(-100);
+		velPidF1.setTarget(-40);
 		f1Output = f1Motor.getSpeed();
 }
 

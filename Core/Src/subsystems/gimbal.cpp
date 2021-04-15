@@ -17,8 +17,8 @@ CtrlTypes ctrlType = VOLTAGE;
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 pidInstance yawPosPid(pidType::position, 20.0, 0.00, 0.01);
-pidInstance pitchPosPid(pidType::position, 80.0, 0.0, 0.01);
-float kC = 60;
+pidInstance pitchPosPid(pidType::position, 78.0, 0.00, 0.03);
+float kF = 20;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
 gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid, gimbalVelFilter);
@@ -37,7 +37,7 @@ void task() {
 
 void update() {
     if (true) {
-        currState = notRunning;
+        currState = running;
         // will change later based on RC input and sensor based decision making
     }
 
@@ -52,7 +52,7 @@ void update() {
 		float pitchError = calculateAngleError(pitchAngle, pitchTarget);
 		
 		yawErrorShow = radToDeg(yawError);
-        pitchErrorShow = radToDeg(pitchError);
+        pitchErrorShow = /*radToDeg(*/cos(normalizePitchAngle())/*)*/;
         // if button pressed on controller, change state to "followgimbal" or something
 }
 
@@ -73,9 +73,9 @@ void act() {
 					pitchPidShow = pitchPosPid.getOutput();
 					double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
 					double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(307.0));
-					yawMotor.setPower(yawPosPid.loop(yawError));
-					pitchMotor.setPower(pitchPosPid.loop(pitchError) + 15);
-					//pitchMotor.setPower(pitchPosPid.loop(-calculateAngleError(pitchMotor.getAngle(), degToRad(307.0))));
+					//yawMotor.setPower(yawPosPid.loop(yawError));
+					//pitchMotor.setPower(kF * cos(normalizePitchAngle()));
+					pitchMotor.setPower(pitchPosPid.loop(pitchError) + (kF * cos(normalizePitchAngle())));
 					//pitchMotor.setPower(kC*-pitchError);
         } // gimbal motors controlled through voltage, sent messages over CAN
         break;
@@ -112,6 +112,10 @@ double calculateAngleError(double currAngle, double targetAngle) {
 	// }
 
   // return 69;
+}
+
+double normalizePitchAngle(){
+		return -(pitchMotor.getAngle() - degToRad(310.0));
 }
 
 } // namespace gimbal

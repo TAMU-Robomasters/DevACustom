@@ -179,5 +179,5 @@ uint8_t getSwitch(switchType sw) {
 }
 
 float getJoystick(joystickAxis joy) {
-    return static_cast<float>(rcDataStruct.rc.ch[joy]) / 660.0;
+    return static_cast<float>(rcDataStruct.rc.ch[joy]/ 660.0);
 }
