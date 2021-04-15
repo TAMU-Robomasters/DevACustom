@@ -3,10 +3,11 @@
 
 #include "cmsis_os.h"
 #include "information/can_protocol.hpp"
+#include "information/filters.hpp"
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "tim.h"
-/* 
+/*
     Referee System Abstractions?
     Taken from QDU (used in CAN protocol)
 */
@@ -23,14 +24,36 @@
 
 #define PI 3.14159265358979323846
 
+template <typename T>
+float radToDeg(T r) {
+    const float pi = PI;
+    return (float)((r / pi) * 180);
+}
+
+template <typename T>
+float degToRad(T d) {
+    const float pi = PI;
+    return (float)((d / 180) * pi);
+}
+
+template <typename T>
+bool neg(T n) {
+    if (n < 0)
+        return true;
+    if (n > 0) // 0 is positive
+        return false;
+		return false;
+}
+
 class Motor {
 private:
-    float32_t power;  // input power, usually from -100 to 100
+    float32_t power; // input power, usually from -100 to 100
+        // This is instantiated to 0 in Motor, if 0 is not safety for the particular motor then change that in the subclass
     float32_t lowerClamp; // input clamp
     float32_t upperClamp; // input clamp
 
 public:
-    Motor(float32_t lC, float32_t uC) : lowerClamp(lC), upperClamp(uC) {}
+    Motor(float32_t lC, float32_t uC) : power(0), lowerClamp(lC), upperClamp(uC) {}
 
     float32_t clamp(double p) {
         if (p < lowerClamp) {
@@ -55,9 +78,12 @@ class canMotor : public Motor {
 private:
     int16_t canID;
     userCAN::motorFeedback_t canFeedback;
+    filter::Kalman velFilter;
+    float radsPerTick;
+    float gearRatio;
 
 public:
-    canMotor(int16_t ID, float32_t lC, float32_t uC) : Motor(lC, uC), canID(ID) {}
+    canMotor(int16_t ID, float32_t lC, float32_t uC, filter::Kalman filter, float angleTicksMax = (2 * PI), float gearRatio = 1) : Motor(lC, uC), canID(ID), velFilter(filter), radsPerTick((2 * PI) / angleTicksMax), gearRatio(gearRatio) {}
 
     int16_t getID() {
         return canID;
@@ -65,6 +91,22 @@ public:
 
     userCAN::motorFeedback_t* getFeedback() {
         return &canFeedback;
+    }
+
+    float getSpeed() {
+        return velFilter.step(static_cast<double>(canFeedback.rotor_speed)) / gearRatio; // in rpm
+    }
+
+    float getAngle() {
+        return static_cast<float>(canFeedback.rotor_angle * radsPerTick); // in radians
+    }
+
+    float getCurrent() {
+        return static_cast<float>(canFeedback.torque_current);
+    }
+
+    float getTemp() {
+        return static_cast<float>(canFeedback.temp); // in C
     }
 };
 
@@ -80,8 +122,10 @@ private:
 
 public:
     pwmMotor(TIM_HandleTypeDef* tim, int tim_c, GPIO_TypeDef* gpiox, int gpio_pin, int lR, int uR)
-        : tim_handle(tim), tim_channel(tim_c), GPIOx(gpiox), GPIO_Pin(gpio_pin), lowerRange(lR), upperRange(uR) {}
-    
+        : tim_handle(tim), tim_channel(tim_c), GPIOx(gpiox), GPIO_Pin(gpio_pin), lowerRange(lR), upperRange(uR) {
+        setPower(0);
+    }
+
     float32_t clamp(double p) {
         if (p < lowerRange) {
             return lowerRange;
@@ -100,9 +144,8 @@ public:
         //p range is from -100 to 100
         // effective max and min are 1083, 533
         int dutyRange = upperRange - lowerRange;
-        float32_t midPoint = (upperRange - lowerRange) / 2;
 
-        int unclamped = int(midPoint + (0.01 * p * dutyRange));
+        int unclamped = int(lowerRange + (0.01 * p * dutyRange));
 
         duty = clamp(unclamped);
 
@@ -124,11 +167,12 @@ public:
 
     void initESC() {
         // htim2.Instance->CCR1 = 1000;
-        setPower(100);
+        setPower(0);
         HAL_GPIO_WritePin(GPIOx, GPIO_Pin, GPIO_PIN_SET);
         osDelay(1000);
         setPower(0);
         // htim2.Instance->CCR1 = 500;
         osDelay(1000);
+        setPower(0);
     }
 };

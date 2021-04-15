@@ -1,29 +1,55 @@
 #include "subsystems/chassis.hpp"
-#include "arm_math.h"
 #include "information/can_protocol.hpp"
+#include "information/filters.hpp"
 #include "information/pid.hpp"
 #include "information/pwm_protocol.hpp"
+#include "information/rc_protocol.h"
 #include "init.hpp"
+#include <arm_math.h>
+
+float rX;
+float rY;
+float lX;
+float lY;
+float switch1;
+float switch2;
+float angle;
+float angleOutput;
+float magnitude;
+float c1Output;
+float turning;
+float disp;
+float motor1P;
+float motor2P;
+float motor3P;
+float motor4P;
+float currTime;
+float c1SentPower;
+float c1Derivative;
+
+//INCLUDE userDebugFiles/chassis1DisplayValues.ini
 
 namespace chassis {
-
-/*
-Task Assignment: Given an angle from front of the robot (0-360) and a Power(0, 100), calculate the power for each chassis motor to move in that current direction 
-Due: Wednesday the 23rd by 11:59Pm
-*/
 
 chassisStates currState = notRunning;
 CtrlTypes ctrlType = CURRENT;
 // i don't really like this but do i care enough to change it?
 
-pidInstance velPid(pidType::velocity, 0.7, 0.0, 0.0);
+filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-chassisMotor c1Motor(userCAN::M3508_M1_ID, velPid);
-chassisMotor c2Motor(userCAN::M3508_M2_ID, velPid);
-chassisMotor c3Motor(userCAN::M3508_M3_ID, velPid);
-chassisMotor c4Motor(userCAN::M3508_M4_ID, velPid);
+pidInstance velPidC1(pidType::velocity, 0.2, 0.001, 0.01);
+pidInstance velPidC2(pidType::velocity, 0.7, 0.0, 0.0);
+pidInstance velPidC3(pidType::velocity, 0.7, 0.0, 0.0);
+pidInstance velPidC4(pidType::velocity, 0.7, 0.0, 0.0);
+
+chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);
+chassisMotor c2Motor(userCAN::M3508_M2_ID, velPidC2, chassisVelFilter);
+chassisMotor c3Motor(userCAN::M3508_M3_ID, velPidC3, chassisVelFilter);
+chassisMotor c4Motor(userCAN::M3508_M4_ID, velPidC4, chassisVelFilter);
 
 void task() {
+
+    // osDelay(500);
 
     for (;;) {
         update();
@@ -31,27 +57,29 @@ void task() {
         act();
         // set power to global variable here, message is actually sent with the others in the CAN task
 
-        osDelay(2);
+        osDelay(10);
     }
 }
 
 void update() {
-    int t = 0;
-    bool looped = false;
-    if (t < 1000 && looped == false) {      //Arbitrary number of 2 seconds for loops   
-        currState = patrol;
-        t++;
+    if (true) {
+        currState = manual;
+        // will change later based on RC input and sensor based decision making
     }
-    else {
-        currState = notRunning;
-        looped = true;
-        t--;
-    }
-    if (t == 0) {
-        looped = false;
-    }
-    // Update encoders
-    velPid.setTarget(200);
+
+    switch1 = (rcDataStruct.rc.s[0]);
+		switch2 = (rcDataStruct.rc.s[1]);
+
+    angle = atan2(getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
+    angleOutput = radToDeg(angle);
+
+    magnitude = sqrt(pow(getJoystick(joystickAxis::leftY), 2) + pow(getJoystick(joystickAxis::leftX), 2));
+
+    currTime = HAL_GetTick();
+    c1Output = c1Motor.getSpeed();
+
+    //velPidC1.setTarget(100);
+
     // if button pressed on controller, change state to "followgimbal" or something
 }
 
@@ -65,7 +93,7 @@ void act() {
         break;
 
     case followGimbal:
-        c1Motor.setPower(0);
+        c1Motor.setPower(3);
         c2Motor.setPower(0);
         c3Motor.setPower(0);
         c4Motor.setPower(0);
@@ -73,49 +101,56 @@ void act() {
         break;
 
     case manual:
-        double power = velPid.loop(static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0);
-        c1Motor.setPower(power);
-        c2Motor.setPower(power);
-        c3Motor.setPower(power);
-        c4Motor.setPower(power);
+        rcToPower(angle, magnitude, getJoystick(joystickAxis::rightX));
+        c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
+        c1SentPower = (c1Motor.getPower() * 16384.0) / 100.0;
+        c1Derivative = velPidC1.getDerivative();
+        // c1Motor.setPower(velPidC1.getTarget());
+        // c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
+        // c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
+        // c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));
         // if current control, power will be set in the CAN task
         // this will change when we have things to put here
-        break;
-    case patrol:
-        bool patrolLoop = false;
-        double ticksToEndOfRail = 180;      //FIXME: Actual Value
-        if (ticksToEndOfRail - static_cast<double>(c1Motor.getFeedback()->rotor_angle)<= .1) {     //FIXME: ENCODERS       if (encoders == ticksToEndOfRail) within a tolerance
-            patrolLoop = true;
-        }
-        else if (static_cast<double>(c1Motor.getFeedback()->rotor_angle) <= .1) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
-            patrolLoop = false;
-        }
-        if (patrolLoop == false) { 
-            double power = velPid.loop(static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0);
-            c1Motor.setPower(power);
-            c2Motor.setPower(power);
-            c3Motor.setPower(power);
-            c4Motor.setPower(power);
-        }
-        else if (patrolLoop == true) {
-            double power = -velPid.loop(static_cast<double>(c1Motor.getFeedback()->rotor_speed) / 19.0);
-            c1Motor.setPower(power);
-            c2Motor.setPower(power);
-            c3Motor.setPower(power);
-            c4Motor.setPower(power);
-        }
         break;
     }
 }
 
-void rcToPower(double angle, double magnitude) {
+void rcToPower(double angle, double magnitude, double yaw) {
     // Computes the appropriate fraction of the wheel's motor power
 
     // Sine and cosine of math.h take angle in radians as input value
-    c1Motor.setPower(magnitude * sqrt(2.0) * 0.5 * (cos(angle) + sin(angle)));
-    c2Motor.setPower(magnitude * sqrt(2.0) * 0.5 * (sin(angle) - cos(angle)));
-    c3Motor.setPower(magnitude * sqrt(2.0) * 0.5 * (sin(angle) - cos(angle)));
-    c4Motor.setPower(magnitude * sqrt(2.0) * 0.5 * (cos(angle) + sin(angle)));
+    // motor 1 back left
+    // motor 2 front left
+    // motor 3 front right
+    // motor 4 back right
+    float turnScalar = 0.6;
+
+    disp = ((abs(magnitude) + abs(yaw)) == 0) ? 0 : abs(magnitude) / (abs(magnitude) + turnScalar*abs(yaw));
+    turning = ((abs(magnitude) + abs(yaw)) == 0) ? 0 : turnScalar*abs(yaw) / (abs(magnitude) + turnScalar*abs(yaw));
+    //disp = 1 - abs(turning);
+    // disp and turning represent the percentage of how much the user wants to displace or turn
+    // displacement takes priority here
+
+    float motor1Turn = yaw;
+    float motor2Turn = yaw;
+    float motor3Turn = yaw;
+    float motor4Turn = yaw;
+
+    float motor1Disp = (magnitude * (sin(angle) - cos(angle))) * 1;
+    float motor2Disp = (magnitude * (cos(angle) + sin(angle))) * 1;
+    float motor3Disp = (magnitude * (sin(angle) - cos(angle))) * -1;
+    float motor4Disp = (magnitude * (cos(angle) + sin(angle))) * -1;
+
+    motor1P = (turning * motor1Turn) + (disp * motor1Disp);
+    motor2P = (turning * motor2Turn) + (disp * motor2Disp);
+    motor3P = (turning * motor3Turn) + (disp * motor3Disp);
+    motor4P = (turning * motor4Turn) + (disp * motor4Disp);
+	
+    velPidC1.setTarget(motor1P * 200);
+    velPidC2.setTarget(motor2P * 200);
+    velPidC3.setTarget(motor3P * 200);
+    velPidC4.setTarget(motor4P * 200);
+    // scaling max speed up to 200 rpm, can be set up to 482rpm
 }
 
 } // namespace chassis

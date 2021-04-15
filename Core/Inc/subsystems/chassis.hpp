@@ -14,9 +14,9 @@ private:
     pidInstance* PID;
 
 public:
-    chassisMotor(int16_t ID, float32_t lC, float32_t uC) : canMotor(ID, -100, 100) {}
-    chassisMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid) : canMotor(ID, -100, 100), PID(&pid) {}
-    chassisMotor(int16_t ID, pidInstance& pid) : canMotor(ID, -100, 100), PID(&pid) {}
+    chassisMotor(int16_t ID, float32_t lC, float32_t uC, filter::Kalman filter) : canMotor(ID, -100, 100, filter, 8191, 19) {}
+    chassisMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid, filter::Kalman filter) : canMotor(ID, -100, 100, filter, 8191, 19), PID(&pid) {}
+    chassisMotor(int16_t ID, pidInstance& pid, filter::Kalman filter) : canMotor(ID, -100, 100, filter, 8191, 19), PID(&pid) {}
 
     void setPID(pidInstance& pid) {
         PID = &pid;
@@ -28,8 +28,7 @@ extern chassisMotor c1Motor, c2Motor, c3Motor, c4Motor;
 enum chassisStates {
     notRunning,
     followGimbal,
-    manual, 
-    patrol
+    manual
 };
 
 enum CtrlTypes {
@@ -39,6 +38,8 @@ enum CtrlTypes {
 };
 extern CtrlTypes ctrlType;
 
+extern filter::Kalman chassisVelFilter;
+
 extern void pwmInitialize();
 
 extern void task();
@@ -47,6 +48,6 @@ extern void update();
 
 extern void act();
 
-extern void rcToPower(double angle, double magnitude);
+extern void rcToPower(double angle, double magnitude, double yaw);
 
 } // namespace chassis

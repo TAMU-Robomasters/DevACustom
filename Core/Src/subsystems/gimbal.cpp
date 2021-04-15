@@ -1,16 +1,29 @@
+#include "information/uart_protocol.hpp"
 #include "subsystems/gimbal.hpp"
 #include "init.hpp"
 
-namespace gimbal {
+float32_t bung = 0;
+float yawAngleShow;
+float yawErrorShow;
+float yawPidShow;
+float pitchAngleShow;
+float pitchErrorShow;
+float pitchPidShow;
 
+namespace gimbal {
+	
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
 
-pidInstance yawPosPid(pidType::position, 3.0, 0.0, 0.0);
-pidInstance pitchPosPid(pidType::position, 0.0, 0.0, 0.0);
+filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid);
-gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid);
+pidInstance yawPosPid(pidType::position, 80.0, 0.00, 0.01);
+pidInstance pitchPosPid(pidType::position, 140.0, 0.0, 0.01);
+//pidInstance yawPosPid(pidType::position, 20.0, 0.00, 0.00);
+//pidInstance pitchPosPid(pidType::position, 20.0, 0.0, 0.00);
+
+gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
+gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid, gimbalVelFilter);
 
 void task() {
 
@@ -25,27 +38,25 @@ void task() {
 }
 
 void update() {
-    yawMotor.setCurrAngle(static_cast<double>(yawMotor.getFeedback()->rotor_angle));
-    pitchMotor.setCurrAngle(static_cast<double>(pitchMotor.getFeedback()->rotor_angle));
+    if (true) {
+        currState = running;
+        // will change later based on RC input and sensor based decision making
+    }
 
-    int t = 0;
-    bool looped = false;
-    if (t < 1000 && looped == false) {      //Arbitrary number of 2 seconds for loops   
-        currState = patrol;
-        t++;
-    }
-    else {
-        currState = notRunning;
-        looped = true;
-        t--;
-    }
-    if (t == 0) {
-        looped = false;
-    }
-    // Update encoders
+    float yawAngle = yawMotor.getAngle();
+    float pitchAngle = pitchMotor.getAngle();
+    yawAngleShow = radToDeg(yawAngle);
+		pitchAngleShow = radToDeg(pitchAngle);
 
-    yawPosPid.setTarget(0);
-    pitchPosPid.setTarget(0);
+    //float yawTarget = degToRad(85.0);
+		float yawTarget = angleX;
+    //float pitchTarget = degToRad(260.0);
+		float pitchTarget = angleY;
+    float yawError = calculateAngleError(yawAngle, yawTarget);
+		float pitchError = calculateAngleError(pitchAngle, pitchTarget);
+		
+		yawErrorShow = radToDeg(yawError);
+    pitchErrorShow = radToDeg(pitchError);
     // if button pressed on controller, change state to "followgimbal" or something
 }
 
@@ -57,56 +68,18 @@ void act() {
         break;
 
     case running:
-        if (ctrlType == VOLTAGE) {
-            double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
-            yawMotor.setPower(power);
-            pitchMotor.setPower(power);
-        }
-        // obviously this will change when we have actual intelligent things to put here
-        break;
-    case patrol: 
-        bool patrolLoopYaw = false;
-        bool patrolLoopPitch = false;
-        if (180 - static_cast<double>(yawMotor.getFeedback()->rotor_angle < .1)) {     //FIXME: is yaw or pitch 180, TOL
-            patrolLoopYaw = true;
-        }
-        else if (static_cast<double>(yawMotor.getFeedback()->rotor_angle < .1)) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
-            patrolLoopYaw = false;
-        }
-        if (180 - static_cast<double>(pitchMotor.getFeedback()->rotor_angle < .1)) {     //FIXME: is yaw or pitch 180, TOL
-            patrolLoopPitch = true;
-        }
-        else if (static_cast<double>(pitchMotor.getFeedback()->rotor_angle < .1)) {  //FIXME: ENCODERS       if (encoders == 0) within a tolerance
-            patrolLoopPitch = false;
-        }
-        if (patrolLoopYaw == false && patrolLoopPitch == false) {
-            if (ctrlType == VOLTAGE) {
-                double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
-                yawMotor.setPower(power);
-                pitchMotor.setPower(power);
-            }
-        }
-        if (patrolLoopYaw == false && patrolLoopPitch == true) {
-            if (ctrlType == VOLTAGE) {
-                double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
-                yawMotor.setPower(power);
-                pitchMotor.setPower(-power);
-            }
-        }
-        if (patrolLoopYaw == true && patrolLoopPitch == false) {
-            if (ctrlType == VOLTAGE) {
-                double power = yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
-                yawMotor.setPower(-power);
-                pitchMotor.setPower(power);
-            }
-        }
-        if (patrolLoopYaw == true && patrolLoopPitch == true) {
-            if (ctrlType == VOLTAGE) {
-                double power = -yawPosPid.loop(calculateAngleError(yawMotor.getCurrAngle(), yawPosPid.getTarget()));
-                yawMotor.setPower(power);
-                pitchMotor.setPower(power);
-            }
-        }
+				yawPosPid.setTarget(0.0);
+        pitchPosPid.setTarget(0.0);
+				// float yawPower = yawPosPid.getOutput();
+				// float pitchPower = pitchPosPid.getOutput();
+				if (ctrlType == VOLTAGE) {
+					yawPidShow = yawPosPid.getOutput();
+					pitchPidShow = pitchPosPid.getOutput();
+					//yawMotor.setPower(yawPosPid.loop(-calculateAngleError(yawMotor.getAngle(), degToRad(85.0))));
+					yawMotor.setPower(yawPosPid.loop(-calculateAngleError(yawMotor.getAngle(), angleX)));
+					//pitchMotor.setPower(pitchPosPid.loop(-calculateAngleError(pitchMotor.getAngle(), degToRad(260.0))));
+					pitchMotor.setPower(pitchPosPid.loop(-calculateAngleError(pitchMotor.getAngle(), angleY)));
+        } // gimbal motors controlled through voltage, sent messages over CAN
         break;
     }
 }
@@ -114,28 +87,33 @@ void act() {
 double fixAngle(double angle) {
     /* Fix angle to [0, 2PI) */
     angle = fmod(angle, 2 * PI);
-    if (angle < 0)
+    if (angle < 0){
         return angle + 2 * PI;
+		}
     return angle;
 }
 
 double calculateAngleError(double currAngle, double targetAngle) {
-    /* Positive is counter-clockwise */
+  /* Positive is counter-clockwise */
 
-    double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
-	
-	if (fabs(angleDelta) <= PI)
-	{
-		return angleDelta;
-	}
-	else if(angleDelta > PI)
-	{
-		return -(2 * PI - angleDelta);
-	}
-	else // angleDelta < -PI
-	{
-		return (2 * PI + angleDelta);
-	}
+	return atan2(sin(targetAngle-currAngle), cos(targetAngle-currAngle));
+
+    // double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
+
+	// if (fabs(angleDelta) <= PI)
+	// {
+	// 	return angleDelta;
+	// }
+	// else if(angleDelta > PI)
+	// {
+	// 	return -(2 * PI - angleDelta);
+	// }
+	// else // angleDelta < -PI
+	// {
+	// 	return (2 * PI + angleDelta);
+	// }
+
+  // return 69;
 }
 
 } // namespace gimbal

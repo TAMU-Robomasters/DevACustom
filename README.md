@@ -26,9 +26,12 @@ Our intent is to use a state machine based design method, with a CAN polling tas
 ## Features
 * C++ support
 * UART/CAN Transmit + Receive
+* RC Support
+* PWM over GPIO
+* Closed loop motor control via PID
 * Code comments in English
 * Debug by sending motor feedback to Arduino over UART ([arduino code here](https://drive.google.com/file/d/19vzUYy_eJUgesJvKe_4gClBAT4xIjfzL/view?usp=sharing)).
 * That's kinda it
 
 ## Contributing
-To add features (like the RC protocol pls), create a pull request and we'll go from there.
+To add features, create a pull request and we'll go from there.

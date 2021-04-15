@@ -5,8 +5,8 @@
 #include "information/pid.hpp"
 #include <math.h>
 
-#define rotor_angle_max 8091;
-#define radsPerTick (2 * PI) / rotor_angle_max;
+//#define gimbal_angle_max 8191;
+// #define radsPerTick (2 * PI) / rotor_angle_max;
 
 namespace gimbal {
 
@@ -16,29 +16,30 @@ private:
     double currAngle; //RADIANS
 
 public:
-    gimbalMotor(int16_t ID, float32_t lC, float32_t uC) : canMotor(ID, -100, 100) {}
-    gimbalMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid) : canMotor(ID, -100, 100), PID(&pid) {}
-    gimbalMotor(int16_t ID, pidInstance& pid) : canMotor(ID, -100, 100), PID(&pid) {}
+    gimbalMotor(int16_t ID, float32_t lC, float32_t uC, filter::Kalman filter) : canMotor(ID, -100, 100, filter, 8191, 1) {}
+    gimbalMotor(int16_t ID, float32_t lC, float32_t uC, pidInstance& pid, filter::Kalman filter) : canMotor(ID, -100, 100, filter, 8191, 1), PID(&pid) {}
+    gimbalMotor(int16_t ID, pidInstance& pid, filter::Kalman filter) : canMotor(ID, -100, 100, filter, 8191, 1), PID(&pid) {}
 
     void setPID(pidInstance& pid) {
         PID = &pid;
     }
 
-    double getCurrAngle() {
-        return currAngle;
-    }
+    // double getCurrAngle() {
+    //     return currAngle;
+    // }
 
-    void setCurrAngle(double ticks) {
-        currAngle = ticks * radsPerTick;
-    }
+    // void setCurrAngle(double ticks) {
+    //     currAngle = ticks * radsPerTick;
+    // }
 };
 
 extern gimbalMotor yawMotor, pitchMotor;
 
+extern pidInstance yawPosPid, pitchPosPid;
+
 enum gimbalStates {
     notRunning,
-    running,
-    patrol
+    running
 };
 extern gimbalStates currState;
 

@@ -3,23 +3,132 @@
 #include "main.h"
 #include "string.h"
 #include "usart.h"
+#include <memory>
 
-/* 
-	Our custom functions for UART/USART; heavily inspired by QDU
-*/
+const int max_serial_value_size = 1024;
+const int serial_buffer_size = (max_serial_value_size * 2) * 2;
+
+extern float angleX;
+extern float angleY;
 
 namespace userUART {
 
-extern void numOut(UART_HandleTypeDef* huart, uint8_t num);
-// helper function that might be useful later
+template <int maxSize, typename T = uint8_t>
+class circularBuffer{
 
-extern void stringOut(UART_HandleTypeDef* huart, char buffer[]);
-// helper function that might be useful later
+	private:
+		T buffer[maxSize];
+		int head = 0;
+		int tail = 0;
+		T delimiter;
+    T* lastWord = NULL;
+		// vector<T> lastWord;
+		int lastWordSize = 0;
 
-extern void newlnOut(UART_HandleTypeDef* huart);
-// helper function that might be useful later
+	public:
+		circularBuffer<maxSize, T>(T delimiter = '\n') : delimiter(delimiter){};
 
-extern void motorfeedbackOut(UART_HandleTypeDef* huart, struct userCAN::motorFeedback_t* data);
+		bool isFull(){
+			return head == (tail + 1) % maxSize;
+		}
+
+		bool isEmpty(){
+			return tail == head;
+		}
+		
+		T front(){
+			return buffer[head];
+		}
+		
+		T get(size_t index){
+			return buffer[index];
+		}
+
+		size_t getHead(){
+			return head;
+		}
+		
+		size_t getTail(){
+			return tail;
+		}
+		
+		size_t getSize(){
+			if(tail >= head){
+				return tail - head;
+			}
+			if(head > tail){
+				return maxSize - tail - head;
+			}
+			return 0;
+		}
+		
+		// vector<T> getLastWord(){
+		//     return lastWord;
+		// }
+		
+		T* getLastWord(){
+			return lastWord;
+		}
+		
+		size_t getLastWordSize(){
+			return lastWordSize;
+		}
+		
+		size_t getMaxSize(){
+			return maxSize;
+		}
+		
+		bool enqueue(T item){
+			if(!isFull()){
+				buffer[tail] = item;
+				tail = (tail + 1) % maxSize;
+			}
+			if (item == delimiter){
+				reset();
+				return true;
+			}
+			return false;
+		}
+		
+		T dequeue(){
+			if (!isEmpty()){
+				T item = buffer[head];
+				T empty;
+				buffer[head] = empty;
+				head = (head + 1) % maxSize;
+				return item;
+			}
+			return 0;
+		}
+
+    void reset() {
+			// lastWord.clear();
+			int sz = getSize();
+			//vector<T> wordation (sz);
+			// lastWord = vector<T>(sz);
+			// lastWord.reserve(sz);
+			if (lastWord != NULL) {
+				delete[] lastWord;
+			}
+			lastWord = new T[sz];
+      lastWordSize = sz;
+
+      for (int i = 0; i < sz; i++){
+				lastWord[i] = dequeue();
+				// lastWord.push_back(dequeue());
+			}
+			
+			head = tail;
+    }
+
+    ~circularBuffer() {
+			delete[] lastWord;
+    }
+};
+
+extern circularBuffer<serial_buffer_size, uint8_t> serialBuffer6;
+
+extern void motorFeedbackOut(UART_HandleTypeDef* huart, struct userCAN::motorFeedback_t* data);
 // function used to output motor feedback info over UART
 
 extern void task();
