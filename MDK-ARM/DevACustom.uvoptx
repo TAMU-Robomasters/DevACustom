@@ -120,7 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name></Name>
+          <Name>d</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -362,6 +362,11 @@
         </Ww>
         <Ww>
           <count>41</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>startingIndex</ItemText>
+        </Ww>
+        <Ww>
+          <count>42</count>
           <WinNumber>1</WinNumber>
           <ItemText>startingIndex</ItemText>
         </Ww>

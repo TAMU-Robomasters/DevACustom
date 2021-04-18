@@ -23,7 +23,7 @@ public:
     }
 };
 
-extern chassisMotor c1Motor, c2Motor, c3Motor, c4Motor;
+extern chassisMotor c1Motor;
 
 enum chassisStates {
     notRunning,

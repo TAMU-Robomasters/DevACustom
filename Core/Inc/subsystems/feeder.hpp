@@ -22,7 +22,9 @@ public:
     }
 };
 
-extern feederMotor f1Motor;
+extern feederMotor agitatorLeft;
+extern feederMotor agitatorRight;
+extern feederMotor indexer;
 
 enum feederStates {
     notRunning,

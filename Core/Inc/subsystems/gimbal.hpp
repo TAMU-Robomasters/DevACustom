@@ -56,6 +56,8 @@ extern void update();
 
 extern void act();
 
+extern double normalizePitchAngle();
+
 extern double calculateAngleError(double currAngle, double targetAngle);
 
 } // namespace gimbal

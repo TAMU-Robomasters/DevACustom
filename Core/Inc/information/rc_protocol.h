@@ -69,8 +69,8 @@ typedef enum {
 } joystickAxis;
 
 typedef enum {
-    left = 0,
-    right = 1,
+    right = 0,
+    left = 1,
 } switchType;
 
 typedef enum {

@@ -90,9 +90,9 @@ device_t* getDevices(void) {
 
 int8_t motor_ControlChassis(float32_t m1, float32_t m2, float32_t m3, float32_t m4, CAN_HandleTypeDef can) {
     int16_t motor1 = static_cast<int16_t>((m1 * M3508_MAX_CURRENT) / 100); // scalar describes current cap but is named volt for some reason
-    int16_t motor2 = static_cast<int16_t>((m2 * M3508_MAX_CURRENT) / 100);
-    int16_t motor3 = static_cast<int16_t>((m3 * M3508_MAX_CURRENT) / 100);
-    int16_t motor4 = static_cast<int16_t>((m4 * M3508_MAX_CURRENT) / 100);
+    int16_t motor2 = static_cast<int16_t>((m2 * M2006_MAX_CURRENT) / 100);
+    int16_t motor3 = static_cast<int16_t>((m3 * M2006_MAX_CURRENT) / 100);
+    int16_t motor4 = static_cast<int16_t>((m4 * M2006_MAX_CURRENT) / 100);
 
     CAN_TxHeaderTypeDef tx_header;
 
@@ -168,18 +168,18 @@ void getMessage(CAN_HandleTypeDef* can) {
         // motor_Decode(&(can_devices_ptr->feeder_fb), rx_data);
         motor_Decode(chassis::c1Motor.getFeedback(), rx_data);
         break;
-    case M3508_M2_ID:
-        motor_Decode(chassis::c2Motor.getFeedback(), rx_data);
+    case M2006_INDEXER_ID:
+        motor_Decode(feeder::indexer.getFeedback(), rx_data);
         break;
-    case M3508_M3_ID:
-        motor_Decode(chassis::c3Motor.getFeedback(), rx_data);
+    case M2006_AGITATOR_RIGHT_ID:
+        motor_Decode(feeder::agitatorRight.getFeedback(), rx_data);
         break;
-    case M3508_M4_ID:
-        motor_Decode(chassis::c4Motor.getFeedback(), rx_data);
-        break;
+        // case M3508_M4_ID:
+        //     motor_Decode(chassis::c4Motor.getFeedback(), rx_data);
+        //     break;
 
-    case M2006_FEEDER_ID:
-        motor_Decode(feeder::f1Motor.getFeedback(), rx_data);
+    case M2006_AGITATOR_LEFT_ID:
+        motor_Decode(feeder::agitatorLeft.getFeedback(), rx_data);
         break;
 
     case GM6020_YAW_ID:
@@ -192,7 +192,7 @@ void getMessage(CAN_HandleTypeDef* can) {
 
     default:
         unknown_message++;
-        HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
+        // HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
         break;
     }
 }
@@ -221,14 +221,14 @@ void receive() {
 void send() {
     if (chassis::ctrlType == chassis::CtrlTypes::CURRENT) {
         userCAN::motor_ControlChassis(chassis::c1Motor.getPower(),
-                                      chassis::c2Motor.getPower(),
-                                      chassis::c3Motor.getPower(),
-                                      chassis::c4Motor.getPower(),
+                                      feeder::agitatorLeft.getPower(),
+                                      feeder::agitatorRight.getPower(),
+                                      0,
                                       hcan1);
     }
     userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(),
                                    gimbal::pitchMotor.getPower(),
-                                   feeder::f1Motor.getPower(),
+                                   feeder::indexer.getPower(),
                                    hcan1);
 }
 

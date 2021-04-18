@@ -38,14 +38,8 @@ CtrlTypes ctrlType = CURRENT;
 filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 pidInstance velPidC1(pidType::velocity, 0.2, 0.001, 0.01);
-pidInstance velPidC2(pidType::velocity, 0.7, 0.0, 0.0);
-pidInstance velPidC3(pidType::velocity, 0.7, 0.0, 0.0);
-pidInstance velPidC4(pidType::velocity, 0.7, 0.0, 0.0);
 
 chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);
-chassisMotor c2Motor(userCAN::M3508_M2_ID, velPidC2, chassisVelFilter);
-chassisMotor c3Motor(userCAN::M3508_M3_ID, velPidC3, chassisVelFilter);
-chassisMotor c4Motor(userCAN::M3508_M4_ID, velPidC4, chassisVelFilter);
 
 void task() {
 
@@ -87,28 +81,19 @@ void act() {
     switch (currState) {
     case notRunning:
         c1Motor.setPower(0);
-        c2Motor.setPower(0);
-        c3Motor.setPower(0);
-        c4Motor.setPower(0);
         break;
 
     case followGimbal:
         c1Motor.setPower(3);
-        c2Motor.setPower(0);
-        c3Motor.setPower(0);
-        c4Motor.setPower(0);
         // obviously this will change when we have things to put here
         break;
 
     case manual:
         rcToPower(angle, magnitude, getJoystick(joystickAxis::rightX));
         c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
-        c1SentPower = (c1Motor.getPower() * 16384.0) / 100.0;
+        c1SentPower = (c1Motor.getPower() * 163.84f);
         c1Derivative = velPidC1.getDerivative();
         // c1Motor.setPower(velPidC1.getTarget());
-        // c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
-        // c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
-        // c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));
         // if current control, power will be set in the CAN task
         // this will change when we have things to put here
         break;
@@ -145,11 +130,8 @@ void rcToPower(double angle, double magnitude, double yaw) {
     motor2P = (turning * motor2Turn) + (disp * motor2Disp);
     motor3P = (turning * motor3Turn) + (disp * motor3Disp);
     motor4P = (turning * motor4Turn) + (disp * motor4Disp);
-	
+
     velPidC1.setTarget(motor1P * 200);
-    velPidC2.setTarget(motor2P * 200);
-    velPidC3.setTarget(motor3P * 200);
-    velPidC4.setTarget(motor4P * 200);
     // scaling max speed up to 200 rpm, can be set up to 482rpm
 }
 

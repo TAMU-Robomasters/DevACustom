@@ -18,9 +18,10 @@ CtrlTypes ctrlType = VOLTAGE;
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 pidInstance yawPosPid(pidType::position, 80.0, 0.00, 0.01);
-pidInstance pitchPosPid(pidType::position, 140.0, 0.0, 0.01);
+pidInstance pitchPosPid(pidType::position, 40.0, 0.0, 0.00);
 //pidInstance yawPosPid(pidType::position, 20.0, 0.00, 0.00);
 //pidInstance pitchPosPid(pidType::position, 20.0, 0.0, 0.00);
+float kF = 25;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
 gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid, gimbalVelFilter);
@@ -56,7 +57,7 @@ void update() {
 		float pitchError = calculateAngleError(pitchAngle, pitchTarget);
 		
 		yawErrorShow = radToDeg(yawError);
-    pitchErrorShow = radToDeg(pitchError);
+    pitchErrorShow = radToDeg(normalizePitchAngle());
     // if button pressed on controller, change state to "followgimbal" or something
 }
 
@@ -75,10 +76,11 @@ void act() {
 				if (ctrlType == VOLTAGE) {
 					yawPidShow = yawPosPid.getOutput();
 					pitchPidShow = pitchPosPid.getOutput();
-					//yawMotor.setPower(yawPosPid.loop(-calculateAngleError(yawMotor.getAngle(), degToRad(85.0))));
-					yawMotor.setPower(yawPosPid.loop(-calculateAngleError(yawMotor.getAngle(), angleX)));
-					//pitchMotor.setPower(pitchPosPid.loop(-calculateAngleError(pitchMotor.getAngle(), degToRad(260.0))));
-					pitchMotor.setPower(pitchPosPid.loop(-calculateAngleError(pitchMotor.getAngle(), angleY)));
+					double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
+					double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
+					//yawMotor.setPower(yawPosPid.loop(yawError));
+					//pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
+					pitchMotor.setPower(pitchPosPid.loop(pitchError) + (-kF * cos(normalizePitchAngle())));
         } // gimbal motors controlled through voltage, sent messages over CAN
         break;
     }
@@ -91,6 +93,10 @@ double fixAngle(double angle) {
         return angle + 2 * PI;
 		}
     return angle;
+}
+
+double normalizePitchAngle(){
+		return -(pitchMotor.getAngle() - degToRad(115.0));
 }
 
 double calculateAngleError(double currAngle, double targetAngle) {

@@ -47,8 +47,8 @@ void act() {
         break;
 
     case running:
-        flywheel1.setPower(10);
-        flywheel2.setPower(10);
+        flywheel1.setPower(15);
+        flywheel2.setPower(15);
         //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
         // obviously this will change when we have actual intelligent things to put here
         break;
