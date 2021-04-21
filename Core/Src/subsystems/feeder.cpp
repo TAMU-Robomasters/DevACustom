@@ -16,9 +16,9 @@ feederStates currState = notRunning;
 	
 filter::Kalman feederVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance velPidAgitatorLeft(pidType::velocity, 0.2, 0.001, 0.01);
-pidInstance velPidAgitatorRight(pidType::velocity, 0.2, 0.001, 0.01);
-pidInstance velPidIndexer(pidType::velocity, 0.2, 0.001, 0.01);
+pidInstance velPidAgitatorLeft(pidType::velocity, 0.2, 0.00, 0.01);
+pidInstance velPidAgitatorRight(pidType::velocity, 0.2, 0.00, 0.01);
+pidInstance velPidIndexer(pidType::velocity, 0.2, 0.00, 0.01);
 
 feederMotor agitatorLeft(userCAN::M2006_AGITATOR_LEFT_ID, velPidAgitatorLeft, feederVelFilter);
 feederMotor agitatorRight(userCAN::M2006_AGITATOR_RIGHT_ID, velPidAgitatorRight, feederVelFilter);
@@ -44,7 +44,7 @@ void update() {
 
         float feederSpeed = 150;
 
-        velPidAgitatorLeft.setTarget(-feederSpeed * (5.0f / 7.0f));
+        velPidAgitatorLeft.setTarget(feederSpeed * (5.0f / 7.0f));
         velPidIndexer.setTarget(feederSpeed);
     }
 

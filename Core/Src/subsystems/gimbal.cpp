@@ -17,7 +17,7 @@ CtrlTypes ctrlType = VOLTAGE;
 
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance yawPosPid(pidType::position, 80.0, 0.00, 0.01);
+pidInstance yawPosPid(pidType::position, 20.0, 0.00, 0.00);
 pidInstance pitchPosPid(pidType::position, 40.0, 0.0, 0.00);
 //pidInstance yawPosPid(pidType::position, 20.0, 0.00, 0.00);
 //pidInstance pitchPosPid(pidType::position, 20.0, 0.0, 0.00);

@@ -77,8 +77,6 @@ void chassisTaskFunc(void const* argument);
 void gimbalTaskFunc(void const* argument);
 void flywheelTaskFunc(void const* argument);
 void feederTaskFunc(void const* argument);
-void rcTaskFunc(void const* argument);
-void sensorTaskFunc(void const* argument);
 void canTaskFunc(void const* argument);
 void uartTaskFunc(void const* argument);
 
@@ -137,7 +135,7 @@ void MX_FREERTOS_Init(void) {
     chassisTaskHandle = osThreadCreate(osThread(chassisTask), NULL);
 
     /* definition and creation of gimbalTask */
-    osThreadDef(gimbalTask, gimbalTaskFunc, osPriorityNormal, 0, 128);
+    osThreadDef(gimbalTask, gimbalTaskFunc, osPriorityAboveNormal, 0, 128);
     gimbalTaskHandle = osThreadCreate(osThread(gimbalTask), NULL);
 
     /* definition and creation of flywheelTask */
@@ -148,16 +146,8 @@ void MX_FREERTOS_Init(void) {
     osThreadDef(feederTask, feederTaskFunc, osPriorityNormal, 0, 128);
     feederTaskHandle = osThreadCreate(osThread(feederTask), NULL);
 
-    /* definition and creation of rcTask */
-    osThreadDef(rcTask, rcTaskFunc, osPriorityNormal, 0, 128);
-    rcTaskHandle = osThreadCreate(osThread(rcTask), NULL);
-
-    /* definition and creation of sensorTask */
-    osThreadDef(sensorTask, sensorTaskFunc, osPriorityNormal, 0, 128);
-    sensorTaskHandle = osThreadCreate(osThread(sensorTask), NULL);
-
     /* definition and creation of canTask */
-    osThreadDef(canTask, canTaskFunc, osPriorityNormal, 0, 128);
+    osThreadDef(canTask, canTaskFunc, osPriorityAboveNormal, 0, 128);
     canTaskHandle = osThreadCreate(osThread(canTask), NULL);
 
     /* definition and creation of uartTask */
@@ -224,7 +214,7 @@ void indicatorTaskFunc(void const* argument) {
         HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
         osDelay(125);
-				counter1++;
+		counter1++;
     }
     /* USER CODE END indicatorTaskFunc */
 }
@@ -239,6 +229,7 @@ void indicatorTaskFunc(void const* argument) {
 void chassisTaskFunc(void const* argument) {
     /* USER CODE BEGIN chassisTaskFunc */
     /* Infinite loop */
+    RCInit();
     chassis::task();
     /* USER CODE END chassisTaskFunc */
 }
@@ -283,38 +274,6 @@ void feederTaskFunc(void const* argument) {
     /* Infinite loop */
     feeder::task();
     /* USER CODE END feederTaskFunc */
-}
-
-/* USER CODE BEGIN Header_rcTaskFunc */
-/**
-* @brief Function implementing the rcTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_rcTaskFunc */
-void rcTaskFunc(void const* argument) {
-    RCInit();
-    /* Infinite loop */
-    for (;;) {
-        osDelay(1000);
-    }
-    /* USER CODE END rcTaskFunc */
-}
-
-/* USER CODE BEGIN Header_sensorTaskFunc */
-/**
-* @brief Function implementing the sensorTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_sensorTaskFunc */
-void sensorTaskFunc(void const* argument) {
-    /* USER CODE BEGIN sensorTaskFunc */
-    /* Infinite loop */
-    for (;;) {
-        osDelay(1);
-    }
-    /* USER CODE END sensorTaskFunc */
 }
 
 /* USER CODE BEGIN Header_canTaskFunc */
