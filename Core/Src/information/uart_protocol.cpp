@@ -7,6 +7,7 @@
 
 #include "init.hpp"
 
+#include "circularBuffer.cpp"
 #include "subsystems/chassis.hpp"
 #include "subsystems/feeder.hpp"
 #include "subsystems/gimbal.hpp"
@@ -17,11 +18,11 @@ using namespace std;
 using namespace userUART;
 
 int goodReceive = 0;
-volatile uint8_t uart6InBuffer[16];
+volatile uint8_t uart6InBuffer[1];
 volatile uint8_t uart7InBuffer[6];
 volatile uint8_t uart8InBuffer[2];
 uint8_t transmitString[] = "teehee";
-uint8_t* word6 = NULL;
+volatile uint8_t* word6 = nullptr;
 volatile int rxCallback6 = 0;
 volatile int rxCallback7 = 0;
 volatile int rxCallback8 = 0;
@@ -29,10 +30,9 @@ volatile int rxAnyCallback = 0;
 
 volatile char stringX[] = "00000";
 volatile char stringY[] = "00000";
-volatile float angleX = 85*PI/180;
-volatile float angleY = 260*PI/180;
-
-int startingIndex = 0;
+volatile uint8_t aimArray[5];
+volatile float angleX = 0;            //0*PI/180; used to be the initial angle for yaw (0)
+volatile float angleY = 0 * PI / 180; //used to be initial angle for pitch (115)
 
 SemaphoreHandle_t uart6Semaphore = NULL;
 
@@ -41,28 +41,19 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 
     if (huart == &huart6) {
         //if (uart6Semaphore != NULL && xSemaphoreTakeFromISR(uart6Semaphore, NULL) == pdTRUE) {
-						HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
-            rxCallback6++;
-            HAL_UART_Receive_IT(huart, (uint8_t*)uart6InBuffer, 16);
-            // for (int i = 0; i < 16; i++) {
-            //     waitingForWord = true;
-            //     if (userUART::serialBuffer6.enqueue(uart6InBuffer[i])) { // means delimiter recieved
-            //         if (word6 != NULL) {
-            //             delete[] word6;
-            //         }
-            //         word6 = userUART::serialBuffer6.getLastWord();
-            //        waitingForWord = false;
-            //         while (!waitingForWord) {
-            //             osDelay(1);
-            //         }
-            //     }
-            // }
-						BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
+        rxCallback6++;
+        HAL_UART_Receive_IT(huart, (uint8_t*)uart6InBuffer, 1);
+        if (userUART::serialBuffer6.enqueue(uart6InBuffer[0])) {
+            word6 = userUART::serialBuffer6.getLastWord();
+            // goodReceive = userUART::serialBuffer6.getLastWordSize();
+
+            BaseType_t xHigherPriorityTaskWoken = pdFALSE;
             xSemaphoreGiveFromISR(uart6Semaphore, &xHigherPriorityTaskWoken);
-					  if (xHigherPriorityTaskWoken == pdTRUE) {
-							portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-						}
-        //}
+            if (xHigherPriorityTaskWoken == pdTRUE) {
+                portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            }
+        }
     }
     if (huart == &huart7) {
         rxCallback7++;
@@ -76,7 +67,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 
 namespace userUART {
 
-circularBuffer<serial_buffer_size, uint8_t> serialBuffer6(' ');
+circularBuffer<serial_buffer_size, uint8_t> serialBuffer6('e');
 
 bool devBoardHandshake = false;
 
@@ -136,52 +127,35 @@ void task() {
     HAL_UART_Receive_IT(&huart7, (uint8_t*)uart7InBuffer, 1);
     HAL_UART_Receive_IT(&huart8, (uint8_t*)uart8InBuffer, 1);
 
-    //char messagePrefix = 's';
-    //int tempStringSize = 0;
-
     for (;;) {
-        if (xSemaphoreTake(uart6Semaphore, 0) == pdTRUE) {
-            startingIndex = 0;
-
-            for (int i = 0; i <= 15; i++) {
-                if (uart6InBuffer[i] == 's') {
-                    startingIndex = i;
-                    break;
-                }
-            }
-
-            goodReceive = (startingIndex + 2)%16;
-            for (int i = 0; i < 5; i++){
-                    stringX[i] = uart6InBuffer[(startingIndex + 2 + i)%16];
-                    stringY[i] = uart6InBuffer[(startingIndex + 8 + i)%16];
-            }
-            // angleX = atof(stringX)/1000;
-            // angleY = atof(stringY)/1000;
-            if (uart6InBuffer[startingIndex] == 's'){
-                angleX = 10000 * (stringX[0] - '0');
-                angleX += 1000 * (stringX[1] - '0');
-                angleX += 100 * (stringX[2] - '0');
-                angleX += 10 * (stringX[3] - '0');
-                angleX += 1 * (stringX[4] - '0');
-                angleY = 10000 * (stringY[0] - '0');
-                angleY += 1000 * (stringY[1] - '0');
-                angleY += 100 * (stringY[2] - '0');
-                angleY += 10 * (stringY[3] - '0');
-                angleY += 1 * (stringY[4] - '0');
-
-                angleX /= 1000;
-                angleY /= 1000;
-            }
-            // else{
-            // 	angleX = 85*PI/180;
-            // 	angleY = 260*PI/180;
-            // }
-
-            //send();
-
-            //xSemaphoreGive(uart6Semaphore);
+        send();
+        for (size_t i = 0; i < serialBuffer6.getLastWordSize(); i++) {
+            aimArray[i] = word6[i];
         }
-        osDelay(5);
+        if (xSemaphoreTake(uart6Semaphore, 0) == pdTRUE) {
+            switch (word6[0]) {
+            case aimAt:
+                goodReceive = 69;
+                //angleX = angleY = 0;
+                uint16_t x1 = word6[1];
+                uint16_t x2 = word6[2];
+                uint16_t y1 = word6[3];
+                uint16_t y2 = word6[4];
+                uint16_t unsnX = (x1 << 8) + x2;
+                uint16_t unsnY = (y1 << 8) + y2;
+                int16_t snX = unsnX - 32768;
+                int16_t snY = unsnY - 32768;
+                angleX = static_cast<float>(snX);
+                angleY = static_cast<float>(snY);
+                //goodReceive = word6[1] - '0';
+                // for (unsigned int i = 0; i < 5; i++) {
+                //     angleX += word6[i + 1] - '0' /* * pow(10.0f, (int)(5 - i))*/;
+                //     stringX[i] = word6[i + 1];
+                // }
+                break;
+            }
+        }
+        // osDelay(5);
     }
 }
 

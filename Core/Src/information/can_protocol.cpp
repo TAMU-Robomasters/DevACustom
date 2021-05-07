@@ -11,6 +11,14 @@
 #include "subsystems/feeder.hpp"
 #include "subsystems/gimbal.hpp"
 
+float currYAWTime;
+float lastYAWTime;
+float lastYAWDataTime;
+float currCANTime;
+float lastCANTime;
+float lastCANLoopTime;
+float canFillLevel;
+
 namespace userCAN {
 
 static device_t* can_devices_ptr;
@@ -157,9 +165,10 @@ int8_t motor_QuickIdSetMode(void) {
     return DEVICE_OK;
 }
 
-void getMessage(CAN_HandleTypeDef* can) {
-    if (HAL_CAN_GetRxMessage(can, CAN_RX_FIFO0, &rx_header, rx_data) == 0x00U) {
+bool getMessage(CAN_HandleTypeDef* can) {
+    if (HAL_CAN_GetRxMessage(can, CAN_RX_FIFO0, &rx_header, rx_data) != 0x00U) {
         //HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
+				return false;
     }
 
     // uint8_t index;
@@ -184,6 +193,10 @@ void getMessage(CAN_HandleTypeDef* can) {
 
     case GM6020_YAW_ID:
         motor_Decode(gimbal::yawMotor.getFeedback(), rx_data);
+        lastYAWTime = currYAWTime;
+        currYAWTime = HAL_GetTick();
+
+        lastYAWDataTime = currYAWTime - lastYAWTime;
         break;
 
     case GM6020_PIT_ID:
@@ -195,6 +208,7 @@ void getMessage(CAN_HandleTypeDef* can) {
         // HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
         break;
     }
+		return true;
 }
 
 void task() {
@@ -206,16 +220,25 @@ void task() {
 
         send();
         // for sending messages over CAN to motors
+        lastCANTime = currCANTime;
+		currCANTime = HAL_GetTick();
+			
+		lastCANLoopTime = currCANTime - lastCANTime;
 
         osDelay(1);
     }
 }
 
 void receive() {
-    if (HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) > 0) {
+	canFillLevel = HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0);
+    //if (canFillLevel > 0) {
         //HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
-        userCAN::getMessage(&hcan1);
-    }
+        //while(HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) > 0){
+				for(unsigned int i = 0; i < canFillLevel; i++){
+            userCAN::getMessage(&hcan1);
+        }
+			
+    //}
 }
 
 void send() {

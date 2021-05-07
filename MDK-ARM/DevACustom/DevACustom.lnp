@@ -48,6 +48,7 @@
 "devacustom\feeder.o"
 "devacustom\flywheel.o"
 "devacustom\gimbal.o"
+"devacustom\circularbuffer.o"
 "devacustom\can_protocol.o"
 "devacustom\uart_protocol.o"
 "devacustom\pwm_protocol.o"

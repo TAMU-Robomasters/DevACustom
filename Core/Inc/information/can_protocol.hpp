@@ -102,6 +102,6 @@ extern int8_t motor_ControlGimbFeed(float32_t yaw, float32_t pitch, float32_t fe
 extern int8_t motor_QuickIdSetMode(void);
 // Starts the ID setting proces of M3508/M2006 motors? dunno tbh
 
-extern void getMessage(CAN_HandleTypeDef* hcan);
+extern bool getMessage(CAN_HandleTypeDef* hcan);
 
 } // namespace userCAN

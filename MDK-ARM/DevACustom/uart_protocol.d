@@ -70,6 +70,7 @@ devacustom\uart_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 devacustom\uart_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\uart_protocol.o: ../Core/Inc/init.hpp
+devacustom\uart_protocol.o: ..\Core\Src\information\circularBuffer.cpp
 devacustom\uart_protocol.o: ../Core/Inc/subsystems/chassis.hpp
 devacustom\uart_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\uart_protocol.o: ../Core/Inc/information/device.hpp

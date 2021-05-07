@@ -866,6 +866,11 @@
           </GroupOption>
           <Files>
             <File>
+              <FileName>circularBuffer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\Src\information\circularBuffer.cpp</FilePath>
+            </File>
+            <File>
               <FileName>can_protocol.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Core\Src\information\can_protocol.cpp</FilePath>

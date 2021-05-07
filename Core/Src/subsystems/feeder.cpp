@@ -44,7 +44,7 @@ void update() {
 
         float feederSpeed = 150;
 
-        velPidAgitatorLeft.setTarget(feederSpeed * (5.0f / 7.0f));
+        velPidAgitatorLeft.setTarget(feederSpeed * (4.0f / 7.0f));
         velPidIndexer.setTarget(feederSpeed);
     }
 
