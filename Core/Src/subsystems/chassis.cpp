@@ -103,7 +103,7 @@ void act() {
     case manual:
         rcToPower(angle, magnitude, getJoystick(joystickAxis::rightX));
         c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
-        c1SentPower = (c1Motor.getPower() * 16384.0) / 100.0;
+        c1SentPower = (c1Motor.getPower() * 16384.0f) / 100.0f;
         c1Derivative = velPidC1.getDerivative();
         // c1Motor.setPower(velPidC1.getTarget());
         c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));

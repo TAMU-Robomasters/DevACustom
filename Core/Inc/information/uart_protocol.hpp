@@ -8,119 +8,53 @@
 const int max_serial_value_size = 1024;
 const int serial_buffer_size = (max_serial_value_size * 2) * 2;
 
+// extern volatile float angleX;
+// extern volatile float angleY;
+
 namespace userUART {
+
+extern QueueHandle_t gimbalQueue;
+
+struct gimbMessage {
+    uint8_t prefix;
+    int16_t disp[2];
+};
+
+typedef enum {
+	aimAt = 'a',
+	structSync = 's',
+} msgTypes;
 
 template <int maxSize, typename T = uint8_t>
 class circularBuffer{
 
 	private:
 		T buffer[maxSize];
-		int head = 0;
-		int tail = 0;
-		T delimiter;
-    T* lastWord = NULL;
-		// vector<T> lastWord;
+        int head = 0;
+        int tail = 0;
+        T delimiter;
+        T* lastWord = nullptr;
+        // vector<T> lastWord;
 		int lastWordSize = 0;
 
 	public:
 		circularBuffer<maxSize, T>(T delimiter = '\n') : delimiter(delimiter){};
+		~circularBuffer();
 
-		bool isFull(){
-			return head == (tail + 1) % maxSize;
-		}
+		bool isFull();
+		bool isEmpty();
+		T front();
+		T get(size_t index);
+		size_t getHead();
+		size_t getTail();
+		size_t getSize();
+		T* getLastWord();
+		size_t getLastWordSize();
+		size_t getMaxSize();
+		bool enqueue(T item);
+		T dequeue();
+    void reset();
 
-		bool isEmpty(){
-			return tail == head;
-		}
-		
-		T front(){
-			return buffer[head];
-		}
-		
-		T get(size_t index){
-			return buffer[index];
-		}
-
-		size_t getHead(){
-			return head;
-		}
-		
-		size_t getTail(){
-			return tail;
-		}
-		
-		size_t getSize(){
-			if(tail >= head){
-				return tail - head;
-			}
-			if(head > tail){
-				return maxSize - tail - head;
-			}
-			return 0;
-		}
-		
-		// vector<T> getLastWord(){
-		//     return lastWord;
-		// }
-		
-		T* getLastWord(){
-			return lastWord;
-		}
-		
-		size_t getLastWordSize(){
-			return lastWordSize;
-		}
-		
-		size_t getMaxSize(){
-			return maxSize;
-		}
-		
-		bool enqueue(T item){
-			if(!isFull()){
-				buffer[tail] = item;
-				tail = (tail + 1) % maxSize;
-			}
-			if (item == delimiter){
-				reset();
-				return true;
-			}
-			return false;
-		}
-		
-		T dequeue(){
-			if (!isEmpty()){
-				T item = buffer[head];
-				T empty;
-				buffer[head] = empty;
-				head = (head + 1) % maxSize;
-				return item;
-			}
-			return 0;
-		}
-
-    void reset() {
-			// lastWord.clear();
-			int sz = getSize();
-			//vector<T> wordation (sz);
-			// lastWord = vector<T>(sz);
-			// lastWord.reserve(sz);
-			if (lastWord != NULL) {
-				delete[] lastWord;
-			}
-			lastWord = new T[sz];
-      lastWordSize = sz;
-
-      for (int i = 0; i < sz; i++){
-				lastWord[i] = dequeue();
-				// lastWord.push_back(dequeue());
-			}
-			
-			head = tail;
-    }
-
-    ~circularBuffer() {
-			delete[] lastWord;
-    }
 };
 
 extern circularBuffer<serial_buffer_size, uint8_t> serialBuffer6;

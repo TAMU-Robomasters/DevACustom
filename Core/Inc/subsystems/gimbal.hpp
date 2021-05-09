@@ -39,7 +39,8 @@ extern pidInstance yawPosPid, pitchPosPid;
 
 enum gimbalStates {
     notRunning,
-    running
+    aimFromCV,
+    idle,
 };
 extern gimbalStates currState;
 

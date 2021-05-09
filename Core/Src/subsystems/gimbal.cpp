@@ -1,4 +1,5 @@
 #include "subsystems/gimbal.hpp"
+#include "information/uart_protocol.hpp"
 #include "init.hpp"
 
 float32_t bung = 0;
@@ -8,6 +9,10 @@ float yawPidShow;
 float pitchAngleShow;
 float pitchErrorShow;
 float pitchPidShow;
+float currGimbTime;
+float lastGimbTime;
+float lastGimbLoopTime;
+int16_t dispYaw, dispPitch;
 
 namespace gimbal {
 
@@ -36,24 +41,33 @@ void task() {
 }
 
 void update() {
-    if (true) {
-        currState = running;
-        // will change later based on RC input and sensor based decision making
+
+    currState = notRunning; // default state
+
+    struct userUART::gimbMessage* pxRxedPointer;
+
+    if (xQueueReceive(userUART::gimbalQueue, &(pxRxedPointer), (TickType_t)0) == pdPASS) {
+        if (pxRxedPointer->prefix == userUART::msgTypes::aimAt) {
+            dispYaw = pxRxedPointer->disp[0];
+            dispPitch = pxRxedPointer->disp[1];
+            currState = aimFromCV;
+        }
+    }
+
+    if (yawMotor.getAngle() + dispYaw > degToRad(180.0) || yawMotor.getAngle() + dispYaw < degToRad(60.0)) {
+        currState = idle;
+    }
+    if (pitchMotor.getAngle() + dispPitch > degToRad(180.0) || pitchMotor.getAngle() + dispPitch < degToRad(90.0)) {
+        currState = idle;
     }
 
     float yawAngle = yawMotor.getAngle();
     float pitchAngle = pitchMotor.getAngle();
     yawAngleShow = radToDeg(yawAngle);
-		pitchAngleShow = radToDeg(pitchAngle);
+    pitchAngleShow = radToDeg(pitchAngle);
 
-    float yawTarget = degToRad(90.0);
-    float pitchTarget = degToRad(307.0);
-    float yawError = calculateAngleError(yawAngle, yawTarget);
-		float pitchError = calculateAngleError(pitchAngle, pitchTarget);
-		
-		yawErrorShow = radToDeg(yawError);
-        pitchErrorShow = /*radToDeg(*/cos(normalizePitchAngle())/*)*/;
-        // if button pressed on controller, change state to "followgimbal" or something
+    pitchErrorShow = radToDeg(normalizePitchAngle());
+    // if button pressed on controller, change state to "followgimbal" or something
 }
 
 void act() {
@@ -63,21 +77,40 @@ void act() {
         pitchMotor.setPower(0);
         break;
 
-    case running:
-				yawPosPid.setTarget(0.0);
+    case aimFromCV:
+        yawPosPid.setTarget(0.0);
         pitchPosPid.setTarget(0.0);
-        // float yawPower = yawPosPid.getOutput();
-        // float pitchPower = pitchPosPid.getOutput();
-        if (ctrlType == VOLTAGE) {
-					yawPidShow = yawPosPid.getOutput();
-					pitchPidShow = pitchPosPid.getOutput();
-					double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
-					double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(307.0));
-					//yawMotor.setPower(yawPosPid.loop(yawError));
-					//pitchMotor.setPower(kF * cos(normalizePitchAngle()));
-					pitchMotor.setPower(pitchPosPid.loop(pitchError) + (kF * cos(normalizePitchAngle())));
-					//pitchMotor.setPower(kC*-pitchError);
-        } // gimbal motors controlled through voltage, sent messages over CAN
+
+        yawPidShow = yawPosPid.getOutput();
+        pitchPidShow = pitchPosPid.getOutput();
+
+        if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
+            double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() + dispYaw);
+            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
+            double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
+            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(307.0));
+            yawMotor.setPower(yawPosPid.loop(yawError));
+            // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
+            pitchMotor.setPower(pitchPosPid.loop(pitchError) + (-kF * cos(normalizePitchAngle())));
+        }
+        break;
+
+    case idle:
+        yawPosPid.setTarget(0.0);
+        pitchPosPid.setTarget(0.0);
+
+        yawPidShow = yawPosPid.getOutput();
+        pitchPidShow = pitchPosPid.getOutput();
+
+        if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
+            double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle());
+            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
+            double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle());
+            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(307.0));
+            yawMotor.setPower(yawPosPid.loop(yawError));
+            // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
+            pitchMotor.setPower(pitchPosPid.loop(pitchError) + (-kF * cos(normalizePitchAngle())));
+        }
         break;
     }
 }
