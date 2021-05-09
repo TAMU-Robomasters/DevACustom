@@ -8,10 +8,17 @@
 const int max_serial_value_size = 1024;
 const int serial_buffer_size = (max_serial_value_size * 2) * 2;
 
-extern volatile float angleX;
-extern volatile float angleY;
+// extern volatile float angleX;
+// extern volatile float angleY;
 
 namespace userUART {
+
+extern QueueHandle_t gimbalQueue;
+
+struct gimbMessage {
+    uint8_t prefix;
+    int16_t disp[2];
+};
 
 typedef enum {
 	aimAt = 'a',
