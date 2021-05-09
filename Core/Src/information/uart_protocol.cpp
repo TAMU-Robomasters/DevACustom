@@ -76,7 +76,7 @@ bool devBoardHandshake = false;
 
 void task() {
 
-    gimbalQueue = xQueueCreate(10, sizeof(&txGimbMessage));
+    gimbalQueue = xQueueCreate(1, sizeof(&txGimbMessage));
     gimbMessage* ptrTogMessage;
 
     uart6Semaphore = xSemaphoreCreateBinary();
@@ -101,10 +101,10 @@ void task() {
                 uint16_t y2 = word6[4];
                 uint16_t unsnX = (x1 << 8) + x2;
                 uint16_t unsnY = (y1 << 8) + y2;
-                int16_t snX = unsnX - 32768;
-                int16_t snY = unsnY - 32768;
-                angleX = static_cast<float>(snX);
-                angleY = static_cast<float>(snY);
+                int16_t snX = (unsnX - 32768);
+                int16_t snY = (unsnY - 32768);
+                angleX = static_cast<float>(snX)/10000.0f;
+                angleY = static_cast<float>(snY)/10000.0f;
 
                 txGimbMessage.prefix = word6[0];
                 txGimbMessage.disp[0] = angleX;

@@ -12,7 +12,9 @@ float pitchPidShow;
 float currGimbTime;
 float lastGimbTime;
 float lastGimbLoopTime;
-int16_t dispYaw, dispPitch;
+float pitchPowerShow;
+float dispYaw, dispPitch;
+float yawSave, pitchSave;
 
 namespace gimbal {
 
@@ -21,9 +23,9 @@ CtrlTypes ctrlType = VOLTAGE;
 	
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance yawPosPid(pidType::position, 20.0, 0.00, 0.01);
-pidInstance pitchPosPid(pidType::position, 78.0, 0.00, 0.03);
-float kF = 20;
+pidInstance yawPosPid(pidType::position, 50.0, 0.00, 0.00);
+pidInstance pitchPosPid(pidType::position, 220.0, 0.00, 1.0);
+float kF = 0;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
 gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid, gimbalVelFilter);
@@ -42,7 +44,7 @@ void task() {
 
 void update() {
 
-    currState = notRunning; // default state
+    currState = idle; // default state
 
     struct userUART::gimbMessage* pxRxedPointer;
 
@@ -54,19 +56,19 @@ void update() {
         }
     }
 
-    if (yawMotor.getAngle() + dispYaw > degToRad(180.0) || yawMotor.getAngle() + dispYaw < degToRad(60.0)) {
-        currState = idle;
-    }
-    if (pitchMotor.getAngle() + dispPitch > degToRad(180.0) || pitchMotor.getAngle() + dispPitch < degToRad(90.0)) {
-        currState = idle;
-    }
+    //if (yawMotor.getAngle() + dispYaw > degToRad(180.0) || yawMotor.getAngle() + dispYaw < degToRad(60.0)) {
+    //    currState = idle;
+    //}
+    //if (pitchMotor.getAngle() + dispPitch > degToRad(180.0) || pitchMotor.getAngle() + dispPitch < degToRad(90.0)) {
+    //    currState = idle;
+    //}
 
     float yawAngle = yawMotor.getAngle();
     float pitchAngle = pitchMotor.getAngle();
     yawAngleShow = radToDeg(yawAngle);
     pitchAngleShow = radToDeg(pitchAngle);
 
-    pitchErrorShow = radToDeg(normalizePitchAngle());
+    pitchErrorShow = (-(pitchMotor.getAngle() - degToRad(310.0)));
     // if button pressed on controller, change state to "followgimbal" or something
 }
 
@@ -83,9 +85,12 @@ void act() {
 
         yawPidShow = yawPosPid.getOutput();
         pitchPidShow = pitchPosPid.getOutput();
+		
+				yawSave = yawMotor.getAngle();
+				pitchSave = pitchMotor.getAngle();
 
         if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
-            double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() + dispYaw);
+            double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() - dispYaw);
             //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
             double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
             //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(307.0));
@@ -103,12 +108,12 @@ void act() {
         pitchPidShow = pitchPosPid.getOutput();
 
         if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
-            double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle());
-            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
-            double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle());
-            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(307.0));
+            double yawError = -calculateAngleError(yawMotor.getAngle(), yawSave);
+            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(180.0));
+            double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
+            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(310.0));
             yawMotor.setPower(yawPosPid.loop(yawError));
-            // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
+            //pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
             pitchMotor.setPower(pitchPosPid.loop(pitchError) + (-kF * cos(normalizePitchAngle())));
         }
         break;

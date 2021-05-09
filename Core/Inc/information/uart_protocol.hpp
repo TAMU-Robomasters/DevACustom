@@ -17,7 +17,7 @@ extern QueueHandle_t gimbalQueue;
 
 struct gimbMessage {
     uint8_t prefix;
-    int16_t disp[2];
+    float disp[2];
 };
 
 typedef enum {
