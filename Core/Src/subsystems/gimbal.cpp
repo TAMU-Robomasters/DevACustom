@@ -12,7 +12,9 @@ float pitchPidShow;
 float currGimbTime;
 float lastGimbTime;
 float lastGimbLoopTime;
-int16_t dispYaw, dispPitch;
+float dispYaw, dispPitch;
+float yawSave = degToRad(90.0);
+float pitchSave = degToRad(115.0);
 
 namespace gimbal {
 	
@@ -49,7 +51,7 @@ void task() {
 
 void update() {
 
-    currState = notRunning; // default state
+    currState = idle; // default state
 
     struct userUART::gimbMessage* pxRxedPointer;
 
@@ -61,17 +63,17 @@ void update() {
         }
     }
 
-    if (yawMotor.getAngle() + dispYaw > degToRad(180.0) || yawMotor.getAngle() + dispYaw < degToRad(60.0)) {
-        currState = idle;
-    }
-    if (pitchMotor.getAngle() + dispPitch > degToRad(180.0) || pitchMotor.getAngle() + dispPitch < degToRad(90.0)) {
-        currState = idle;
-    }
+    // if (yawMotor.getAngle() + dispYaw > degToRad(180.0) || yawMotor.getAngle() + dispYaw < degToRad(60.0)) {
+    //     currState = idle;
+    // }
+    // if (pitchMotor.getAngle() + dispPitch > degToRad(180.0) || pitchMotor.getAngle() + dispPitch < degToRad(90.0)) {
+    //     currState = idle;
+    // }
 
     float yawAngle = yawMotor.getAngle();
     float pitchAngle = pitchMotor.getAngle();
     yawAngleShow = radToDeg(yawAngle);
-		pitchAngleShow = radToDeg(pitchAngle);
+    pitchAngleShow = radToDeg(pitchAngle);
 
     pitchErrorShow = radToDeg(normalizePitchAngle());
     // if button pressed on controller, change state to "followgimbal" or something
@@ -90,6 +92,9 @@ void act() {
 
         yawPidShow = yawPosPid.getOutput();
         pitchPidShow = pitchPosPid.getOutput();
+
+        yawSave = yawMotor.getAngle();
+        pitchSave = pitchMotor.getAngle();
 
         if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
             double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() + dispYaw);
@@ -110,9 +115,9 @@ void act() {
         pitchPidShow = pitchPosPid.getOutput();
 
         if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
-            double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle());
+            double yawError = -calculateAngleError(yawMotor.getAngle(), yawSave);
             //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
-            double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle());
+            double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
             //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
             yawMotor.setPower(yawPosPid.loop(yawError));
             // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
