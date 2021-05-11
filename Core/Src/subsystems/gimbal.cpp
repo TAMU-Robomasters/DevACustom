@@ -14,7 +14,8 @@ float lastGimbTime;
 float lastGimbLoopTime;
 float pitchPowerShow;
 float dispYaw, dispPitch;
-float yawSave, pitchSave;
+float yawSave = 274.0*PI/180;
+float pitchSave = 16*PI/180;
 
 namespace gimbal {
 
@@ -91,9 +92,9 @@ void act() {
 
         if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
             double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() - dispYaw);
-            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
+            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(274.0));
             double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
-            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(307.0));
+            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(21.5));
             yawMotor.setPower(yawPosPid.loop(yawError));
             // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
             pitchMotor.setPower(pitchPosPid.loop(pitchError) + (-kF * cos(normalizePitchAngle())));
@@ -109,9 +110,9 @@ void act() {
 
         if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
             double yawError = -calculateAngleError(yawMotor.getAngle(), yawSave);
-            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(180.0));
+            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(274.0));
             double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
-            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(310.0));
+            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(21.5));
             yawMotor.setPower(yawPosPid.loop(yawError));
             //pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
             pitchMotor.setPower(pitchPosPid.loop(pitchError) + (-kF * cos(normalizePitchAngle())));
@@ -153,7 +154,7 @@ double calculateAngleError(double currAngle, double targetAngle) {
 }
 
 double normalizePitchAngle(){
-		return -(pitchMotor.getAngle() - degToRad(310.0));
+		return -(pitchMotor.getAngle() - degToRad(21.5));
 }
 
 } // namespace gimbal
