@@ -62,8 +62,6 @@ osThreadId chassisTaskHandle;
 osThreadId gimbalTaskHandle;
 osThreadId flywheelTaskHandle;
 osThreadId feederTaskHandle;
-osThreadId rcTaskHandle;
-osThreadId sensorTaskHandle;
 osThreadId canTaskHandle;
 osThreadId uartTaskHandle;
 

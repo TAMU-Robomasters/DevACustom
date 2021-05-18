@@ -6,6 +6,7 @@ float32_t bung = 0;
 float yawAngleShow;
 float yawErrorShow;
 float yawPidShow;
+float yawDerivShow;
 float pitchAngleShow;
 float pitchErrorShow;
 float pitchPidShow;
@@ -13,20 +14,19 @@ float currGimbTime;
 float lastGimbTime;
 float lastGimbLoopTime;
 float dispYaw, dispPitch;
-float yawSave = degToRad(90.0);
+float yawSave = degToRad(270.0);
 float pitchSave = degToRad(115.0);
 
+
 namespace gimbal {
-	
+
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
 
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance yawPosPid(pidType::position, 30.0, 0.00, 0.00);
-pidInstance pitchPosPid(pidType::position, 50.0, 0.0, 0.00);
-//pidInstance yawPosPid(pidType::position, 20.0, 0.00, 0.00);
-//pidInstance pitchPosPid(pidType::position, 20.0, 0.0, 0.00);
+pidInstance yawPosPid(pidType::position, 150.0, 0.00, 10000.0);
+pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 2500.0);
 float kF = 30;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
@@ -44,6 +44,11 @@ void task() {
         currGimbTime = HAL_GetTick();
 
         lastGimbLoopTime = currGimbTime - lastGimbTime;
+			
+        yawPidShow = yawPosPid.getOutput();
+        pitchPidShow = pitchPosPid.getOutput();
+			
+        yawDerivShow = yawPosPid.getDerivative()*10000;
 
         osDelay(10);
     }
@@ -54,14 +59,21 @@ void update() {
     currState = idle; // default state
 
     struct userUART::gimbMessage* pxRxedPointer;
-
-    if (xQueueReceive(userUART::gimbalQueue, &(pxRxedPointer), (TickType_t)0) == pdPASS) {
-        if (pxRxedPointer->prefix == userUART::msgTypes::aimAt) {
-            dispYaw = pxRxedPointer->disp[0];
-            dispPitch = pxRxedPointer->disp[1];
-					  currState = aimFromCV;
+	
+    if (userUART::gimbalQueue != NULL){
+        if (xQueueReceive(userUART::gimbalQueue, &(pxRxedPointer), (TickType_t)0) == pdPASS) {
+            if (pxRxedPointer->prefix == userUART::msgTypes::aimAt) {
+                dispYaw = pxRxedPointer->disp[0];
+                dispPitch = pxRxedPointer->disp[1];
+                
+                if (abs(calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() + dispYaw)) > degToRad(5.0) && abs(calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch)) > degToRad(2.0)){
+                        currState = aimFromCV;
+                }
+            }
         }
     }
+
+    //HAL_UART_Transmit(&huart6, (uint8_t*)"sacke", sizeof("sacke"), 50);
 
     // if (yawMotor.getAngle() + dispYaw > degToRad(180.0) || yawMotor.getAngle() + dispYaw < degToRad(60.0)) {
     //     currState = idle;
@@ -76,6 +88,7 @@ void update() {
     pitchAngleShow = radToDeg(pitchAngle);
 
     pitchErrorShow = radToDeg(normalizePitchAngle());
+
     // if button pressed on controller, change state to "followgimbal" or something
 }
 
@@ -89,9 +102,6 @@ void act() {
     case aimFromCV:
         yawPosPid.setTarget(0.0);
         pitchPosPid.setTarget(0.0);
-
-        yawPidShow = yawPosPid.getOutput();
-        pitchPidShow = pitchPosPid.getOutput();
 
         yawSave = yawMotor.getAngle();
         pitchSave = pitchMotor.getAngle();
@@ -110,9 +120,6 @@ void act() {
     case idle:
         yawPosPid.setTarget(0.0);
         pitchPosPid.setTarget(0.0);
-
-        yawPidShow = yawPosPid.getOutput();
-        pitchPidShow = pitchPosPid.getOutput();
 
         if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
             double yawError = -calculateAngleError(yawMotor.getAngle(), yawSave);

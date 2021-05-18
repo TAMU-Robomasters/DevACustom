@@ -34,6 +34,10 @@ volatile uint8_t aimArray[5];
 volatile float angleX = 0 * PI / 180; //0*PI/180; used to be the initial angle for yaw (0)
 volatile float angleY = 0 * PI / 180; //used to be initial angle for pitch (115)
 
+int lagTestStart = 0;
+int lagTestEnd = 0;
+uint8_t lagTestArray[] = {'a', 'b', 'c', '\n'};
+
 SemaphoreHandle_t uart6Semaphore = NULL;
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
@@ -85,6 +89,9 @@ void task() {
     HAL_UART_Receive_IT(&huart6, (uint8_t*)uart6InBuffer, 1);
     HAL_UART_Receive_IT(&huart7, (uint8_t*)uart7InBuffer, 1);
     HAL_UART_Receive_IT(&huart8, (uint8_t*)uart8InBuffer, 1);
+	
+		lagTestStart = HAL_GetTick();
+		//HAL_UART_Transmit(&huart6, (uint8_t*)lagTestArray, sizeof(lagTestArray), 50);
 
     for (;;) {
         send();
@@ -93,7 +100,7 @@ void task() {
         }
         if (xSemaphoreTake(uart6Semaphore, 0) == pdTRUE) {
             switch (word6[0]) {
-            case aimAt:
+            case aimAt: {
                 goodReceive = 69;
                 uint16_t x1 = word6[1];
                 uint16_t x2 = word6[2];
@@ -112,9 +119,15 @@ void task() {
                 ptrTogMessage = &txGimbMessage;
                 xQueueSend(gimbalQueue, (void*)&ptrTogMessage, (TickType_t)0);
                 break;
+						}
+						case structSync: {
+								lagTestEnd = HAL_GetTick();
+								HAL_UART_Transmit(&huart6, (uint8_t*)lagTestArray, sizeof(lagTestArray), 50);
+								break;
+						}
             }
         }
-        // osDelay(5);
+        osDelay(5);
     }
 }
 
