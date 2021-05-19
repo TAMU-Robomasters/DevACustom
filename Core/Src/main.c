@@ -23,8 +23,10 @@
 #include "cmsis_os.h"
 #include "can.h"
 #include "dma.h"
+#include "fatfs.h"
 #include "rng.h"
 #include "rtc.h"
+#include "sdio.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -32,6 +34,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "information/rc_protocol.h"
+#include "information/sd_protocol.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,7 +94,6 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -120,7 +122,10 @@ int main(void)
   MX_USART1_UART_Init();
   MX_UART7_Init();
   MX_UART8_Init();
+  MX_SDIO_SD_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
+	BSP_SD_Init();
 
   //HAL_UART_Receive_IT(&huart6, (uint8_t*)readBuf, 1);
 
@@ -135,6 +140,9 @@ int main(void)
   HAL_GPIO_WritePin(GPIOG, LED_F_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_G_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_H_Pin, GPIO_PIN_SET);
+	
+	// checkOperatingType();
+  // sdTestFunc();
 
   /* USER CODE END 2 */
 

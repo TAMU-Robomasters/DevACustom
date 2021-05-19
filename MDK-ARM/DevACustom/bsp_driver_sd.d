@@ -1,5 +1,5 @@
-devacustom\bsp_driver_sd.o: ../FATFS/Target/bsp_driver_sd.c
-devacustom\bsp_driver_sd.o: ../FATFS/Target/bsp_driver_sd.h
+devacustom\bsp_driver_sd.o: ..\FATFS\Target\bsp_driver_sd.c
+devacustom\bsp_driver_sd.o: ..\FATFS\Target\bsp_driver_sd.h
 devacustom\bsp_driver_sd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 devacustom\bsp_driver_sd.o: ../Core/Inc/stm32f4xx_hal_conf.h
 devacustom\bsp_driver_sd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h

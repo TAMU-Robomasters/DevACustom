@@ -35,6 +35,7 @@
 
 #include "information/can_protocol.hpp"
 #include "information/rc_protocol.h"
+#include "information/sd_protocol.h"
 #include "information/uart_protocol.hpp"
 /* USER CODE END Includes */
 
@@ -77,8 +78,6 @@ void chassisTaskFunc(void const* argument);
 void gimbalTaskFunc(void const* argument);
 void flywheelTaskFunc(void const* argument);
 void feederTaskFunc(void const* argument);
-void rcTaskFunc(void const* argument);
-void sensorTaskFunc(void const* argument);
 void canTaskFunc(void const* argument);
 void uartTaskFunc(void const* argument);
 
@@ -129,7 +128,7 @@ void MX_FREERTOS_Init(void) {
 
     /* Create the thread(s) */
     /* definition and creation of indicatorTask */
-    osThreadDef(indicatorTask, indicatorTaskFunc, osPriorityNormal, 0, 128);
+    osThreadDef(indicatorTask, indicatorTaskFunc, osPriorityNormal, 0, 1024);
     indicatorTaskHandle = osThreadCreate(osThread(indicatorTask), NULL);
 
     /* definition and creation of chassisTask */
@@ -147,14 +146,6 @@ void MX_FREERTOS_Init(void) {
     /* definition and creation of feederTask */
     osThreadDef(feederTask, feederTaskFunc, osPriorityNormal, 0, 128);
     feederTaskHandle = osThreadCreate(osThread(feederTask), NULL);
-
-    /* definition and creation of rcTask */
-    osThreadDef(rcTask, rcTaskFunc, osPriorityNormal, 0, 128);
-    rcTaskHandle = osThreadCreate(osThread(rcTask), NULL);
-
-    /* definition and creation of sensorTask */
-    osThreadDef(sensorTask, sensorTaskFunc, osPriorityNormal, 0, 128);
-    sensorTaskHandle = osThreadCreate(osThread(sensorTask), NULL);
 
     /* definition and creation of canTask */
     osThreadDef(canTask, canTaskFunc, osPriorityNormal, 0, 128);
@@ -179,6 +170,7 @@ void MX_FREERTOS_Init(void) {
 void indicatorTaskFunc(void const* argument) {
     /* USER CODE BEGIN indicatorTaskFunc */
     /* Infinite loop */
+    sdTestFunc();
     HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
     for (;;) {
         //friendly reminder that "GPIOG" refers to the GPIO port G, and the "LED_A_Pin" directs it to the specific pin under that port
@@ -224,7 +216,7 @@ void indicatorTaskFunc(void const* argument) {
         HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
         osDelay(125);
-				counter1++;
+        counter1++;
     }
     /* USER CODE END indicatorTaskFunc */
 }
@@ -238,6 +230,7 @@ void indicatorTaskFunc(void const* argument) {
 /* USER CODE END Header_chassisTaskFunc */
 void chassisTaskFunc(void const* argument) {
     /* USER CODE BEGIN chassisTaskFunc */
+    RCInit();
     /* Infinite loop */
     chassis::task();
     /* USER CODE END chassisTaskFunc */
@@ -283,38 +276,6 @@ void feederTaskFunc(void const* argument) {
     /* Infinite loop */
     feeder::task();
     /* USER CODE END feederTaskFunc */
-}
-
-/* USER CODE BEGIN Header_rcTaskFunc */
-/**
-* @brief Function implementing the rcTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_rcTaskFunc */
-void rcTaskFunc(void const* argument) {
-    RCInit();
-    /* Infinite loop */
-    for (;;) {
-        osDelay(1000);
-    }
-    /* USER CODE END rcTaskFunc */
-}
-
-/* USER CODE BEGIN Header_sensorTaskFunc */
-/**
-* @brief Function implementing the sensorTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_sensorTaskFunc */
-void sensorTaskFunc(void const* argument) {
-    /* USER CODE BEGIN sensorTaskFunc */
-    /* Infinite loop */
-    for (;;) {
-        osDelay(1);
-    }
-    /* USER CODE END sensorTaskFunc */
 }
 
 /* USER CODE BEGIN Header_canTaskFunc */

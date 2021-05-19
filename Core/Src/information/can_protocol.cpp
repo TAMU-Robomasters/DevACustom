@@ -204,7 +204,7 @@ void getMessage(CAN_HandleTypeDef* can) {
 
     default:
         unknown_message++;
-        HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
+        //HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
         break;
     }
 }
@@ -228,9 +228,9 @@ void receive() {
     //if (canFillLevel > 0) {
         //HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
         //while(HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) > 0){
-				for(unsigned int i = 0; i < canFillLevel; i++){
-            userCAN::getMessage(&hcan1);
-        }
+    for (unsigned int i = 0; i < canFillLevel; i++) {
+        userCAN::getMessage(&hcan1);
+    }
 }
 
 void send() {

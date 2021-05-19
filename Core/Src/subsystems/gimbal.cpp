@@ -14,8 +14,8 @@ float lastGimbTime;
 float lastGimbLoopTime;
 float pitchPowerShow;
 float dispYaw, dispPitch;
-float yawSave = 274.0*PI/180;
-float pitchSave = 16*PI/180;
+float yawSave = degToRad(274.0);
+float pitchSave = degToRad(16.0);
 
 namespace gimbal {
 
@@ -70,6 +70,9 @@ void update() {
     pitchAngleShow = radToDeg(pitchAngle);
 
     pitchErrorShow = (-(pitchMotor.getAngle() - degToRad(310.0)));
+
+    yawPidShow = yawPosPid.getOutput();
+    pitchPidShow = pitchPosPid.getOutput();
     // if button pressed on controller, change state to "followgimbal" or something
 }
 
@@ -84,11 +87,8 @@ void act() {
         yawPosPid.setTarget(0.0);
         pitchPosPid.setTarget(0.0);
 
-        yawPidShow = yawPosPid.getOutput();
-        pitchPidShow = pitchPosPid.getOutput();
-		
-				yawSave = yawMotor.getAngle();
-				pitchSave = pitchMotor.getAngle();
+        yawSave = yawMotor.getAngle();
+        pitchSave = pitchMotor.getAngle();
 
         if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
             double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() - dispYaw);
@@ -104,9 +104,6 @@ void act() {
     case idle:
         yawPosPid.setTarget(0.0);
         pitchPosPid.setTarget(0.0);
-
-        yawPidShow = yawPosPid.getOutput();
-        pitchPidShow = pitchPosPid.getOutput();
 
         if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
             double yawError = -calculateAngleError(yawMotor.getAngle(), yawSave);

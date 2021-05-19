@@ -24,6 +24,12 @@
 
 #define PI 3.14159265358979323846
 
+enum operatingTypes {
+    primary,
+    secondary,
+};
+extern operatingTypes operatingType;
+
 template <typename T>
 float radToDeg(T r) {
     const float pi = PI;

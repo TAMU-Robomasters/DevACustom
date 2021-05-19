@@ -44,11 +44,6 @@ devacustom\sd_protocol.o: ../FATFS/App/fatfs.h
 devacustom\sd_protocol.o: ../Middlewares/Third_Party/FatFs/src/ff.h
 devacustom\sd_protocol.o: ../Middlewares/Third_Party/FatFs/src/integer.h
 devacustom\sd_protocol.o: ../FATFS/Target/ffconf.h
-devacustom\sd_protocol.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-devacustom\sd_protocol.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
-devacustom\sd_protocol.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
-devacustom\sd_protocol.o: ../FATFS/Target/sd_diskio.h
-devacustom\sd_protocol.o: ../Core/Inc/information/device.hpp
 devacustom\sd_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\sd_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 devacustom\sd_protocol.o: ../Core/Inc/FreeRTOSConfig.h
@@ -63,6 +58,11 @@ devacustom\sd_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/tim
 devacustom\sd_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 devacustom\sd_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 devacustom\sd_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+devacustom\sd_protocol.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
+devacustom\sd_protocol.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
+devacustom\sd_protocol.o: ../FATFS/Target/sd_diskio.h
+devacustom\sd_protocol.o: ../Core/Inc/information/device.hpp
+devacustom\sd_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\sd_protocol.o: ../Core/Inc/information/can_protocol.hpp
 devacustom\sd_protocol.o: ../Core/Inc/can.h
 devacustom\sd_protocol.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

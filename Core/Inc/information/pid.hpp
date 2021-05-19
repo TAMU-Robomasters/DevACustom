@@ -52,7 +52,7 @@ public:
             errorSum = std::copysign(iWindupBound, errorSum);
         }
 
-        float output = (kP * error) + (errorSum) + (kD * derivative);
+        float output = (kP * error) + (errorSum) + (-kD * derivative);
 
         lastLoopTime = currTime;
         lastError = error;
