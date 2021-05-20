@@ -157,6 +157,12 @@ void MX_FREERTOS_Init(void) {
 
     /* USER CODE BEGIN RTOS_THREADS */
     /* add threads, ... */
+    vTaskSuspend(chassisTaskHandle);
+    vTaskSuspend(gimbalTaskHandle);
+    vTaskSuspend(flywheelTaskHandle);
+    vTaskSuspend(feederTaskHandle);
+    vTaskSuspend(canTaskHandle);
+    vTaskSuspend(uartTaskHandle);
     /* USER CODE END RTOS_THREADS */
 }
 
@@ -171,6 +177,14 @@ void indicatorTaskFunc(void const* argument) {
     /* USER CODE BEGIN indicatorTaskFunc */
     /* Infinite loop */
     sdTestFunc();
+
+    vTaskResume(chassisTaskHandle);
+    vTaskResume(gimbalTaskHandle);
+    vTaskResume(flywheelTaskHandle);
+    vTaskResume(feederTaskHandle);
+    vTaskResume(canTaskHandle);
+    vTaskResume(uartTaskHandle);
+
     HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
     for (;;) {
         //friendly reminder that "GPIOG" refers to the GPIO port G, and the "LED_A_Pin" directs it to the specific pin under that port

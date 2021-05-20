@@ -48,12 +48,14 @@ void update() {
     currState = idle; // default state
 
     struct userUART::gimbMessage* pxRxedPointer;
-
-    if (xQueueReceive(userUART::gimbalQueue, &(pxRxedPointer), (TickType_t)0) == pdPASS) {
-        if (pxRxedPointer->prefix == userUART::msgTypes::aimAt) {
-            dispYaw = pxRxedPointer->disp[0];
-            dispPitch = pxRxedPointer->disp[1];
-            currState = aimFromCV;
+	
+    if (userUART::gimbalQueue != NULL){
+        if (xQueueReceive(userUART::gimbalQueue, &(pxRxedPointer), (TickType_t)0) == pdPASS) {
+            if (pxRxedPointer->prefix == userUART::msgTypes::aimAt) {
+                dispYaw = pxRxedPointer->disp[0];
+                dispPitch = pxRxedPointer->disp[1];
+                currState = aimFromCV;
+            }
         }
     }
 

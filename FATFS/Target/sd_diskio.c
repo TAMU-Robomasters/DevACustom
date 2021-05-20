@@ -618,11 +618,12 @@ DRESULT SD_ioctl(BYTE lun, BYTE cmd, void *buff)
   return res;
 }
 #endif /* _USE_IOCTL == 1 */
+
 /* USER CODE BEGIN afterIoctlSection */
 /* can be used to modify previous code / undefine following code / add new code */
 /* USER CODE END afterIoctlSection */
 
-/* USER CODE BEGIN callbackSection */
+/* USER CODE BEGIN callbackSection */ 
 /* can be used to modify / following code or add new code */
 void HAL_SD_TxCpltCallback(SD_HandleTypeDef *hsd){
   osMessagePut(SDQueueID, WRITE_CPLT_MSG, osWaitForever);

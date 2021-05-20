@@ -120,7 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name></Name>
+          <Name>d</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -157,9 +157,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>56</LineNumber>
+          <LineNumber>73</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134238460</Address>
+          <Address>134238536</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,14 +168,62 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Core\Src\information\sd_protocol.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\DevACustom\../Core/Src/information/sd_protocol.cpp\56</Expression>
+          <Expression>\\DevACustom\../Core/Src/information/sd_protocol.cpp\73</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
+          <LineNumber>68</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134238506</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Core\Src\information\sd_protocol.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\DevACustom\../Core/Src/information/sd_protocol.cpp\68</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>63</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134238474</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Core\Src\information\sd_protocol.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\DevACustom\../Core/Src/information/sd_protocol.cpp\63</Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>58</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134238448</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Core\Src\information\sd_protocol.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\DevACustom\../Core/Src/information/sd_protocol.cpp\58</Expression>
+        </Bp>
+        <Bp>
+          <Number>4</Number>
+          <Type>0</Type>
           <LineNumber>926</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134268738</Address>
+          <Address>134270830</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -185,70 +233,6 @@
           <Filename>../Middlewares/Third_Party/FatFs/src/ff.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\DevACustom\../Middlewares/Third_Party/FatFs/src/ff.c\926</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>3366</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134263660</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Middlewares/Third_Party/FatFs/src/ff.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\DevACustom\../Middlewares/Third_Party/FatFs/src/ff.c\3366</Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>3313</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134263452</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Middlewares/Third_Party/FatFs/src/ff.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\DevACustom\../Middlewares/Third_Party/FatFs/src/ff.c\3313</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>3049</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134265800</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Middlewares/Third_Party/FatFs/src/ff.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\DevACustom\../Middlewares/Third_Party/FatFs/src/ff.c\3049</Expression>
-        </Bp>
-        <Bp>
-          <Number>5</Number>
-          <Type>0</Type>
-          <LineNumber>55</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\Core\Src\information\sd_protocol.cpp</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
