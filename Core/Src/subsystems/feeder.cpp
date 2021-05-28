@@ -14,7 +14,7 @@ feederStates currState = notRunning;
 	
 filter::Kalman feederVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance velPidF1(pidType::velocity, 0.3, 0.001, 0.01);
+pidInstance velPidF1(pidType::velocity, 5.0, 0.00, 20.00);
 
 feederMotor f1Motor(userCAN::M2006_FEEDER_ID, velPidF1, feederVelFilter);
 
@@ -33,10 +33,10 @@ void update() {
     currState = notRunning;
     if (getSwitch(switchType::right) == switchPosition::up) {
         currState = running;
+        velPidF1.setTarget(40);
     }
 
-		velPidF1.setTarget(-40);
-		f1Output = f1Motor.getSpeed();
+    f1Output = f1Motor.getSpeed();
 }
 
 void act() {

@@ -38,9 +38,10 @@ extern gimbalMotor yawMotor, pitchMotor;
 extern pidInstance yawPosPid, pitchPosPid;
 
 enum gimbalStates {
-    notRunning,
-    aimFromCV,
-    idle,
+    notRunning = 0,
+    aimFromCV = 1,
+    idle = 2,
+		rc = 3,
 };
 extern gimbalStates currState;
 
@@ -60,5 +61,8 @@ extern void act();
 extern double calculateAngleError(double currAngle, double targetAngle);
 
 extern double normalizePitchAngle();
+
+extern void sendGimbMessage();
+extern void sendGimbMessage(float y);
 
 } // namespace gimbal

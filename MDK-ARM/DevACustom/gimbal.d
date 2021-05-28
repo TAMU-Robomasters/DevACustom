@@ -63,6 +63,9 @@ devacustom\gimbal.o: ../Core/Inc/information/pid.hpp
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 devacustom\gimbal.o: ../Core/Inc/information/uart_protocol.hpp
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+devacustom\gimbal.o: ../Core/Inc/subsystems/chassis.hpp
+devacustom\gimbal.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\gimbal.o: ../Core/Inc/init.hpp
 devacustom\gimbal.o: ../Core/Inc/usart.h
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\memory
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\new
@@ -75,4 +78,4 @@ devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_iterbase.h
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstddef
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_mutex.h
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstring
-devacustom\gimbal.o: ../Core/Inc/init.hpp
+devacustom\gimbal.o: ../Core/Inc/information/rc_protocol.h

@@ -234,17 +234,14 @@ void receive() {
 }
 
 void send() {
-    if (chassis::ctrlType == chassis::CtrlTypes::CURRENT) {
-        userCAN::motor_ControlChassis(chassis::c1Motor.getPower(),
-                                      chassis::c2Motor.getPower(),
-                                      chassis::c3Motor.getPower(),
-                                      chassis::c4Motor.getPower(),
-                                      hcan1);
+    if (operatingType == primary) {
+        userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(), gimbal::pitchMotor.getPower(), feeder::f1Motor.getPower(), hcan1);
     }
-    userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(),
-                                   gimbal::pitchMotor.getPower(),
-                                   feeder::f1Motor.getPower(),
-                                   hcan1);
+
+    if (operatingType == secondary) {
+        userCAN::motor_ControlChassis(chassis::c1Motor.getPower(), chassis::c2Motor.getPower(), chassis::c3Motor.getPower(), chassis::c4Motor.getPower(), hcan1);
+        userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(), gimbal::pitchMotor.getPower(), feeder::f1Motor.getPower(), hcan1);
+    }
 }
 
 } // namespace userCAN

@@ -59,6 +59,7 @@ private:
     float32_t upperClamp; // input clamp
 
 public:
+    Motor() : power(0), lowerClamp(-100), upperClamp(100) {}
     Motor(float32_t lC, float32_t uC) : power(0), lowerClamp(lC), upperClamp(uC) {}
 
     float32_t clamp(double p) {
@@ -100,7 +101,8 @@ public:
     }
 
     float getSpeed() {
-        return velFilter.step(static_cast<double>(canFeedback.rotor_speed)) / gearRatio; // in rpm
+        // return velFilter.step(static_cast<double>(canFeedback.rotor_speed)) / gearRatio; // in rpm
+        return static_cast<float>(canFeedback.rotor_speed / gearRatio); // in rpm
     }
 
     float getAngle() {

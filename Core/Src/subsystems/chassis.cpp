@@ -4,28 +4,19 @@
 #include "information/pid.hpp"
 #include "information/pwm_protocol.hpp"
 #include "information/rc_protocol.h"
+#include "information/uart_protocol.hpp"
 #include "init.hpp"
 #include <arm_math.h>
 
-float rX;
-float rY;
-float lX;
-float lY;
-float switch1;
-float switch2;
-float angle;
-float angleOutput;
-float magnitude;
-float c1Output;
-float turning;
-float disp;
-float motor1P;
-float motor2P;
-float motor3P;
-float motor4P;
 float currTime;
-float c1SentPower;
-float c1Derivative;
+float angle, magnitude;
+float angleOutput;
+float turning, disp;
+float motor1P, motor2P, motor3P, motor4P;
+float c1SentPower, c1Derivative, c1Output;
+
+float c1Rx, c2Rx, c3Rx, c4Rx;
+uint8_t chassisMsg[11];
 
 //INCLUDE userDebugFiles/chassis1DisplayValues.ini
 
@@ -37,10 +28,10 @@ CtrlTypes ctrlType = CURRENT;
 
 filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance velPidC1(pidType::velocity, 0.2, 0.000, 0.000);
-pidInstance velPidC2(pidType::velocity, 0.2, 0.000, 0.000);
-pidInstance velPidC3(pidType::velocity, 0.2, 0.000, 0.000);
-pidInstance velPidC4(pidType::velocity, 0.2, 0.000, 0.000);
+pidInstance velPidC1(pidType::velocity, 0.2, 0.000, 10.000);
+pidInstance velPidC2(pidType::velocity, 0.2, 0.000, 10.000);
+pidInstance velPidC3(pidType::velocity, 0.2, 0.000, 10.000);
+pidInstance velPidC4(pidType::velocity, 0.2, 0.000, 10.000);
 
 chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);
 chassisMotor c2Motor(userCAN::M3508_M2_ID, velPidC2, chassisVelFilter);
@@ -49,34 +40,50 @@ chassisMotor c4Motor(userCAN::M3508_M4_ID, velPidC4, chassisVelFilter);
 
 void task() {
 
-    // osDelay(500);
-
     for (;;) {
         update();
 
         act();
         // set power to global variable here, message is actually sent with the others in the CAN task
 
-        osDelay(10);
+        if (operatingType == primary){
+            osDelay(2);
+        }
+        else if (operatingType == secondary){
+            osDelay(10);
+        }
+        else
+            osDelay(5);
     }
 }
 
 void update() {
-    if (true) {
+    struct userUART::chassisMsgStruct* pxChassisRxedPointer;
+
+    if (operatingType == primary) {
         currState = manual;
         // will change later based on RC input and sensor based decision making
     }
 
-    switch1 = (rcDataStruct.rc.s[0]);
-		switch2 = (rcDataStruct.rc.s[1]);
+    if (operatingType == secondary) {
+				currState = notRunning; // default state if not updated by primary board
+        angleOutput = radToDeg(angle);
 
-    angle = atan2(getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
-    angleOutput = radToDeg(angle);
-
-    magnitude = sqrt(pow(getJoystick(joystickAxis::leftY), 2) + pow(getJoystick(joystickAxis::leftX), 2));
+        if (userUART::chassisMsgQueue != NULL) {
+            if (xQueueReceive(userUART::chassisMsgQueue, &(pxChassisRxedPointer), (TickType_t)0) == pdPASS) {
+                if (pxChassisRxedPointer->prefix == userUART::d2dMsgTypes::chassis) {
+										c1Output = c1Motor.getSpeed();
+                    currState = pxChassisRxedPointer->state;
+                    c1Rx = pxChassisRxedPointer->m1;
+                    c2Rx = pxChassisRxedPointer->m2;
+                    c3Rx = pxChassisRxedPointer->m3;
+                    c4Rx = pxChassisRxedPointer->m4;
+                }
+            }
+        }
+    }
 
     currTime = HAL_GetTick();
-    c1Output = c1Motor.getSpeed();
 
     //velPidC1.setTarget(100);
 
@@ -93,23 +100,35 @@ void act() {
         break;
 
     case followGimbal:
-        c1Motor.setPower(3);
-        c2Motor.setPower(0);
-        c3Motor.setPower(0);
-        c4Motor.setPower(0);
-        // obviously this will change when we have things to put here
+        if (operatingType == primary) {
+        }
+        if (operatingType == secondary) {
+        }
+        // this will change when we have things to put here
         break;
 
     case manual:
-        rcToPower(angle, magnitude, getJoystick(joystickAxis::rightX));
-        c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
-        c1SentPower = (c1Motor.getPower() * 16384.0f) / 100.0f;
-        c1Derivative = velPidC1.getDerivative();
-        // c1Motor.setPower(velPidC1.getTarget());
-        c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
-        c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
-        c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));
-        // if current control, power will be set in the CAN task
+        if (operatingType == primary) {
+            angle = atan2(getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
+            magnitude = sqrt(pow(getJoystick(joystickAxis::leftY), 2) + pow(getJoystick(joystickAxis::leftX), 2));
+            rcToPower(angle, magnitude, getJoystick(joystickAxis::rightX));
+        }
+        
+        if (operatingType == secondary) {
+            c1SentPower = (c1Motor.getPower() * 16384.0f) / 100.0f;
+            c1Derivative = velPidC1.getDerivative();
+            
+            velPidC1.setTarget(c1Rx);
+            velPidC2.setTarget(c2Rx);
+            velPidC3.setTarget(c3Rx);
+            velPidC4.setTarget(c4Rx);
+            
+            // c1Motor.setPower(velPidC1.getTarget());
+            c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
+            c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
+            c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
+            c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));
+        }
         // this will change when we have things to put here
         break;
     }
@@ -124,6 +143,7 @@ void rcToPower(double angle, double magnitude, double yaw) {
     // motor 3 front right
     // motor 4 back right
     float turnScalar = 0.6;
+    int rpmScaler = 200;
 
     disp = ((abs(magnitude) + abs(yaw)) == 0) ? 0 : abs(magnitude) / (abs(magnitude) + turnScalar*abs(yaw));
     turning = ((abs(magnitude) + abs(yaw)) == 0) ? 0 : turnScalar*abs(yaw) / (abs(magnitude) + turnScalar*abs(yaw));
@@ -145,12 +165,38 @@ void rcToPower(double angle, double magnitude, double yaw) {
     motor2P = (turning * motor2Turn) + (disp * motor2Disp);
     motor3P = (turning * motor3Turn) + (disp * motor3Disp);
     motor4P = (turning * motor4Turn) + (disp * motor4Disp);
-	
-    velPidC1.setTarget(motor1P * 200);
-    velPidC2.setTarget(motor2P * 200);
-    velPidC3.setTarget(motor3P * 200);
-    velPidC4.setTarget(motor4P * 200);
+
+    //velPidC1.setTarget(motor1P * 200);
+    //velPidC2.setTarget(motor2P * 200);
+    //velPidC3.setTarget(motor3P * 200);
+    //velPidC4.setTarget(motor4P * 200);
+
     // scaling max speed up to 200 rpm, can be set up to 482rpm
+    motor1P *= rpmScaler;
+    motor2P *= rpmScaler;
+    motor3P *= rpmScaler;
+    motor4P *= rpmScaler;
+
+    sendChassisMessage(motor1P, motor2P, motor3P, motor4P);
+}
+
+void sendChassisMessage(float m1, float m2, float m3, float m4) {
+    int16_t m1S = static_cast<int16_t>(m1 * 50);
+    int16_t m2S = static_cast<int16_t>(m2 * 50);
+    int16_t m3S = static_cast<int16_t>(m3 * 50);
+    int16_t m4S = static_cast<int16_t>(m4 * 50);
+    chassisMsg[0] = 'c';
+    chassisMsg[1] = static_cast<uint8_t>(currState);
+    chassisMsg[2] = (m1S + 32768) >> 8;
+    chassisMsg[3] = (m1S + 32768);
+    chassisMsg[4] = (m2S + 32768) >> 8;
+    chassisMsg[5] = (m2S + 32768);
+    chassisMsg[6] = (m3S + 32768) >> 8;
+    chassisMsg[7] = (m3S + 32768);
+    chassisMsg[8] = (m4S + 32768) >> 8;
+    chassisMsg[9] = (m4S + 32768);
+    chassisMsg[10] = 'e';
+    HAL_UART_Transmit(&huart8, (uint8_t*)chassisMsg, sizeof(chassisMsg), 1);
 }
 
 } // namespace chassis

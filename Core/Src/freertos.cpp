@@ -176,7 +176,7 @@ void MX_FREERTOS_Init(void) {
 void indicatorTaskFunc(void const* argument) {
     /* USER CODE BEGIN indicatorTaskFunc */
     /* Infinite loop */
-    sdTestFunc();
+    checkOperatingType();
 
     vTaskResume(chassisTaskHandle);
     vTaskResume(gimbalTaskHandle);

@@ -22,13 +22,20 @@ public:
         PID = &pid;
     }
 };
-
 extern chassisMotor c1Motor, c2Motor, c3Motor, c4Motor;
 
 enum chassisStates {
-    notRunning,
-    followGimbal,
-    manual
+    notRunning = 0,
+    followGimbal = 1,
+    manual = 2,
+};
+extern chassisStates currState;
+
+struct chassisTargets {
+    float m1;
+    float m2;
+    float m3;
+    float m4;
 };
 
 enum CtrlTypes {
@@ -49,5 +56,7 @@ extern void update();
 extern void act();
 
 extern void rcToPower(double angle, double magnitude, double yaw);
+
+extern void sendChassisMessage(float m1, float m2, float m3, float m4);
 
 } // namespace chassis

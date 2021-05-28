@@ -6,7 +6,7 @@
 #include "sdio.h"
 #include "stm32f4xx_hal.h"
 
-static uint8_t buffer[_MAX_SS];   /* a work buffer for the f_mkfs() */
+//static uint8_t buffer[_MAX_SS];   /* a work buffer for the f_mkfs() */
 uint32_t byteswritten, bytesread; /* file write/read counts */
 static char* f_name = "test.txt"; /* file name */
 uint8_t wtext[] = "wagabagabobo"; /* file write buffer */
@@ -16,38 +16,38 @@ FIL fil;                             /* File object */
 
 operatingTypes operatingType = primary;
 
+// void checkOperatingType() {
+//     if ((f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) == FR_OK) && (f_mkfs((TCHAR const*)SDPath, FM_EXFAT, 0, buffer, sizeof(buffer)) == FR_NOT_READY)) {
+//         HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
+//         /* Create and Open a new text file object with write access */
+//         if (f_open(&SDFile, f_name, FA_CREATE_ALWAYS | FA_WRITE) == FR_OK) {
+//             //HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
+//             /* Write data to the text file */
+//             f_write(&SDFile, wtext, sizeof(wtext), (UINT*)&byteswritten);
+//             /* Close the open text file */
+//             f_close(&SDFile);
+
+//             /* Open the text file object with read access */
+//             if (f_open(&SDFile, f_name, FA_READ) == FR_OK) {
+//                 /* Read data from the text file */
+//                 f_read(&SDFile, rtext, sizeof(rtext), (UINT*)&bytesread);
+
+//                 /* Close the open text file */
+//                 f_close(&SDFile);
+//             } else {
+//                 err = ERR_OPEN;
+//             }
+//         } else {
+//             err = ERR_OPEN;
+//         }
+//     } else {
+//         err = ERR_MOUNT_MKFS;
+//     }
+//     /* Unlink the SD disk I/O driver */
+//     FATFS_UnLinkDriver(SDPath);
+// }
+
 void checkOperatingType() {
-    if ((f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) == FR_OK) && (f_mkfs((TCHAR const*)SDPath, FM_EXFAT, 0, buffer, sizeof(buffer)) == FR_NOT_READY)) {
-        HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
-        /* Create and Open a new text file object with write access */
-        if (f_open(&SDFile, f_name, FA_CREATE_ALWAYS | FA_WRITE) == FR_OK) {
-            //HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
-            /* Write data to the text file */
-            f_write(&SDFile, wtext, sizeof(wtext), (UINT*)&byteswritten);
-            /* Close the open text file */
-            f_close(&SDFile);
-
-            /* Open the text file object with read access */
-            if (f_open(&SDFile, f_name, FA_READ) == FR_OK) {
-                /* Read data from the text file */
-                f_read(&SDFile, rtext, sizeof(rtext), (UINT*)&bytesread);
-
-                /* Close the open text file */
-                f_close(&SDFile);
-            } else {
-                err = ERR_OPEN;
-            }
-        } else {
-            err = ERR_OPEN;
-        }
-    } else {
-        err = ERR_MOUNT_MKFS;
-    }
-    /* Unlink the SD disk I/O driver */
-    FATFS_UnLinkDriver(SDPath);
-}
-
-void sdTestFunc() {
     //mount the SD card
     f_mount(&SDFatFS, (TCHAR const*)SDPath, 1);
     //make filesystem (not needed and takes a while)
@@ -73,12 +73,13 @@ void sdTestFunc() {
     if (f_read(&SDFile, rtext, sizeof(rtext), (UINT*)&bytesread) == FR_OK) {
         if (rtext[0] == 'p' && rtext[6] == 'y') {
             operatingType = primary;
-						HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
-					  HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_RESET);
         }
         if (rtext[0] == 's' && rtext[8] == 'y') {
             operatingType = secondary;
-						HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_RESET);
         }
     }
+    FATFS_UnLinkDriver(SDPath);
 }
