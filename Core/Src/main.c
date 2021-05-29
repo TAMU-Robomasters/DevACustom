@@ -132,6 +132,7 @@ int main(void)
   // Turn all the LED's off to begin with
   HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LED_LASER_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOG, LED_A_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_B_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_C_Pin, GPIO_PIN_SET);
@@ -140,8 +141,8 @@ int main(void)
   HAL_GPIO_WritePin(GPIOG, LED_F_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_G_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_H_Pin, GPIO_PIN_SET);
-	
-	// checkOperatingType();
+
+  // checkOperatingType();
   // sdTestFunc();
 
   /* USER CODE END 2 */

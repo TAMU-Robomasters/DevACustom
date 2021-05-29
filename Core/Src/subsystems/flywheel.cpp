@@ -22,6 +22,9 @@ void task() {
     //osDelay(1000);
     flywheel2.initESC();
 
+    HAL_GPIO_WritePin(GPIOH, POWER2_CTRL_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOG, LED_LASER_Pin, GPIO_PIN_SET); // turn on the laser
+
     for (;;) {
         update();
 
@@ -42,11 +45,13 @@ void update() {
 void act() {
     switch (currState) {
     case notRunning:
+        HAL_GPIO_WritePin(GPIOH, POWER4_CTRL_Pin, GPIO_PIN_RESET);
         flywheel1.setPower(0);
         flywheel2.setPower(0);
         break;
 
     case running:
+        HAL_GPIO_WritePin(GPIOH, POWER4_CTRL_Pin, GPIO_PIN_SET);
         flywheel1.setPower(25);
         flywheel2.setPower(25);
         //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
