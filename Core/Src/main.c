@@ -23,8 +23,10 @@
 #include "cmsis_os.h"
 #include "can.h"
 #include "dma.h"
+#include "fatfs.h"
 #include "rng.h"
 #include "rtc.h"
+#include "sdio.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -119,6 +121,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_UART7_Init();
   MX_UART8_Init();
+  MX_SDIO_SD_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
   //HAL_UART_Receive_IT(&huart6, (uint8_t*)readBuf, 1);

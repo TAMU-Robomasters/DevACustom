@@ -23,14 +23,6 @@ public:
     void setPID(pidInstance& pid) {
         PID = &pid;
     }
-
-    // double getCurrAngle() {
-    //     return currAngle;
-    // }
-
-    // void setCurrAngle(double ticks) {
-    //     currAngle = ticks * radsPerTick;
-    // }
 };
 
 extern gimbalMotor yawMotor, pitchMotor;
@@ -60,5 +52,8 @@ extern void act();
 extern double normalizePitchAngle();
 
 extern double calculateAngleError(double currAngle, double targetAngle);
+
+extern void sendGimbMessage();
+extern void sendGimbMessage(float y);
 
 } // namespace gimbal

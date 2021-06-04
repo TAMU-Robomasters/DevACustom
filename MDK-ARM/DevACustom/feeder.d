@@ -51,6 +51,8 @@ devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rng.h
 devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h
 devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h
+devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h
+devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
 devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\feeder.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
@@ -64,6 +66,11 @@ devacustom\feeder.o: ../Core/Inc/information/rc_protocol.h
 devacustom\feeder.o: ../Core/Inc/usart.h
 devacustom\feeder.o: ../Core/Inc/information/uart_protocol.hpp
 devacustom\feeder.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+devacustom\feeder.o: ../Core/Inc/subsystems/chassis.hpp
+devacustom\feeder.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\feeder.o: ../Core/Inc/init.hpp
+devacustom\feeder.o: ../Core/Inc/subsystems/gimbal.hpp
+devacustom\feeder.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\feeder.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\memory
 devacustom\feeder.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\new
 devacustom\feeder.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\exception
@@ -75,4 +82,3 @@ devacustom\feeder.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_iterbase.h
 devacustom\feeder.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstddef
 devacustom\feeder.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_mutex.h
 devacustom\feeder.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstring
-devacustom\feeder.o: ../Core/Inc/init.hpp

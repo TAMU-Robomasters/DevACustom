@@ -43,6 +43,8 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "sd_diskio.h": "c",
+        "bsp_driver_sd.h": "c"
     }
 }

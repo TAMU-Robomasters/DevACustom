@@ -29,6 +29,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -65,6 +66,8 @@ void Error_Handler(void);
 #define TIM_PSC_APB1 ((APB1_TIMER_CLOCKS/PWM_FREQUENCE)/PWM_RESOLUTION -1)
 #define APB2_TIMER_CLOCKS 168000000
 #define TIM_PSC_APB2 ((APB2_TIMER_CLOCKS/PWM_FREQUENCE)/PWM_RESOLUTION -1)
+#define LED_LASER_Pin GPIO_PIN_13
+#define LED_LASER_GPIO_Port GPIOG
 #define PORT_Y_Pin GPIO_PIN_7
 #define PORT_Y_GPIO_Port GPIOI
 #define PORT_X_Pin GPIO_PIN_6
@@ -125,6 +128,8 @@ void Error_Handler(void);
 #define PORT_V_GPIO_Port GPIOA
 #define LED_GREEN_Pin GPIO_PIN_14
 #define LED_GREEN_GPIO_Port GPIOF
+#define SD_EXTI_Pin GPIO_PIN_15
+#define SD_EXTI_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 
 // #define USE_HAL_CAN_REGISTER_CALLBACKS = 1

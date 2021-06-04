@@ -1,22 +1,19 @@
-#include "information/uart_protocol.hpp"
 #include "subsystems/gimbal.hpp"
+#include "information/uart_protocol.hpp"
 #include "init.hpp"
 
 float32_t bung = 0;
-float yawAngleShow;
-float yawErrorShow;
-float yawPidShow;
-float yawDerivShow;
-float pitchAngleShow;
-float pitchErrorShow;
-float pitchPidShow;
-float currGimbTime;
-float lastGimbTime;
-float lastGimbLoopTime;
+float yawAngleShow, yawErrorShow, yawPidShow, yawDerivShow;
+float pitchAngleShow, pitchErrorShow, pitchPidShow, pitchTargetShow;
+float currGimbTime, lastGimbTime, lastGimbLoopTime;
 float dispYaw, dispPitch;
+float yawTarget, pitchTarget;
+
 float yawSave = degToRad(270.0);
 float pitchSave = degToRad(115.0);
 
+float yawRx;
+uint8_t gimbMsg[5];
 
 namespace gimbal {
 
@@ -44,13 +41,18 @@ void task() {
         currGimbTime = HAL_GetTick();
 
         lastGimbLoopTime = currGimbTime - lastGimbTime;
-			
+
         yawPidShow = yawPosPid.getOutput();
         pitchPidShow = pitchPosPid.getOutput();
-			
-        yawDerivShow = yawPosPid.getDerivative()*10000;
 
-        osDelay(10);
+        yawDerivShow = yawPosPid.getDerivative() * 10000;
+
+        if (operatingType == primary) {
+            osDelay(2);
+        } else if (operatingType == secondary) {
+            osDelay(10);
+        } else
+            osDelay(5);
     }
 }
 
@@ -58,16 +60,39 @@ void update() {
 
     currState = idle; // default state
 
-    struct userUART::gimbMessage* pxRxedPointer;
-	
-    if (userUART::gimbalQueue != NULL){
-        if (xQueueReceive(userUART::gimbalQueue, &(pxRxedPointer), (TickType_t)0) == pdPASS) {
-            if (pxRxedPointer->prefix == userUART::msgTypes::aimAt) {
-                dispYaw = pxRxedPointer->disp[0];
-                dispPitch = pxRxedPointer->disp[1];
-                
-                if (abs(calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() + dispYaw)) > degToRad(5.0) && abs(calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch)) > degToRad(2.0)){
-                        currState = aimFromCV;
+    struct userUART::aimMsgStruct* pxAimRxedPointer;
+    struct userUART::gimbMsgStruct* pxGimbRxedPointer;
+
+    if (operatingType == primary) {
+        currState = idle; // default state
+
+        pitchAngleShow = radToDeg(pitchMotor.getAngle());
+        pitchTargetShow = (-(pitchMotor.getAngle() - degToRad(115.0)));
+        pitchPidShow = pitchPosPid.getOutput();
+        // pitchErrorShow = radToDeg(normalizePitchAngle());
+
+        if (userUART::aimMsgQueue != NULL) {
+            if (xQueueReceive(userUART::aimMsgQueue, &(pxAimRxedPointer), (TickType_t)0) == pdPASS) {
+                if (pxAimRxedPointer->prefix == userUART::jetsonMsgTypes::aimAt) {
+                    dispYaw = pxAimRxedPointer->disp[0];
+                    dispPitch = pxAimRxedPointer->disp[1];
+                    //currState = aimFromCV;
+                }
+            }
+        }
+    }
+
+    if (operatingType == secondary) {
+        currState = notRunning;
+
+        yawAngleShow = radToDeg(yawMotor.getAngle());
+        yawPidShow = yawPosPid.getOutput();
+
+        if (userUART::gimbMsgQueue != NULL) {
+            if (xQueueReceive(userUART::gimbMsgQueue, &(pxGimbRxedPointer), (TickType_t)0) == pdPASS) {
+                if (pxGimbRxedPointer->prefix == userUART::d2dMsgTypes::gimbal) {
+                    currState = pxGimbRxedPointer->state;
+                    yawRx = pxGimbRxedPointer->yaw;
                 }
             }
         }
@@ -81,93 +106,89 @@ void update() {
     // if (pitchMotor.getAngle() + dispPitch > degToRad(180.0) || pitchMotor.getAngle() + dispPitch < degToRad(90.0)) {
     //     currState = idle;
     // }
-
-    float yawAngle = yawMotor.getAngle();
-    float pitchAngle = pitchMotor.getAngle();
-    yawAngleShow = radToDeg(yawAngle);
-    pitchAngleShow = radToDeg(pitchAngle);
-
-    pitchErrorShow = radToDeg(normalizePitchAngle());
-
-    // if button pressed on controller, change state to "followgimbal" or something
 }
 
 void act() {
     switch (currState) {
     case notRunning:
-        yawMotor.setPower(0);
+        // if (operatingType == primary) {
         pitchMotor.setPower(0);
+        // }
+        // if (operatingType == secondary) {
+        yawMotor.setPower(0);
+        // }
         break;
 
     case aimFromCV:
-        yawPosPid.setTarget(0.0);
-        pitchPosPid.setTarget(0.0);
-
-        yawSave = yawMotor.getAngle();
-        pitchSave = pitchMotor.getAngle();
-
-        if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
-            double yawError = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() + dispYaw);
-            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
-            double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
-            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
-            yawMotor.setPower(yawPosPid.loop(yawError));
+        if (operatingType == primary) {
+            pitchSave = pitchMotor.getAngle();
+            pitchPosPid.setTarget(0.0);
+            pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
+            pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
+            // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
             // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
-            pitchMotor.setPower(pitchPosPid.loop(pitchError) + (-kF * cos(normalizePitchAngle())));
+            sendGimbMessage(dispYaw);
+        }
+        if (operatingType == secondary) {
+            yawSave = yawMotor.getAngle();
+            yawPosPid.setTarget(0.0);
+            yawTarget = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() - yawRx);
+            // yawTarget = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
+            yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
         }
         break;
 
     case idle:
         yawPosPid.setTarget(0.0);
-        pitchPosPid.setTarget(0.0);
 
-        if (ctrlType == VOLTAGE) { // gimbal motors controlled through voltage, sent messages over CAN
-            double yawError = -calculateAngleError(yawMotor.getAngle(), yawSave);
-            //double yawError = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
-            double pitchError = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
-            //double pitchError = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
-            yawMotor.setPower(yawPosPid.loop(yawError));
+        if (operatingType == primary) {
+            pitchPosPid.setTarget(0.0);
+            pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
+            pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
+            // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
             // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
-            pitchMotor.setPower(pitchPosPid.loop(pitchError) + (-kF * cos(normalizePitchAngle())));
+            sendGimbMessage();
+        }
+        if (operatingType == secondary) {
+            yawPosPid.setTarget(0.0);
+            yawDerivShow = yawMotor.getSpeed() * yawPosPid.getkD();
+            yawTarget = -calculateAngleError(yawMotor.getAngle(), yawSave);
+            // yawTarget = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
+            yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
         }
         break;
     }
 }
 
-double fixAngle(double angle) {
-    /* Fix angle to [0, 2PI) */
-    angle = fmod(angle, 2 * PI);
-    if (angle < 0){
-        return angle + 2 * PI;
-		}
-    return angle;
-}
-
-double normalizePitchAngle(){
-		return -(pitchMotor.getAngle() - degToRad(115.0));
+double normalizePitchAngle() {
+    return -(pitchMotor.getAngle() - degToRad(115.0));
 }
 
 double calculateAngleError(double currAngle, double targetAngle) {
-  /* Positive is counter-clockwise */
+    /* Positive is counter-clockwise */
+    return atan2(sin(targetAngle - currAngle), cos(targetAngle - currAngle));
+}
 
-	return atan2(sin(targetAngle-currAngle), cos(targetAngle-currAngle));
+void sendGimbMessage() {
+    //uint8_t gimbMsg[5];
+    gimbMsg[0] = 'g';
+    gimbMsg[1] = static_cast<uint8_t>(currState);
+    gimbMsg[2] = 0;
+    gimbMsg[3] = 0;
+    gimbMsg[4] = 'e';
+    HAL_UART_Transmit(&huart8, (uint8_t*)gimbMsg, sizeof(gimbMsg), 1);
+}
 
-    // double angleDelta = fixAngle(targetAngle) - fixAngle(currAngle);
-
-	// if (fabs(angleDelta) <= PI)
-	// {
-	// 	return angleDelta;
-	// }
-	// else if(angleDelta > PI)
-	// {
-	// 	return -(2 * PI - angleDelta);
-	// }
-	// else // angleDelta < -PI
-	// {
-	// 	return (2 * PI + angleDelta);
-	// }
-
-  // return 69;
+void sendGimbMessage(float y) {
+    int16_t yawT = static_cast<int16_t>(y * 10000);
+    uint8_t yawT1 = (yawT + 32768) >> 8;
+    uint8_t yawT2 = (yawT + 32768);
+    gimbMsg[0] = 'g';
+    gimbMsg[1] = static_cast<uint8_t>(currState);
+    gimbMsg[2] = yawT1;
+    gimbMsg[3] = yawT2;
+    gimbMsg[4] = 'e';
+    HAL_UART_Transmit(&huart8, (uint8_t*)gimbMsg, sizeof(gimbMsg), 1);
 }
 
 } // namespace gimbal

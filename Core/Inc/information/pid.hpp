@@ -30,13 +30,7 @@ private:
 
 public:
     pidInstance(float p = 0, float i = 0, float d = 0) : kP(p), kI(i), kD(d), lastLoopTime(0), iWindupBound(100) {}
-    pidInstance(pidType pT = pidType::velocity, float p = 0, float i = 0, float d = 0) : type(pT), kP(p), kI(i), kD(d), lastLoopTime(0), iWindupBound(100) {}
-
-    // pidInstance(pidType _type, double p = 0, double i = 0, double d = 0, double _outSafe = 0.0, double _outMin = -100.0, double _outMax = 100.0) :
-    //     type(_type), kP(p), kI(i), kD(d), outSafe(_outSafe), outMin(_outMin), outMax(_outMax)
-    // 	{
-    // 		reset();
-    // 	}
+    pidInstance(pidType pT = pidType::position, float p = 0, float i = 0, float d = 0) : type(pT), kP(p), kI(i), kD(d), lastLoopTime(0), iWindupBound(100) {}
 
     float loop(float currInput) {
         this->currInput = currInput;
@@ -47,6 +41,32 @@ public:
 
         derivative = (dT == 0) ? 0 : ((currInput - lastInput) / (dT));
         //instead of using lastError - error, we use -(lastInput - currInput) to minimize output spikes when the target changes
+
+        errorSum += error * dT * kI;
+        if (std::abs(errorSum) > iWindupBound) {
+            errorSum = std::copysign(iWindupBound, errorSum);
+        }
+
+        float output = (kP * error) + (errorSum) + (-kD * derivative);
+
+        lastLoopTime = currTime;
+        lastError = error;
+        lastInput = currInput;
+
+        this->output = output;
+        return output;
+    }
+
+    float loop(float currInput, float speedInput) {
+        this->currInput = currInput;
+
+        float currTime = HAL_GetTick();
+        float error = target - currInput;
+        float dT = (lastLoopTime == 0) ? 0 : (currTime - lastLoopTime);
+
+        derivative = (dT == 0) ? 0 : speedInput;
+        //instead of using lastError - error, we use -(lastInput - currInput) to minimize output spikes when the target changes
+
         errorSum += error * dT * kI;
         if (std::abs(errorSum) > iWindupBound){
             errorSum = std::copysign(iWindupBound, errorSum);
@@ -149,6 +169,18 @@ public:
     //     lastTime = -1;        // signal reset
     //     lastOutput = outSafe; // turn off motors
     // }
+
+    float getkP() {
+        return kP;
+    }
+
+    float getkI() {
+        return kI;
+    }
+
+    float getkD() {
+        return kD;
+    }
 
     float getTarget() {
         return this->target;

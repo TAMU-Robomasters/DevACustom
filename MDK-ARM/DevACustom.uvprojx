@@ -339,7 +339,7 @@
               <MiscControls>--cpp11</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F427xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Drivers/CMSIS/DSP/Include/;         ../Core/Inc;         ../Drivers/STM32F4xx_HAL_Driver/Inc;         ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;         ../Middlewares/Third_Party/FreeRTOS/Source/include;         ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;         ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;         ../Core/Inc/subsystems;         ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;         ../Drivers/CMSIS/Device/Include;         ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Drivers/CMSIS/DSP/Include/;          ../Core/Inc;          ../Drivers/STM32F4xx_HAL_Driver/Inc;          ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;          ../Middlewares/Third_Party/FreeRTOS/Source/include;          ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;          ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;          ../Core/Inc/subsystems;          ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;          ../Drivers/CMSIS/Device/Include;          ../Drivers/CMSIS/Include;../FATFS/Target;../FATFS/App;../Middlewares/Third_Party/FatFs/src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -432,6 +432,11 @@
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Core/Src/sdio.c</FilePath>
             </File>
             <File>
               <FileName>tim.c</FileName>
@@ -547,6 +552,16 @@
               <FileName>stm32f4xx_hal_rtc_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_ll_sdmmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_sd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_hal_tim.c</FileName>
@@ -889,6 +904,135 @@
               <FileName>rc_protocol.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Core\Src\information\rc_protocol.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>sd_protocol.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\Src\information\sd_protocol.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/FATFS/App</GroupName>
+          <Files>
+            <File>
+              <FileName>fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../FATFS/App/fatfs.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/FATFS/Target</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp_driver_sd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../FATFS/Target/bsp_driver_sd.c</FilePath>
+            </File>
+            <File>
+              <FileName>sd_diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../FATFS/Target/sd_diskio.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/FatFs</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls>--c99</MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <ClangAsOpt>0</ClangAsOpt>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Middlewares/Third_Party/FatFs/src/diskio.c</FilePath>
+            </File>
+            <File>
+              <FileName>ff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Middlewares/Third_Party/FatFs/src/ff.c</FilePath>
+            </File>
+            <File>
+              <FileName>ff_gen_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Middlewares/Third_Party/FatFs/src/ff_gen_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>syscall.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Middlewares/Third_Party/FatFs/src/option/syscall.c</FilePath>
+            </File>
+            <File>
+              <FileName>ccsbcs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Middlewares/Third_Party/FatFs/src/option/ccsbcs.c</FilePath>
             </File>
           </Files>
         </Group>

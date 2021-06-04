@@ -35,6 +35,7 @@
 
 #include "information/can_protocol.hpp"
 #include "information/rc_protocol.h"
+#include "information/sd_protocol.h"
 #include "information/uart_protocol.hpp"
 /* USER CODE END Includes */
 
@@ -62,6 +63,8 @@ osThreadId chassisTaskHandle;
 osThreadId gimbalTaskHandle;
 osThreadId flywheelTaskHandle;
 osThreadId feederTaskHandle;
+osThreadId rcTaskHandle;
+osThreadId sensorTaskHandle;
 osThreadId canTaskHandle;
 osThreadId uartTaskHandle;
 
@@ -125,7 +128,7 @@ void MX_FREERTOS_Init(void) {
 
     /* Create the thread(s) */
     /* definition and creation of indicatorTask */
-    osThreadDef(indicatorTask, indicatorTaskFunc, osPriorityNormal, 0, 128);
+    osThreadDef(indicatorTask, indicatorTaskFunc, osPriorityNormal, 0, 1024);
     indicatorTaskHandle = osThreadCreate(osThread(indicatorTask), NULL);
 
     /* definition and creation of chassisTask */
@@ -133,7 +136,7 @@ void MX_FREERTOS_Init(void) {
     chassisTaskHandle = osThreadCreate(osThread(chassisTask), NULL);
 
     /* definition and creation of gimbalTask */
-    osThreadDef(gimbalTask, gimbalTaskFunc, osPriorityAboveNormal, 0, 128);
+    osThreadDef(gimbalTask, gimbalTaskFunc, osPriorityNormal, 0, 128);
     gimbalTaskHandle = osThreadCreate(osThread(gimbalTask), NULL);
 
     /* definition and creation of flywheelTask */
@@ -145,7 +148,7 @@ void MX_FREERTOS_Init(void) {
     feederTaskHandle = osThreadCreate(osThread(feederTask), NULL);
 
     /* definition and creation of canTask */
-    osThreadDef(canTask, canTaskFunc, osPriorityAboveNormal, 0, 128);
+    osThreadDef(canTask, canTaskFunc, osPriorityNormal, 0, 128);
     canTaskHandle = osThreadCreate(osThread(canTask), NULL);
 
     /* definition and creation of uartTask */
@@ -154,6 +157,12 @@ void MX_FREERTOS_Init(void) {
 
     /* USER CODE BEGIN RTOS_THREADS */
     /* add threads, ... */
+    vTaskSuspend(chassisTaskHandle);
+    vTaskSuspend(gimbalTaskHandle);
+    vTaskSuspend(flywheelTaskHandle);
+    vTaskSuspend(feederTaskHandle);
+    vTaskSuspend(canTaskHandle);
+    vTaskSuspend(uartTaskHandle);
     /* USER CODE END RTOS_THREADS */
 }
 
@@ -167,6 +176,15 @@ void MX_FREERTOS_Init(void) {
 void indicatorTaskFunc(void const* argument) {
     /* USER CODE BEGIN indicatorTaskFunc */
     /* Infinite loop */
+    checkOperatingType();
+
+    vTaskResume(chassisTaskHandle);
+    vTaskResume(gimbalTaskHandle);
+    vTaskResume(flywheelTaskHandle);
+    vTaskResume(feederTaskHandle);
+    vTaskResume(canTaskHandle);
+    vTaskResume(uartTaskHandle);
+
     HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
     for (;;) {
         //friendly reminder that "GPIOG" refers to the GPIO port G, and the "LED_A_Pin" directs it to the specific pin under that port
@@ -212,7 +230,7 @@ void indicatorTaskFunc(void const* argument) {
         HAL_GPIO_TogglePin(GPIOG, LED_B_Pin);
         HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
         osDelay(125);
-		counter1++;
+        counter1++;
     }
     /* USER CODE END indicatorTaskFunc */
 }
@@ -226,8 +244,8 @@ void indicatorTaskFunc(void const* argument) {
 /* USER CODE END Header_chassisTaskFunc */
 void chassisTaskFunc(void const* argument) {
     /* USER CODE BEGIN chassisTaskFunc */
-    /* Infinite loop */
     RCInit();
+    /* Infinite loop */
     chassis::task();
     /* USER CODE END chassisTaskFunc */
 }

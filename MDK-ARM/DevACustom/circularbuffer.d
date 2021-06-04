@@ -35,6 +35,8 @@ devacustom\circularbuffer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_p
 devacustom\circularbuffer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rng.h
 devacustom\circularbuffer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h
 devacustom\circularbuffer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h
+devacustom\circularbuffer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h
+devacustom\circularbuffer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
 devacustom\circularbuffer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\circularbuffer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\circularbuffer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
@@ -53,6 +55,17 @@ devacustom\circularbuffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/
 devacustom\circularbuffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 devacustom\circularbuffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 devacustom\circularbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+devacustom\circularbuffer.o: ../Core/Inc/subsystems/chassis.hpp
+devacustom\circularbuffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\circularbuffer.o: ../Core/Inc/information/device.hpp
+devacustom\circularbuffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\circularbuffer.o: ../Core/Inc/information/filters.hpp
+devacustom\circularbuffer.o: ../Core/Inc/tim.h
+devacustom\circularbuffer.o: ../Core/Inc/information/pid.hpp
+devacustom\circularbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+devacustom\circularbuffer.o: ../Core/Inc/init.hpp
+devacustom\circularbuffer.o: ../Core/Inc/subsystems/gimbal.hpp
+devacustom\circularbuffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\circularbuffer.o: ../Core/Inc/usart.h
 devacustom\circularbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\memory
 devacustom\circularbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\new

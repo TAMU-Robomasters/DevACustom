@@ -168,7 +168,7 @@ int8_t motor_QuickIdSetMode(void) {
 bool getMessage(CAN_HandleTypeDef* can) {
     if (HAL_CAN_GetRxMessage(can, CAN_RX_FIFO0, &rx_header, rx_data) != 0x00U) {
         //HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
-				return false;
+        return false;
     }
 
     // uint8_t index;
@@ -177,15 +177,14 @@ bool getMessage(CAN_HandleTypeDef* can) {
         // motor_Decode(&(can_devices_ptr->feeder_fb), rx_data);
         motor_Decode(chassis::c1Motor.getFeedback(), rx_data);
         break;
+
     case M2006_INDEXER_ID:
         motor_Decode(feeder::indexer.getFeedback(), rx_data);
         break;
+
     case M2006_AGITATOR_RIGHT_ID:
         motor_Decode(feeder::agitatorRight.getFeedback(), rx_data);
         break;
-        // case M3508_M4_ID:
-        //     motor_Decode(chassis::c4Motor.getFeedback(), rx_data);
-        //     break;
 
     case M2006_AGITATOR_LEFT_ID:
         motor_Decode(feeder::agitatorLeft.getFeedback(), rx_data);
@@ -208,7 +207,7 @@ bool getMessage(CAN_HandleTypeDef* can) {
         // HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
         break;
     }
-		return true;
+    return true;
 }
 
 void task() {
@@ -221,38 +220,34 @@ void task() {
         send();
         // for sending messages over CAN to motors
         lastCANTime = currCANTime;
-		currCANTime = HAL_GetTick();
-			
-		lastCANLoopTime = currCANTime - lastCANTime;
+        currCANTime = HAL_GetTick();
+
+        lastCANLoopTime = currCANTime - lastCANTime;
 
         osDelay(1);
     }
 }
 
 void receive() {
-	canFillLevel = HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0);
+    canFillLevel = HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0);
     //if (canFillLevel > 0) {
-        //HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
-        //while(HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) > 0){
-				for(unsigned int i = 0; i < canFillLevel; i++){
-            userCAN::getMessage(&hcan1);
-        }
-			
+    //HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_RESET);
+    //while(HAL_CAN_GetRxFifoFillLevel(&hcan1, CAN_RX_FIFO0) > 0){
+    for (unsigned int i = 0; i < canFillLevel; i++) {
+        userCAN::getMessage(&hcan1);
+    }
     //}
 }
 
 void send() {
-    if (chassis::ctrlType == chassis::CtrlTypes::CURRENT) {
-        userCAN::motor_ControlChassis(chassis::c1Motor.getPower(),
-                                      feeder::agitatorLeft.getPower(),
-                                      feeder::agitatorRight.getPower(),
-                                      0,
-                                      hcan1);
+    if (operatingType == primary) {
+        userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(), gimbal::pitchMotor.getPower(), feeder::indexer.getPower(), hcan1);
     }
-    userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(),
-                                   gimbal::pitchMotor.getPower(),
-                                   feeder::indexer.getPower(),
-                                   hcan1);
+
+    if (operatingType == secondary) {
+        userCAN::motor_ControlChassis(chassis::c1Motor.getPower(), feeder::agitatorLeft.getPower(), feeder::agitatorRight.getPower(), 0, hcan1);
+        userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(), gimbal::pitchMotor.getPower(), feeder::indexer.getPower(), hcan1);
+    }
 }
 
 } // namespace userCAN
