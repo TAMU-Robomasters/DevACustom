@@ -69,3 +69,4 @@ devacustom\main.o: ../Core/Inc/tim.h
 devacustom\main.o: ../Core/Inc/usart.h
 devacustom\main.o: ../Core/Inc/gpio.h
 devacustom\main.o: ../Core/Inc/information/rc_protocol.h
+devacustom\main.o: ../Core/Inc/information/sd_protocol.h

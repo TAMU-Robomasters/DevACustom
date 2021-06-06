@@ -34,6 +34,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "information/rc_protocol.h"
+#include "information/sd_protocol.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -124,12 +125,14 @@ int main(void)
   MX_SDIO_SD_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
+	BSP_SD_Init();
 
   //HAL_UART_Receive_IT(&huart6, (uint8_t*)readBuf, 1);
 
   // Turn all the LED's off to begin with
   HAL_GPIO_WritePin(GPIOE, LED_RED_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOF, LED_GREEN_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOG, LED_LASER_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOG, LED_A_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_B_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_C_Pin, GPIO_PIN_SET);
