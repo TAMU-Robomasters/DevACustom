@@ -6,7 +6,8 @@ float32_t bung = 0;
 float yawAngleShow, yawErrorShow, yawPidShow, yawDerivShow;
 float pitchAngleShow, pitchErrorShow, pitchPidShow, pitchTargetShow;
 float currGimbTime, lastGimbTime, lastGimbLoopTime;
-float dispYaw, dispPitch;
+float dispYaw;
+float dispPitch;
 float yawTarget, pitchTarget;
 
 float yawSave = degToRad(270.0);
@@ -22,8 +23,10 @@ CtrlTypes ctrlType = VOLTAGE;
 
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance yawPosPid(pidType::position, 150.0, 0.00, 10000.0);
-pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 2500.0);
+//pidInstance yawPosPid(pidType::position, 150.0, 0.00, 10000.0);
+//pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 2500.0);
+pidInstance yawPosPid(pidType::position, 200.0, 0.00, 2.0);
+pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 0.5);
 float kF = 30;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
@@ -76,7 +79,7 @@ void update() {
                 if (pxAimRxedPointer->prefix == userUART::jetsonMsgTypes::aimAt) {
                     dispYaw = pxAimRxedPointer->disp[0];
                     dispPitch = pxAimRxedPointer->disp[1];
-                    //currState = aimFromCV;
+                    currState = aimFromCV;
                 }
             }
         }
@@ -90,6 +93,7 @@ void update() {
 
         if (userUART::gimbMsgQueue != NULL) {
             if (xQueueReceive(userUART::gimbMsgQueue, &(pxGimbRxedPointer), (TickType_t)0) == pdPASS) {
+								bung++;
                 if (pxGimbRxedPointer->prefix == userUART::d2dMsgTypes::gimbal) {
                     currState = pxGimbRxedPointer->state;
                     yawRx = pxGimbRxedPointer->yaw;
@@ -139,8 +143,6 @@ void act() {
         break;
 
     case idle:
-        yawPosPid.setTarget(0.0);
-
         if (operatingType == primary) {
             pitchPosPid.setTarget(0.0);
             pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchSave);

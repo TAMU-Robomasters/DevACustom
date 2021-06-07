@@ -45,6 +45,7 @@
         "typeinfo": "cpp",
         "iostream": "cpp",
         "sd_diskio.h": "c",
-        "bsp_driver_sd.h": "c"
+        "bsp_driver_sd.h": "c",
+        "stm32f4xx_hal.h": "c"
     }
 }

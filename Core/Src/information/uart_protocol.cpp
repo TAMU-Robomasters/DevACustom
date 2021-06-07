@@ -71,7 +71,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
         HAL_UART_Receive_IT(huart, (uint8_t*)uart8InBuffer, 1);
         if (userUART::d2dBuffer.enqueue(uart8InBuffer[0])) {
             d2dMessage = userUART::d2dBuffer.getLastWord();
-            //goodReceive = userUART::d2dBuffer.getLastWordSize();
+            goodReceive = userUART::d2dBuffer.getLastWordSize();
 
             BaseType_t xHigherPriorityTaskWoken = pdFALSE;
             xSemaphoreGiveFromISR(uart8Semaphore, &xHigherPriorityTaskWoken);
@@ -143,7 +143,7 @@ void task() {
                 break;
             }
             case structSync: {
-                goodReceive = 69;
+                //goodReceive = 69;
                 lagTestEnd = HAL_GetTick();
                 lagTestRoundTrip = lagTestEnd - lagTestStart;
                 lagTestStart = HAL_GetTick();
@@ -156,8 +156,8 @@ void task() {
         if (xSemaphoreTake(uart8Semaphore, 0) == pdTRUE) {
             switch (d2dMessage[0]) {
             case gimbal: {
-                if (userUART::d2dBuffer.getLastWordSize() == 5) {
-                    //goodReceive = 69;
+                if (userUART::d2dBuffer.getLastWordSize() == 4) {
+                    goodReceive = 69;
                     uint16_t y1 = d2dMessage[2];
                     uint16_t y2 = d2dMessage[3];
                     int16_t snY = (y1 << 8) + y2 - 32768;
@@ -166,7 +166,7 @@ void task() {
                     txGimbMessage.state = static_cast<gimbal::gimbalStates>(d2dMessage[1]);
                     txGimbMessage.yaw = static_cast<float>(snY) / 10000.0f;
                     gimbMsgPtr = &txGimbMessage;
-                    xQueueSend(gimbMsgQueue, (void*)&gimbMsgPtr, (TickType_t)0);
+                    xQueueSend(gimbMsgQueue, (void*)&gimbMsgPtr, (TickType_t)1);
 
                     lastGimbalTime = currGimbalTime;
                     currGimbalTime = HAL_GetTick();
@@ -176,7 +176,7 @@ void task() {
             }
             case chassis: {
                 if (userUART::d2dBuffer.getLastWordSize() == 4) {
-                    goodReceive = 69;
+                    //goodReceive = 69;
                     chassis::chassisStates state = static_cast<chassis::chassisStates>(d2dMessage[1]);
                     uint16_t c1_1 = d2dMessage[2];
                     uint16_t c1_2 = d2dMessage[3];
@@ -188,7 +188,7 @@ void task() {
                     txChassisMessage.m1 = static_cast<float>(snC1) / 50.0f;
 
                     chassisMsgPtr = &txChassisMessage;
-                    xQueueSend(chassisMsgQueue, (void*)&chassisMsgPtr, (TickType_t)0);
+                    xQueueSend(chassisMsgQueue, (void*)&chassisMsgPtr, (TickType_t)1);
 
                     lastChassisTime = currChassisTime;
                     currChassisTime = HAL_GetTick();
