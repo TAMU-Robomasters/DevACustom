@@ -339,7 +339,7 @@
               <MiscControls>--cpp11</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F427xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Drivers/CMSIS/DSP/Include/;                        ../Core/Inc;                        ../Drivers/STM32F4xx_HAL_Driver/Inc;                        ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                        ../Middlewares/Third_Party/FreeRTOS/Source/include;                        ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;                        ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                        ../Core/Inc/subsystems;                        ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;                        ../Drivers/CMSIS/Device/Include;                        ../Drivers/CMSIS/Include;               ../FATFS/Target;               ../FATFS/App;               ../Middlewares/Third_Party/FatFs/src</IncludePath>
+              <IncludePath>../Drivers/CMSIS/DSP/Include/;                         ../Core/Inc;                         ../Drivers/STM32F4xx_HAL_Driver/Inc;                         ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                         ../Middlewares/Third_Party/FreeRTOS/Source/include;                         ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;                         ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                         ../Core/Inc/subsystems;                         ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;                         ../Drivers/CMSIS/Device/Include;                         ../Drivers/CMSIS/Include;                ../FATFS/Target;                ../FATFS/App;                ../Middlewares/Third_Party/FatFs/src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -437,6 +437,11 @@
               <FileName>sdio.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/sdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Core/Src/spi.c</FilePath>
             </File>
             <File>
               <FileName>tim.c</FileName>
@@ -562,6 +567,11 @@
               <FileName>stm32f4xx_hal_sd.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_hal_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c</FilePath>
             </File>
             <File>
               <FileName>stm32f4xx_hal_tim.c</FileName>
@@ -904,6 +914,21 @@
               <FileName>gimbal.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Core\Src\subsystems\gimbal.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Core/Src/imu</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp_imu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\imu\bsp_imu.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu_protocol.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\Src\imu\imu_protocol.cpp</FilePath>
             </File>
           </Files>
         </Group>

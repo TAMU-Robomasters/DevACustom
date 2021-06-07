@@ -1,4 +1,5 @@
 #include "subsystems/gimbal.hpp"
+#include "imu/imu_protocol.hpp"
 #include "information/uart_protocol.hpp"
 #include "information/rc_protocol.h"
 #include "init.hpp"
@@ -19,6 +20,7 @@ float lastGimbLoopTime;
 float pitchPowerShow;
 float dispYaw;
 float dispPitch;
+float roll, pitch, yaw;
 
 float rcRightX;
 
@@ -74,6 +76,12 @@ void update() {
         pitchAngleShow = radToDeg(pitchMotor.getAngle());
         pitchTargetShow = (-(pitchMotor.getAngle() - degToRad(310.0)));
         pitchPidShow = pitchPosPid.getOutput();
+			
+				userIMU::imuUpdate();
+
+        roll = userIMU::imuRoll();
+        pitch = userIMU::imuPitch();
+        yaw = userIMU::imuYaw();
 
         if (/*fabs(getJoystick(joystickAxis::rightX)) >= 0.05f || */ fabs(getJoystick(joystickAxis::rightY)) >= 0.05f) {
             currState = rc;

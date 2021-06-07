@@ -34,6 +34,7 @@ devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h
 devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h
 devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h
 devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
+devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
@@ -65,6 +66,7 @@ devacustom\main.o: ../FATFS/Target/sd_diskio.h
 devacustom\main.o: ../Core/Inc/rng.h
 devacustom\main.o: ../Core/Inc/rtc.h
 devacustom\main.o: ../Core/Inc/sdio.h
+devacustom\main.o: ../Core/Inc/spi.h
 devacustom\main.o: ../Core/Inc/tim.h
 devacustom\main.o: ../Core/Inc/usart.h
 devacustom\main.o: ../Core/Inc/gpio.h

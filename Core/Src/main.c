@@ -27,6 +27,7 @@
 #include "rng.h"
 #include "rtc.h"
 #include "sdio.h"
+#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -124,6 +125,7 @@ int main(void)
   MX_UART8_Init();
   MX_SDIO_SD_Init();
   MX_FATFS_Init();
+  MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
 	BSP_SD_Init();
 
@@ -148,7 +150,7 @@ int main(void)
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
-  MX_FREERTOS_Init();
+  MX_FREERTOS_Init(); 
   /* Start scheduler */
   osKernelStart();
  

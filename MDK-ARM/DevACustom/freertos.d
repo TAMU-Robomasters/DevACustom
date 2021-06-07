@@ -48,6 +48,7 @@ devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h
 devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h
 devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h
 devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
+devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 devacustom\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
@@ -69,12 +70,18 @@ devacustom\freertos.o: ../Core/Inc/subsystems/flywheel.hpp
 devacustom\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\freertos.o: ../Core/Inc/subsystems/gimbal.hpp
 devacustom\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\freertos.o: ../Core/Inc/imu/imu_protocol.hpp
+devacustom\freertos.o: ../Core/Inc/imu/bsp_imu.h
+devacustom\freertos.o: ../Core/Inc/imu/mytype.h
+devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 devacustom\freertos.o: ../Core/Inc/information/rc_protocol.h
 devacustom\freertos.o: ../Core/Inc/usart.h
 devacustom\freertos.o: ../Core/Inc/information/sd_protocol.h
 devacustom\freertos.o: ../Core/Inc/sdio.h
 devacustom\freertos.o: ../Core/Inc/information/uart_protocol.hpp
-devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\memory
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\new
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\exception
