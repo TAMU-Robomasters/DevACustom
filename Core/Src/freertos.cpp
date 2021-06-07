@@ -33,6 +33,7 @@
 #include "subsystems/flywheel.hpp"
 #include "subsystems/gimbal.hpp"
 
+#include "imu/imu_protocol.hpp"
 #include "information/can_protocol.hpp"
 #include "information/rc_protocol.h"
 #include "information/sd_protocol.h"
@@ -177,6 +178,8 @@ void indicatorTaskFunc(void const* argument) {
     /* USER CODE BEGIN indicatorTaskFunc */
     /* Infinite loop */
     checkOperatingType();
+
+    userIMU::imuInit();
 
     vTaskResume(chassisTaskHandle);
     vTaskResume(gimbalTaskHandle);

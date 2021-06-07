@@ -238,12 +238,17 @@
         <Ww>
           <count>16</count>
           <WinNumber>1</WinNumber>
-          <ItemText>txGimbMessage</ItemText>
+          <ItemText>roll</ItemText>
         </Ww>
         <Ww>
           <count>17</count>
           <WinNumber>1</WinNumber>
-          <ItemText>txGimbMessage.prefix</ItemText>
+          <ItemText>pitch</ItemText>
+        </Ww>
+        <Ww>
+          <count>18</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>yaw</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

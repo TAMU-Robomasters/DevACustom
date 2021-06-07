@@ -1,4 +1,5 @@
 #include "subsystems/gimbal.hpp"
+#include "imu/imu_protocol.hpp"
 #include "information/uart_protocol.hpp"
 #include "init.hpp"
 
@@ -9,6 +10,7 @@ float currGimbTime, lastGimbTime, lastGimbLoopTime;
 float dispYaw;
 float dispPitch;
 float yawTarget, pitchTarget;
+float roll, pitch, yaw;
 
 float yawSave = degToRad(270.0);
 float pitchSave = degToRad(115.0);
@@ -67,12 +69,18 @@ void update() {
     struct userUART::gimbMsgStruct* pxGimbRxedPointer;
 
     if (operatingType == primary) {
-        currState = idle; // default state
+        currState = aimFromCV; // default state
 
         pitchAngleShow = radToDeg(pitchMotor.getAngle());
         pitchTargetShow = (-(pitchMotor.getAngle() - degToRad(115.0)));
         pitchPidShow = pitchPosPid.getOutput();
         // pitchErrorShow = radToDeg(normalizePitchAngle());
+
+        userIMU::imuUpdate();
+
+        roll = userIMU::imuRoll();
+        pitch = userIMU::imuPitch();
+        yaw = userIMU::imuYaw();
 
         if (userUART::aimMsgQueue != NULL) {
             if (xQueueReceive(userUART::aimMsgQueue, &(pxAimRxedPointer), (TickType_t)0) == pdPASS) {

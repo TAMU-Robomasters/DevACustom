@@ -62,8 +62,14 @@ devacustom\gimbal.o: ../Core/Inc/information/filters.hpp
 devacustom\gimbal.o: ../Core/Inc/tim.h
 devacustom\gimbal.o: ../Core/Inc/information/pid.hpp
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-devacustom\gimbal.o: ../Core/Inc/information/uart_protocol.hpp
+devacustom\gimbal.o: ../Core/Inc/imu/imu_protocol.hpp
+devacustom\gimbal.o: ../Core/Inc/imu/bsp_imu.h
+devacustom\gimbal.o: ../Core/Inc/imu/mytype.h
+devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+devacustom\gimbal.o: ../Core/Inc/information/uart_protocol.hpp
 devacustom\gimbal.o: ../Core/Inc/subsystems/chassis.hpp
 devacustom\gimbal.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 devacustom\gimbal.o: ../Core/Inc/init.hpp
