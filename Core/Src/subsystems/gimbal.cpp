@@ -11,12 +11,16 @@ float dispYaw;
 float dispPitch;
 float yawTarget, pitchTarget;
 float roll, pitch, yaw;
+int stateShow;
 
 float yawSave = degToRad(270.0);
-float pitchSave = degToRad(115.0);
+float pitchSave = degToRad(130.0);
 
 float yawRx;
 uint8_t gimbMsg[5];
+
+int startTime;
+int messagesPerSec;
 
 namespace gimbal {
 
@@ -27,7 +31,7 @@ filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 //pidInstance yawPosPid(pidType::position, 150.0, 0.00, 10000.0);
 //pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 2500.0);
-pidInstance yawPosPid(pidType::position, 200.0, 0.00, 2.0);
+pidInstance yawPosPid(pidType::position, 200.0, 0.00, 2.2);
 pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 0.5);
 float kF = 30;
 
@@ -35,6 +39,8 @@ gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
 gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid, gimbalVelFilter);
 
 void task() {
+	
+		startTime = HAL_GetTick();
 
     for (;;) {
         update();
@@ -63,13 +69,13 @@ void task() {
 
 void update() {
 
-    currState = idle; // default state
-
     struct userUART::aimMsgStruct* pxAimRxedPointer;
     struct userUART::gimbMsgStruct* pxGimbRxedPointer;
 
     if (operatingType == primary) {
-        currState = aimFromCV; // default state
+        //currState = idle; // default state
+			
+				messagesPerSec = bung/((HAL_GetTick() - startTime)/1000);
 
         pitchAngleShow = radToDeg(pitchMotor.getAngle());
         pitchTargetShow = (-(pitchMotor.getAngle() - degToRad(115.0)));
@@ -85,29 +91,42 @@ void update() {
         if (userUART::aimMsgQueue != NULL) {
             if (xQueueReceive(userUART::aimMsgQueue, &(pxAimRxedPointer), (TickType_t)0) == pdPASS) {
                 if (pxAimRxedPointer->prefix == userUART::jetsonMsgTypes::aimAt) {
+										bung++;
                     dispYaw = pxAimRxedPointer->disp[0];
                     dispPitch = pxAimRxedPointer->disp[1];
+										if (dispYaw == 0 && dispPitch == 0){
+											currState = idle;
+										}
                     currState = aimFromCV;
                 }
             }
         }
+				sendGimbMessage(dispYaw);
+				stateShow = currState;
     }
 
     if (operatingType == secondary) {
-        currState = notRunning;
+        //currState = notRunning;
 
         yawAngleShow = radToDeg(yawMotor.getAngle());
         yawPidShow = yawPosPid.getOutput();
+			
+			  userIMU::imuUpdate();
+
+        roll = userIMU::imuRoll();
+        pitch = userIMU::imuPitch();
+        yaw = userIMU::imuYaw();
 
         if (userUART::gimbMsgQueue != NULL) {
             if (xQueueReceive(userUART::gimbMsgQueue, &(pxGimbRxedPointer), (TickType_t)0) == pdPASS) {
-								bung++;
                 if (pxGimbRxedPointer->prefix == userUART::d2dMsgTypes::gimbal) {
+										bung++;
                     currState = pxGimbRxedPointer->state;
                     yawRx = pxGimbRxedPointer->yaw;
                 }
             }
         }
+				stateShow = currState;
     }
 
     //HAL_UART_Transmit(&huart6, (uint8_t*)"sacke", sizeof("sacke"), 50);
@@ -139,12 +158,11 @@ void act() {
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
             // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
-            sendGimbMessage(dispYaw);
         }
         if (operatingType == secondary) {
             yawSave = yawMotor.getAngle();
             yawPosPid.setTarget(0.0);
-            yawTarget = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() - yawRx);
+            yawTarget = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() + yawRx);
             // yawTarget = -calculateAngleError(yawMotor.getAngle(), degToRad(90.0));
             yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
         }
@@ -156,8 +174,7 @@ void act() {
             pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
-            // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
-            sendGimbMessage();
+            pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
         }
         if (operatingType == secondary) {
             yawPosPid.setTarget(0.0);

@@ -30,9 +30,9 @@ extern gimbalMotor yawMotor, pitchMotor;
 extern pidInstance yawPosPid, pitchPosPid;
 
 enum gimbalStates {
-    notRunning,
-    aimFromCV,
-    idle,
+    notRunning = 0,
+    aimFromCV = 1,
+    idle = 2,
 };
 extern gimbalStates currState;
 

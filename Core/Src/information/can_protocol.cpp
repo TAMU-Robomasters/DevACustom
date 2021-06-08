@@ -241,6 +241,7 @@ void receive() {
 
 void send() {
     if (operatingType == primary) {
+        userCAN::motor_ControlChassis(chassis::c1Motor.getPower(), feeder::agitatorLeft.getPower(), feeder::agitatorRight.getPower(), 0, hcan1);
         userCAN::motor_ControlGimbFeed(gimbal::yawMotor.getPower(), gimbal::pitchMotor.getPower(), feeder::indexer.getPower(), hcan1);
     }
 
