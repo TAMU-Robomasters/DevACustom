@@ -143,7 +143,7 @@ void task() {
                     txAimMessage.disp[0] = angleX;
                     txAimMessage.disp[1] = angleY;
                     aimMsgPtr = &txAimMessage;
-                    xQueueSend(aimMsgQueue, (void*)&aimMsgPtr, (TickType_t)0);
+                    xQueueSend(aimMsgQueue, (void*)&aimMsgPtr, (TickType_t)1);
                 }
                 break;
             }
@@ -171,11 +171,11 @@ void task() {
                     txGimbMessage.state = static_cast<gimbal::gimbalStates>(d2dMessage[1]);
                     txGimbMessage.yaw = static_cast<float>(snY) / 10000.0f;
                     gimbMsgPtr = &txGimbMessage;
-                    xQueueSend(gimbMsgQueue, (void*)&gimbMsgPtr, (TickType_t)0);
-									
-										lastGimbalTime = currGimbalTime;
-										currGimbalTime = HAL_GetTick();
-										timeSinceLastGimbalMessage = currGimbalTime - lastGimbalTime;
+                    xQueueSend(gimbMsgQueue, (void*)&gimbMsgPtr, (TickType_t)1);
+
+                    lastGimbalTime = currGimbalTime;
+                    currGimbalTime = HAL_GetTick();
+                    timeSinceLastGimbalMessage = currGimbalTime - lastGimbalTime;
                 }
                 break;
             }
@@ -204,11 +204,11 @@ void task() {
                     txChassisMessage.m3 = static_cast<float>(snC3) / 50.0f;
                     txChassisMessage.m4 = static_cast<float>(snC4) / 50.0f;
                     chassisMsgPtr = &txChassisMessage;
-                    xQueueSend(chassisMsgQueue, (void*)&chassisMsgPtr, (TickType_t)0);
-										
-										lastChassisTime = currChassisTime;
-										currChassisTime = HAL_GetTick();
-										timeSinceLastChassisMessage = currChassisTime - lastChassisTime;
+                    xQueueSend(chassisMsgQueue, (void*)&chassisMsgPtr, (TickType_t)1);
+
+                    lastChassisTime = currChassisTime;
+                    currChassisTime = HAL_GetTick();
+                    timeSinceLastChassisMessage = currChassisTime - lastChassisTime;
                 }
                 break;
             }

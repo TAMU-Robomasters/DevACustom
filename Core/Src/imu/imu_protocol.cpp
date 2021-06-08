@@ -15,15 +15,15 @@ void imuUpdate() {
 }
 
 float imuRoll() {
-    return imu.rol;
+    return imu.wx;
 }
 
 float imuPitch() {
-    return imu.pit;
+    return imu.wy;
 }
 
 float imuYaw() {
-    return imu.yaw;
+    return imu.wz;
 }
 
 } // namespace userIMU

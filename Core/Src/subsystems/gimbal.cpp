@@ -76,12 +76,16 @@ void update() {
         pitchAngleShow = radToDeg(pitchMotor.getAngle());
         pitchTargetShow = (-(pitchMotor.getAngle() - degToRad(310.0)));
         pitchPidShow = pitchPosPid.getOutput();
-			
-				userIMU::imuUpdate();
 
-        roll = userIMU::imuRoll();
-        pitch = userIMU::imuPitch();
-        yaw = userIMU::imuYaw();
+        userIMU::imuUpdate();
+
+        //roll = userIMU::imuRoll();
+        //pitch = userIMU::imuPitch();
+        //yaw = userIMU::imuYaw();
+
+        roll = imu.mx;
+        pitch = imu.my;
+        yaw = imu.mz;
 
         if (/*fabs(getJoystick(joystickAxis::rightX)) >= 0.05f || */ fabs(getJoystick(joystickAxis::rightY)) >= 0.05f) {
             currState = rc;
@@ -180,7 +184,8 @@ void act() {
             if (fabs(getJoystick(joystickAxis::rightY)) >= 0.05f) {
                 pitchSave = pitchMotor.getAngle();
                 pitchPosPid.setTarget(0.0);
-                dispPitch = -getJoystick(joystickAxis::rightY) / 10.0f + std::copysign(0.02f, -getJoystick(joystickAxis::rightY));
+                dispPitch = -getJoystick(joystickAxis::rightY) / 10.0f + 0.03f /*+ std::copysign(0.02f, -getJoystick(joystickAxis::rightY))*/;
+
                 pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
                 pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             }
