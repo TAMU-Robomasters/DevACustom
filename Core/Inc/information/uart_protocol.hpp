@@ -24,7 +24,8 @@ struct aimMsgStruct {
 struct gimbMsgStruct {
     uint8_t prefix;
     gimbal::gimbalStates state;
-    float yaw;
+    float rx;
+    float imuY;
     // float pitch;
 };
 

@@ -7,6 +7,8 @@
 #include "stm32f4xx_hal.h"
 #include "tim.h"
 
+extern float chasMaxRPM;
+
 namespace chassis {
 
 class chassisMotor : public canMotor {
@@ -58,5 +60,6 @@ extern void act();
 extern void rcToPower(double angle, double magnitude, double yaw);
 
 extern void sendChassisMessage(float m1, float m2, float m3, float m4);
+extern void sendChassisMessage();
 
 } // namespace chassis

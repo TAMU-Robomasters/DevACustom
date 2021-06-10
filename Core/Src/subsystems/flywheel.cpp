@@ -1,6 +1,6 @@
 #include "subsystems/flywheel.hpp"
-#include "init.hpp"
 #include "information/rc_protocol.h"
+#include "init.hpp"
 #include <arm_math.h>
 
 namespace flywheel {
@@ -36,9 +36,10 @@ void task() {
 }
 
 void update() {
-    currState = notRunning;
-    if (getSwitch(switchType::left) == switchPosition::up) {
+    if (getSwitch(switchType::left) == switchPosition::up || getSwitch(switchType::left) == switchPosition::mid) {
         currState = running;
+    } else {
+        currState = notRunning;
     }
 }
 
@@ -65,33 +66,27 @@ double calcSlewDRpm(double currFw1Speed, double currFw2Speed, double targetFw1Sp
     double fw2DRPM;
     double velLim = angularAccLimit * 10;
 
-    if(angularAccLimit > abs(targetFw1Speed - currFw1Speed) / 10) {
+    if (angularAccLimit > abs(targetFw1Speed - currFw1Speed) / 10) {
         fw1DRPM = targetFw1Speed - currFw1Speed;
-    }
-    else if(angularAccLimit < abs(targetFw1Speed - currFw1Speed) / 10) {
-        if(targetFw1Speed - currFw1Speed < 0) {
+    } else if (angularAccLimit < abs(targetFw1Speed - currFw1Speed) / 10) {
+        if (targetFw1Speed - currFw1Speed < 0) {
             fw1DRPM = -velLim;
-        }
-        else if(targetFw1Speed - currFw1Speed > 0) {
+        } else if (targetFw1Speed - currFw1Speed > 0) {
             fw1DRPM = velLim;
         }
-    }
-    else {
+    } else {
         fw1DRPM = 0;
     }
 
-    if(angularAccLimit > abs(targetFw2Speed - currFw2Speed) / 10) {
+    if (angularAccLimit > abs(targetFw2Speed - currFw2Speed) / 10) {
         fw2DRPM = targetFw2Speed - currFw2Speed;
-    }
-    else if(angularAccLimit < abs(targetFw2Speed - currFw2Speed) / 10) {
-        if(targetFw2Speed - currFw2Speed < 0) {
+    } else if (angularAccLimit < abs(targetFw2Speed - currFw2Speed) / 10) {
+        if (targetFw2Speed - currFw2Speed < 0) {
             fw2DRPM = -velLim;
-        }
-        else if(targetFw2Speed - currFw2Speed > 0) {
+        } else if (targetFw2Speed - currFw2Speed > 0) {
             fw2DRPM = velLim;
         }
-    }
-    else {
+    } else {
         fw2DRPM = 0;
     }
 

@@ -118,7 +118,7 @@ void task() {
     HAL_UART_Receive_IT(&huart6, (uint8_t*)uart6InBuffer, 1);
     HAL_UART_Receive_IT(&huart7, (uint8_t*)uart7InBuffer, 1);
     HAL_UART_Receive_IT(&huart8, (uint8_t*)uart8InBuffer, 1);
-	
+
     lagTestStart = HAL_GetTick();
     //HAL_UART_Transmit(&huart8, (uint8_t*)lagTestArray, sizeof(lagTestArray), 100);
 
@@ -134,8 +134,8 @@ void task() {
                     uint16_t y2 = jetsonMessage[4];
                     uint16_t unsnX = (x1 << 8) + x2;
                     uint16_t unsnY = (y1 << 8) + y2;
-                    int16_t snX = (unsnX - 32768);
-                    int16_t snY = (unsnY - 32768);
+                    int16_t snX = (unsnX - int16_MAX);
+                    int16_t snY = (unsnY - int16_MAX);
                     angleX = static_cast<float>(snX) / 10000.0f;
                     angleY = static_cast<float>(snY) / 10000.0f;
 
@@ -157,58 +157,53 @@ void task() {
             }
             }
         }
-        
+
         if (xSemaphoreTake(uart8Semaphore, 0) == pdTRUE) {
             switch (d2dMessage[0]) {
             case gimbal: {
-                if (userUART::d2dBuffer.getLastWordSize() == 4) {
+                if (userUART::d2dBuffer.getLastWordSize() == 6) {
                     //goodReceive = 69;
-                    uint16_t y1 = d2dMessage[2];
-                    uint16_t y2 = d2dMessage[3];
-                    int16_t snY = (y1 << 8) + y2 - 32768;
+                    float valScaler = PI / int16_MAX;
+                    uint16_t rx1 = d2dMessage[2];
+                    uint16_t rx2 = d2dMessage[3];
+                    int16_t snRx = (rx1 << 8) + rx2 - int16_MAX;
+                    uint16_t imuY1 = d2dMessage[4];
+                    uint16_t imuY2 = d2dMessage[5];
+                    int16_t snImuY = (imuY1 << 8) + imuY2 - int16_MAX;
 
                     txGimbMessage.prefix = d2dMessage[0];
                     txGimbMessage.state = static_cast<gimbal::gimbalStates>(d2dMessage[1]);
-                    txGimbMessage.yaw = static_cast<float>(snY) / 10000.0f;
+                    txGimbMessage.rx = static_cast<float>(snRx) * valScaler;
+                    txGimbMessage.imuY = static_cast<float>(snImuY) * valScaler;
                     gimbMsgPtr = &txGimbMessage;
                     xQueueSend(gimbMsgQueue, (void*)&gimbMsgPtr, (TickType_t)1);
 
-                    lastGimbalTime = currGimbalTime;
-                    currGimbalTime = HAL_GetTick();
-                    timeSinceLastGimbalMessage = currGimbalTime - lastGimbalTime;
+                    timeSinceLastGimbalMessage = HAL_GetTick() - lastGimbalTime;
+                    lastGimbalTime = HAL_GetTick();
                 }
                 break;
             }
             case chassis: {
-                if (userUART::d2dBuffer.getLastWordSize() == 10){
-										goodReceive = 69;
+                if (userUART::d2dBuffer.getLastWordSize() == 6) {
+                    goodReceive = 69;
                     chassis::chassisStates state = static_cast<chassis::chassisStates>(d2dMessage[1]);
-                    uint16_t c1_1 = d2dMessage[2];
-                    uint16_t c1_2 = d2dMessage[3];
-                    uint16_t c2_1 = d2dMessage[4];
-                    uint16_t c2_2 = d2dMessage[5];
-                    uint16_t c3_1 = d2dMessage[6];
-                    uint16_t c3_2 = d2dMessage[7];
-                    uint16_t c4_1 = d2dMessage[8];
-                    uint16_t c4_2 = d2dMessage[9];
-
-                    int16_t snC1 = (c1_1 << 8) + c1_2 - 32768;
-                    int16_t snC2 = (c2_1 << 8) + c2_2 - 32768;
-                    int16_t snC3 = (c3_1 << 8) + c3_2 - 32768;
-                    int16_t snC4 = (c4_1 << 8) + c4_2 - 32768;
+                    float c1 = d2dMessage[2];
+                    float c2 = d2dMessage[3];
+                    float c3 = d2dMessage[4];
+                    float c4 = d2dMessage[5];
+                    float valScaler = chasMaxRPM / int8_MAX;
 
                     txChassisMessage.prefix = d2dMessage[0];
                     txChassisMessage.state = static_cast<chassis::chassisStates>(d2dMessage[1]);
-                    txChassisMessage.m1 = static_cast<float>(snC1) / 50.0f;
-                    txChassisMessage.m2 = static_cast<float>(snC2) / 50.0f;
-                    txChassisMessage.m3 = static_cast<float>(snC3) / 50.0f;
-                    txChassisMessage.m4 = static_cast<float>(snC4) / 50.0f;
+                    txChassisMessage.m1 = static_cast<float>((c1 - int8_MAX) * valScaler);
+                    txChassisMessage.m2 = static_cast<float>((c2 - int8_MAX) * valScaler);
+                    txChassisMessage.m3 = static_cast<float>((c3 - int8_MAX) * valScaler);
+                    txChassisMessage.m4 = static_cast<float>((c4 - int8_MAX) * valScaler);
                     chassisMsgPtr = &txChassisMessage;
                     xQueueSend(chassisMsgQueue, (void*)&chassisMsgPtr, (TickType_t)1);
 
-                    lastChassisTime = currChassisTime;
-                    currChassisTime = HAL_GetTick();
-                    timeSinceLastChassisMessage = currChassisTime - lastChassisTime;
+                    timeSinceLastChassisMessage = HAL_GetTick() - lastChassisTime;
+                    lastChassisTime = HAL_GetTick();
                 }
                 break;
             }
@@ -225,7 +220,7 @@ void task() {
 }
 
 void receive() {}
- 
+
 void send() {
     // HAL_UART_Transmit(&huart7, (uint8_t*)"handshake", sizeof("handshake"), 100);
     // userUART::yawInfoOut(&huart6, gimbal::yawMotor.getFeedback());

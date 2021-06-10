@@ -1,7 +1,7 @@
 #include "subsystems/gimbal.hpp"
 #include "imu/imu_protocol.hpp"
-#include "information/uart_protocol.hpp"
 #include "information/rc_protocol.h"
+#include "information/uart_protocol.hpp"
 #include "init.hpp"
 
 float32_t bung = 0;
@@ -14,32 +14,39 @@ float pitchAngleShow;
 double pitchTarget;
 float pitchTargetShow;
 float pitchPidShow;
-float currGimbTime;
-float lastGimbTime;
-float lastGimbLoopTime;
+float currGimbTime, lastGimbTime, lastGimbLoopTime;
 float pitchPowerShow;
 float dispYaw;
 float dispPitch;
 float roll, pitch, yaw;
 
+int stateShow;
+
 float rcRightX;
+float rcRightY;
 
 float yawSave = degToRad(94.0);
 float pitchSave = degToRad(355.0);
+float imuYawSave = degToRad(180.0);
+float imuPitchSave = degToRad(0.0);
 
-float yawRx;
-uint8_t gimbMsg[5];
+float yawRx = 0;
+float gimbYawIMU = 0;
+uint8_t gimbMsg[7];
+
+int16_t test;
+uint8_t test1, test2;
 
 namespace gimbal {
 
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
-	
+
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 // pidInstance yawPosPid(pidType::position, 95.0, 0.00, 2100.00);
 // pidInstance pitchPosPid(pidType::position, 350.0, 0.00, 6000.0); // not using direct motor speeds
-pidInstance yawPosPid(pidType::position, 100.0, 0.00, 0.6);
+pidInstance yawPosPid(pidType::position, 200.0, 0.3, 0.6);
 pidInstance pitchPosPid(pidType::position, 350.0, 0.00, 1.0);
 float kF = 0;
 
@@ -53,14 +60,12 @@ void task() {
 
         act();
         // set power to global variable here, message is actually sent with the others in the CAN task
-				
-        if (operatingType == primary){
+
+        if (operatingType == primary) {
             osDelay(2);
-        }
-        else if (operatingType == secondary){
+        } else if (operatingType == secondary) {
             osDelay(10);
-        }
-        else
+        } else
             osDelay(5);
     }
 }
@@ -70,22 +75,20 @@ void update() {
     struct userUART::aimMsgStruct* pxAimRxedPointer;
     struct userUART::gimbMsgStruct* pxGimbRxedPointer;
 
+    userIMU::imuUpdate();
+
+    roll = userIMU::imuRoll();
+    pitch = userIMU::imuPitch();
+    yaw = userIMU::imuYaw();
+
     if (operatingType == primary) {
-        currState = idle; // default state
+        currState = notRunning; // default state
 
         pitchAngleShow = radToDeg(pitchMotor.getAngle());
         pitchTargetShow = (-(pitchMotor.getAngle() - degToRad(310.0)));
         pitchPidShow = pitchPosPid.getOutput();
-
-        userIMU::imuUpdate();
-
-        //roll = userIMU::imuRoll();
-        //pitch = userIMU::imuPitch();
-        //yaw = userIMU::imuYaw();
-
-        roll = imu.mx;
-        pitch = imu.my;
-        yaw = imu.mz;
+        rcRightX = getJoystick(joystickAxis::rightX);
+        rcRightY = getJoystick(joystickAxis::rightY);
 
         if (/*fabs(getJoystick(joystickAxis::rightX)) >= 0.05f || */ fabs(getJoystick(joystickAxis::rightY)) >= 0.05f) {
             currState = rc;
@@ -100,11 +103,15 @@ void update() {
                 }
             }
         }
+
+        if (getSwitch(right) == switchPosition::up) {
+            currState = imuIdle;
+        }
     }
 
     if (operatingType == secondary) {
-        currState = notRunning;
-			
+        //currState = notRunning;
+
         yawAngleShow = radToDeg(yawMotor.getAngle());
         yawPidShow = yawPosPid.getOutput();
 
@@ -112,11 +119,14 @@ void update() {
             if (xQueueReceive(userUART::gimbMsgQueue, &(pxGimbRxedPointer), (TickType_t)0) == pdPASS) {
                 if (pxGimbRxedPointer->prefix == userUART::d2dMsgTypes::gimbal) {
                     currState = pxGimbRxedPointer->state;
-                    yawRx = pxGimbRxedPointer->yaw;
+                    yawRx = pxGimbRxedPointer->rx;
+                    gimbYawIMU = pxGimbRxedPointer->imuY;
                 }
             }
         }
     }
+
+    stateShow = currState;
 
     //if (yawMotor.getAngle() + dispYaw > degToRad(180.0) || yawMotor.getAngle() + dispYaw < degToRad(60.0)) {
     //    currState = idle;
@@ -135,6 +145,9 @@ void act() {
         // if (operatingType == secondary) {
         yawMotor.setPower(0);
         // }
+        if (operatingType == primary) {
+            sendGimbMessage(0);
+        }
         break;
 
     case aimFromCV:
@@ -168,7 +181,7 @@ void act() {
             pitchPosPid.setTarget(0.0);
             pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
-            sendGimbMessage();
+            sendGimbMessage(0);
         }
         if (operatingType == secondary) {
             yawPosPid.setTarget(0.0);
@@ -178,9 +191,23 @@ void act() {
         }
         break;
 
+    case imuIdle:
+        if (operatingType == primary) {
+            pitchPosPid.setTarget(0.0);
+            pitchTarget = calculateAngleError(userIMU::imuPitch(), imuPitchSave);
+            pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
+            sendGimbMessage(0);
+        }
+        if (operatingType == secondary) {
+            yawPosPid.setTarget(0.0);
+            yawDerivShow = yawMotor.getSpeed() * yawPosPid.getkD();
+            yawTarget = calculateAngleError(gimbYawIMU, imuYawSave);
+            yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
+        }
+        break;
+
     case rc:
         if (operatingType == primary) {
-            rcRightX = getJoystick(joystickAxis::rightX);
             if (fabs(getJoystick(joystickAxis::rightY)) >= 0.05f) {
                 pitchSave = pitchMotor.getAngle();
                 pitchPosPid.setTarget(0.0);
@@ -189,10 +216,10 @@ void act() {
                 pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
                 pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             }
-            sendGimbMessage();
+            sendGimbMessage(0);
             // if (getJoystick(joystickAxis::rightX) != 0){
-                // dispYaw = -getJoystick(joystickAxis::rightX) / 6.0f;
-                // sendGimbMessage(dispYaw);
+            // dispYaw = -getJoystick(joystickAxis::rightX) / 6.0f;
+            // sendGimbMessage(dispYaw);
             // }
         }
         if (operatingType == secondary) {
@@ -212,26 +239,27 @@ double normalizePitchAngle() {
     return -(pitchMotor.getAngle() - degToRad(355.0));
 }
 
-void sendGimbMessage() {
-    //uint8_t gimbMsg[5];
-    gimbMsg[0] = 'g';
-    gimbMsg[1] = static_cast<uint8_t>(currState);
-    gimbMsg[2] = 0;
-    gimbMsg[3] = 0;
-    gimbMsg[4] = 'e';
-    HAL_UART_Transmit(&huart8, (uint8_t*)gimbMsg, sizeof(gimbMsg), 1);
-}
-
 void sendGimbMessage(float y) {
-    int16_t yawT = static_cast<int16_t>(y * 10000);
-    uint8_t yawT1 = (yawT + 32768) >> 8;
-    uint8_t yawT2 = (yawT + 32768);
+    float valScaler = PI / int16_MAX;
+    int16_t yawT = static_cast<int16_t>(y / valScaler);
+    uint8_t yawT1 = (yawT + int16_MAX) >> 8;
+    uint8_t yawT2 = (yawT + int16_MAX);
+    int16_t imuY = static_cast<int16_t>(userIMU::imuYaw() / valScaler);
+    uint8_t imuY1 = (imuY + int16_MAX) >> 8;
+    uint8_t imuY2 = (imuY + int16_MAX);
+
+    // test = static_cast<int16_t>(-PI / valScaler);
+    // test1 = (test + int16_MAX) >> 8;
+    // test2 = (test + int16_MAX);
+
     gimbMsg[0] = 'g';
     gimbMsg[1] = static_cast<uint8_t>(currState);
     gimbMsg[2] = yawT1;
     gimbMsg[3] = yawT2;
-    gimbMsg[4] = 'e';
-    HAL_UART_Transmit(&huart8, (uint8_t*)gimbMsg, sizeof(gimbMsg), 1);
+    gimbMsg[4] = imuY1;
+    gimbMsg[5] = imuY2;
+    gimbMsg[6] = 'e';
+    HAL_UART_Transmit(&huart8, (uint8_t*)gimbMsg, sizeof(gimbMsg), 3);
 }
 
 } // namespace gimbal

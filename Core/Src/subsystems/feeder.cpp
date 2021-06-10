@@ -11,7 +11,7 @@ float f1Output;
 namespace feeder {
 
 feederStates currState = notRunning;
-	
+
 filter::Kalman feederVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 pidInstance velPidF1(pidType::velocity, 5.0, 0.00, 20.00);
@@ -30,10 +30,11 @@ void task() {
 }
 
 void update() {
-    currState = notRunning;
-    if (getSwitch(switchType::right) == switchPosition::up) {
+    if (getSwitch(switchType::left) == switchPosition::up) {
         currState = running;
         velPidF1.setTarget(40);
+    } else {
+        currState = notRunning;
     }
 
     f1Output = f1Motor.getSpeed();

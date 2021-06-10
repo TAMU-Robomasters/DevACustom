@@ -1,5 +1,6 @@
 #include "imu/imu_protocol.hpp"
 #include "imu/bsp_imu.h"
+#include "information/device.hpp"
 
 namespace userIMU {
 
@@ -15,15 +16,15 @@ void imuUpdate() {
 }
 
 float imuRoll() {
-    return imu.wx;
+    return degToRad(imu.pit);
 }
 
 float imuPitch() {
-    return imu.wy;
+    return degToRad(imu.rol);
 }
 
 float imuYaw() {
-    return imu.wz;
+    return degToRad(imu.yaw);
 }
 
 } // namespace userIMU

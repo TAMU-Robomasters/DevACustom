@@ -62,9 +62,9 @@ devacustom\flywheel.o: ../Core/Inc/information/filters.hpp
 devacustom\flywheel.o: ../Core/Inc/tim.h
 devacustom\flywheel.o: ../Core/Inc/information/pid.hpp
 devacustom\flywheel.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-devacustom\flywheel.o: ../Core/Inc/init.hpp
 devacustom\flywheel.o: ../Core/Inc/information/rc_protocol.h
 devacustom\flywheel.o: ../Core/Inc/usart.h
+devacustom\flywheel.o: ../Core/Inc/init.hpp
 devacustom\flywheel.o: ../Drivers/CMSIS/DSP/Include/arm_math.h
 devacustom\flywheel.o: ../Drivers/CMSIS/Include/core_cm4.h
 devacustom\flywheel.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
