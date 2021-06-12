@@ -178,8 +178,8 @@ void indicatorTaskFunc(void const* argument) {
     /* USER CODE BEGIN indicatorTaskFunc */
     /* Infinite loop */
     checkOperatingType();
-	
-		userIMU::imuInit();
+
+    userIMU::imuInit();
 
     vTaskResume(chassisTaskHandle);
     vTaskResume(gimbalTaskHandle);
