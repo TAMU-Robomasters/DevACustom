@@ -73,7 +73,7 @@ void update() {
     struct userUART::gimbMsgStruct* pxGimbRxedPointer;
 
     if (operatingType == primary) {
-        //currState = idle; // default state
+        currState = idle; // default state
 			
 				messagesPerSec = bung/((HAL_GetTick() - startTime)/1000);
 
@@ -174,7 +174,7 @@ void act() {
             pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
-            pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
+            // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
         }
         if (operatingType == secondary) {
             yawPosPid.setTarget(0.0);

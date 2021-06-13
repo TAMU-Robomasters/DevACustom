@@ -3,7 +3,7 @@
 <title>Static Call Graph - [DevACustom\DevACustom.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image DevACustom\DevACustom.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Jun 07 23:17:23 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Jun 11 22:07:09 2021
 <BR><P>
 <H3>Maximum Stack Usage =       1728 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -693,12 +693,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
-<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
+<BR>[Called By]<UL><LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[206]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_powf
 <LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[1aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
 <LI><a href="#[20c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
+<LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
 </UL>
 
 <P><STRONG><a name="[9c]"></a>__cxa_finalize</STRONG> (Thumb, 66 bytes, Stack size 24 bytes, cxa_finalize.o(.text))
@@ -2763,7 +2763,7 @@ Global Symbols
 
 <P><STRONG><a name="[2fb]"></a>feeder::feederMotor::feederMotor__sub_object(short, pidInstance&, filter::Kalman)</STRONG> (Thumb, 0 bytes, Stack size 48 bytes, feeder.o(i._ZN6feeder11feederMotorC1EsR11pidInstanceN6filter6KalmanE), UNUSED)
 
-<P><STRONG><a name="[1c5]"></a>feeder::act()</STRONG> (Thumb, 138 bytes, Stack size 24 bytes, feeder.o(i._ZN6feeder3actEv))
+<P><STRONG><a name="[1c5]"></a>feeder::act()</STRONG> (Thumb, 192 bytes, Stack size 24 bytes, feeder.o(i._ZN6feeder3actEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = feeder::act() &rArr; pidInstance::loop(float) &rArr; __aeabi_d2f
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -2785,7 +2785,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;feederTaskFunc(const void*)
 </UL>
 
-<P><STRONG><a name="[1c7]"></a>feeder::update()</STRONG> (Thumb, 114 bytes, Stack size 24 bytes, feeder.o(i._ZN6feeder6updateEv))
+<P><STRONG><a name="[1c7]"></a>feeder::update()</STRONG> (Thumb, 198 bytes, Stack size 24 bytes, feeder.o(i._ZN6feeder6updateEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = feeder::update() &rArr; pidInstance::setTarget(double) &rArr; __aeabi_d2f
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -2836,7 +2836,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::act()
 </UL>
 
-<P><STRONG><a name="[1d3]"></a>gimbal::act()</STRONG> (Thumb, 962 bytes, Stack size 56 bytes, gimbal.o(i._ZN6gimbal3actEv))
+<P><STRONG><a name="[1d3]"></a>gimbal::act()</STRONG> (Thumb, 886 bytes, Stack size 56 bytes, gimbal.o(i._ZN6gimbal3actEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = gimbal::act() &rArr; gimbal::calculateAngleError(double, double) &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
@@ -2868,7 +2868,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbalTaskFunc(const void*)
 </UL>
 
-<P><STRONG><a name="[1d7]"></a>gimbal::update()</STRONG> (Thumb, 458 bytes, Stack size 24 bytes, gimbal.o(i._ZN6gimbal6updateEv))
+<P><STRONG><a name="[1d7]"></a>gimbal::update()</STRONG> (Thumb, 464 bytes, Stack size 24 bytes, gimbal.o(i._ZN6gimbal6updateEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = gimbal::update() &rArr; userIMU::imuUpdate() &rArr; imu_ahrs_update() &rArr; __hardfp_sqrtf &rArr; __set_errno
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
@@ -2897,10 +2897,10 @@ Global Symbols
 <P><STRONG><a name="[1e0]"></a>chassis::act()</STRONG> (Thumb, 352 bytes, Stack size 32 bytes, chassis.o(i._ZN7chassis3actEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = chassis::act() &rArr; chassis::rcToPower(double, double, double) &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
-<LI><a href="#[1e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
+<BR>[Calls]<UL><LI><a href="#[1e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
 <LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
 <LI><a href="#[1e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getJoystick(joystickAxis)
 <LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::pow(float, int)
 <LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::getSpeed()
@@ -3100,7 +3100,7 @@ Global Symbols
 
 <P><STRONG><a name="[2fe]"></a>flywheel::flywheelMotor::flywheelMotor__sub_object(TIM_HandleTypeDef*, int, GPIO_TypeDef*, int)</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, flywheel.o(i._ZN8flywheel13flywheelMotorC1EP17TIM_HandleTypeDefiP12GPIO_TypeDefi), UNUSED)
 
-<P><STRONG><a name="[1fb]"></a>flywheel::act()</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, flywheel.o(i._ZN8flywheel3actEv))
+<P><STRONG><a name="[1fb]"></a>flywheel::act()</STRONG> (Thumb, 102 bytes, Stack size 8 bytes, flywheel.o(i._ZN8flywheel3actEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = flywheel::act() &rArr; pwmMotor::setPower(double) &rArr; pwmMotor::clamp(double) &rArr; __aeabi_cdcmple
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
@@ -3108,7 +3108,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[19c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flywheel::task()
 </UL>
 
-<P><STRONG><a name="[19c]"></a>flywheel::task()</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, flywheel.o(i._ZN8flywheel4taskEv))
+<P><STRONG><a name="[19c]"></a>flywheel::task()</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, flywheel.o(i._ZN8flywheel4taskEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = flywheel::task() &rArr; pwmMotor::initESC() &rArr; pwmMotor::setPower(double) &rArr; pwmMotor::clamp(double) &rArr; __aeabi_cdcmple
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
@@ -3120,7 +3120,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flywheelTaskFunc(const void*)
 </UL>
 
-<P><STRONG><a name="[1fd]"></a>flywheel::update()</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, flywheel.o(i._ZN8flywheel6updateEv))
+<P><STRONG><a name="[1fd]"></a>flywheel::update()</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, flywheel.o(i._ZN8flywheel6updateEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = flywheel::update()
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSwitch(switchType)
@@ -5191,7 +5191,7 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> feeder.o(.init_array)
 </UL>
-<P><STRONG><a name="[8e]"></a>__sti___12_flywheel_cpp_2b98d6e6</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, flywheel.o(i.__sti___12_flywheel_cpp_2b98d6e6))
+<P><STRONG><a name="[8e]"></a>__sti___12_flywheel_cpp_2b98d6e6</STRONG> (Thumb, 68 bytes, Stack size 8 bytes, flywheel.o(i.__sti___12_flywheel_cpp_2b98d6e6))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = __sti___12_flywheel_cpp_2b98d6e6 &rArr; flywheel::flywheelMotor::flywheelMotor(TIM_HandleTypeDef*, int, GPIO_TypeDef*, int) &rArr; pwmMotor::setPower(double) &rArr; pwmMotor::clamp(double) &rArr; __aeabi_cdcmple
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flywheel::flywheelMotor::flywheelMotor(TIM_HandleTypeDef*, int, GPIO_TypeDef*, int)

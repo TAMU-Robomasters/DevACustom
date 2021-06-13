@@ -9,6 +9,7 @@
 #include "stm32f4xx_hal.h"
 
 float f1Output;
+float indexerPidOut, agitatorLeftPidOut, agitatorRightPidOut;
 
 namespace feeder {
 
@@ -18,7 +19,7 @@ filter::Kalman feederVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 pidInstance velPidAgitatorLeft(pidType::velocity, 0.2, 0.00, 0.01);
 pidInstance velPidAgitatorRight(pidType::velocity, 0.2, 0.00, 0.01);
-pidInstance velPidIndexer(pidType::velocity, 0.2, 0.00, 0.01);
+pidInstance velPidIndexer(pidType::velocity, 0.5, 0.00, 0.01);
 
 feederMotor agitatorLeft(userCAN::M2006_AGITATOR_LEFT_ID, velPidAgitatorLeft, feederVelFilter);
 feederMotor agitatorRight(userCAN::M2006_AGITATOR_RIGHT_ID, velPidAgitatorRight, feederVelFilter);
@@ -39,29 +40,35 @@ void task() {
 
 void update() {
     currState = notRunning;
-    if (getSwitch(switchType::right) == switchPosition::up) {
+    if (getSwitch(switchType::left) == switchPosition::up) {
         currState = running;
 
         float feederSpeed = 150;
 
-        velPidAgitatorLeft.setTarget(feederSpeed * (4.0f / 7.0f));
+        velPidAgitatorLeft.setTarget(feederSpeed * (4.75f / 7.0f));
+        velPidAgitatorRight.setTarget(-feederSpeed * (4.75f / 7.0f));
         velPidIndexer.setTarget(feederSpeed);
     }
 
-    f1Output = agitatorLeft.getSpeed();
+    f1Output = agitatorRight.getSpeed();
+		indexerPidOut = velPidIndexer.getOutput();
+		agitatorLeftPidOut = velPidAgitatorLeft.getOutput();
+		agitatorRightPidOut = velPidAgitatorRight.getOutput();
+
 }
 
 void act() {
     switch (currState) {
     case notRunning:
         agitatorLeft.setPower(0);
+        agitatorRight.setPower(0);
         indexer.setPower(0);
         break;
 
     case running:
+        agitatorRight.setPower(velPidAgitatorRight.loop(agitatorRight.getSpeed()));
         agitatorLeft.setPower(velPidAgitatorLeft.loop(agitatorLeft.getSpeed()));
         indexer.setPower(velPidIndexer.loop(indexer.getSpeed()));
-        // agitatorLeft.setPower(20);
         // obviously this will change when we have actual intelligent things to put here
         break;
     }

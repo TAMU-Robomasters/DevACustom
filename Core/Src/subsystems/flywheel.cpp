@@ -11,6 +11,8 @@ double angularAccLimit = 0.1; // defined as rpm/10ms^2
 
 flywheelMotor flywheel1(&htim2, 1, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
 flywheelMotor flywheel2(&htim2, 2, POWER3_CTRL_GPIO_Port, POWER3_CTRL_Pin);
+flywheelMotor flywheel3(&htim2, 3, POWER1_CTRL_GPIO_Port, POWER1_CTRL_Pin);
+flywheelMotor flywheel4(&htim2, 4, POWER3_CTRL_GPIO_Port, POWER3_CTRL_Pin);
 
 void task() {
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
@@ -19,8 +21,9 @@ void task() {
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
     osDelay(500);
     flywheel1.initESC();
-    osDelay(1000);
     flywheel2.initESC();
+    flywheel3.initESC();
+    flywheel4.initESC();
 
     for (;;) {
         update();
@@ -34,7 +37,7 @@ void task() {
 
 void update() {
     currState = notRunning;
-    if (getSwitch(switchType::left) == switchPosition::up) {
+    if (getSwitch(switchType::left) == switchPosition::up || getSwitch(switchType::left) == switchPosition::mid) {
         currState = running;
     }
 }
@@ -44,11 +47,15 @@ void act() {
     case notRunning:
         flywheel1.setPower(0);
         flywheel2.setPower(0);
+        flywheel3.setPower(0);
+        flywheel4.setPower(0);
         break;
 
     case running:
         flywheel1.setPower(25);
         flywheel2.setPower(25);
+        flywheel3.setPower(25);
+        flywheel4.setPower(25);
         //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
         // obviously this will change when we have actual intelligent things to put here
         break;
