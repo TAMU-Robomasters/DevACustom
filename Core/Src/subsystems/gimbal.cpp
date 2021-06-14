@@ -73,7 +73,7 @@ void update() {
     struct userUART::gimbMsgStruct* pxGimbRxedPointer;
 
     if (operatingType == primary) {
-        currState = idle; // default state
+        //currState = idle; // default state
 			
 				messagesPerSec = bung/((HAL_GetTick() - startTime)/1000);
 

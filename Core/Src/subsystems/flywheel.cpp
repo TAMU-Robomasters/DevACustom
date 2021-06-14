@@ -52,10 +52,19 @@ void act() {
         break;
 
     case running:
-        flywheel1.setPower(25);
-        flywheel2.setPower(25);
-        flywheel3.setPower(25);
-        flywheel4.setPower(25);
+        float target = 45;
+				if(flywheel1.getPower() < target){
+					flywheel1.setPower(flywheel1.getPower() + 0.05f);
+					flywheel2.setPower(flywheel2.getPower() + 0.05f);
+					flywheel3.setPower(flywheel3.getPower() + 0.05f);
+					flywheel4.setPower(flywheel4.getPower() + 0.05f);
+				}
+				else{
+					flywheel1.setPower(target);
+					flywheel2.setPower(target);
+					flywheel3.setPower(target);
+					flywheel4.setPower(target);
+				}
         //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
         // obviously this will change when we have actual intelligent things to put here
         break;

@@ -28,6 +28,7 @@ volatile int rxCallback6 = 0;
 volatile int rxCallback7 = 0;
 volatile int rxCallback8 = 0;
 volatile int rxAnyCallback = 0;
+int jetsonMessages = 0;
 
 volatile uint8_t aimArray[5];
 volatile float angleX = 0 * PI / 180; //0*PI/180; used to be the initial angle for yaw (0)
@@ -122,6 +123,7 @@ void task() {
         if (operatingType == primary && xSemaphoreTake(uart6Semaphore, 0) == pdTRUE) {
             switch (jetsonMessage[0]) {
             case aimAt: {
+								jetsonMessages++;
                 if (userUART::jetsonBuffer.getLastWordSize() == 5) {
                     uint16_t x1 = jetsonMessage[1];
                     uint16_t x2 = jetsonMessage[2];
