@@ -66,7 +66,7 @@ void update() {
     }
 
     if (operatingType == secondary) {
-				c1Rx = c2Rx = c3Rx = c4Rx = 0;
+        c1Rx = c2Rx = c3Rx = c4Rx = 0;
         currState = notRunning; // default state if not updated by primary board
         angleOutput = radToDeg(angle);
 
@@ -83,8 +83,8 @@ void update() {
             }
         }
     }
-		
-		chasStateShow = currState;
+
+    chasStateShow = currState;
 
     //currTime = HAL_GetTick();
 

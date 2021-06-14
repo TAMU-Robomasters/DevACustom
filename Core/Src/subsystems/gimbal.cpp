@@ -27,8 +27,8 @@ float rcRightY;
 
 float yawSave = degToRad(94.0);
 float pitchSave = degToRad(355.0);
-float imuYawSave = degToRad(180.0);
-float imuPitchSave = degToRad(0.0);
+float imuGimbYawSave = degToRad(180.0);
+float imuGimbPitchSave = degToRad(0.0);
 
 float yawRx = 0;
 float gimbYawIMU = 0;
@@ -46,7 +46,7 @@ filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 // pidInstance yawPosPid(pidType::position, 95.0, 0.00, 2100.00);
 // pidInstance pitchPosPid(pidType::position, 350.0, 0.00, 6000.0); // not using direct motor speeds
-pidInstance yawPosPid(pidType::position, 200.0, 0.3, 0.6);
+pidInstance yawPosPid(pidType::position, 150.0, 0.0, 0.6);
 pidInstance pitchPosPid(pidType::position, 350.0, 0.00, 1.0);
 float kF = 0;
 
@@ -85,12 +85,12 @@ void update() {
         currState = notRunning; // default state
 
         pitchAngleShow = radToDeg(pitchMotor.getAngle());
-        pitchTargetShow = (-(pitchMotor.getAngle() - degToRad(310.0)));
+        pitchTargetShow = radToDeg(pitchPosPid.getTarget());
         pitchPidShow = pitchPosPid.getOutput();
         rcRightX = getJoystick(joystickAxis::rightX);
         rcRightY = getJoystick(joystickAxis::rightY);
 
-        if (/*fabs(getJoystick(joystickAxis::rightX)) >= 0.05f || */ fabs(getJoystick(joystickAxis::rightY)) >= 0.05f) {
+        if (fabs(getJoystick(joystickAxis::rightX)) + fabs(getJoystick(joystickAxis::rightY)) >= 0.05f) {
             currState = rc;
         }
 
@@ -103,14 +103,10 @@ void update() {
                 }
             }
         }
-
-        if (getSwitch(right) == switchPosition::up) {
-            currState = imuIdle;
-        }
     }
 
     if (operatingType == secondary) {
-        //currState = notRunning;
+        currState = notRunning;
 
         yawAngleShow = radToDeg(yawMotor.getAngle());
         yawPidShow = yawPosPid.getOutput();
@@ -139,13 +135,10 @@ void update() {
 void act() {
     switch (currState) {
     case notRunning:
-        // if (operatingType == primary) {
         pitchMotor.setPower(0);
-        // }
-        // if (operatingType == secondary) {
         yawMotor.setPower(0);
-        // }
         if (operatingType == primary) {
+            imuGimbPitchSave = userIMU::imuPitch();
             sendGimbMessage(0);
         }
         break;
@@ -159,6 +152,8 @@ void act() {
         // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
         if (operatingType == primary) {
             pitchSave = pitchMotor.getAngle();
+            imuGimbPitchSave = userIMU::imuPitch();
+
             pitchPosPid.setTarget(0.0);
             pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
@@ -166,6 +161,8 @@ void act() {
         }
         if (operatingType == secondary) {
             yawSave = yawMotor.getAngle();
+            imuGimbYawSave = gimbYawIMU;
+
             yawPosPid.setTarget(0.0);
             yawTarget = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() - yawRx);
             yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
@@ -178,12 +175,16 @@ void act() {
         // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(21.5));
         // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
         if (operatingType == primary) {
+            imuGimbPitchSave = userIMU::imuPitch();
+
             pitchPosPid.setTarget(0.0);
             pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             sendGimbMessage(0);
         }
         if (operatingType == secondary) {
+            imuGimbYawSave = gimbYawIMU;
+
             yawPosPid.setTarget(0.0);
             yawDerivShow = yawMotor.getSpeed() * yawPosPid.getkD();
             yawTarget = -calculateAngleError(yawMotor.getAngle(), yawSave);
@@ -194,28 +195,27 @@ void act() {
     case imuIdle:
         if (operatingType == primary) {
             pitchPosPid.setTarget(0.0);
-            pitchTarget = calculateAngleError(userIMU::imuPitch(), imuPitchSave);
+            pitchTarget = calculateAngleError(userIMU::imuPitch(), imuGimbPitchSave);
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             sendGimbMessage(0);
         }
         if (operatingType == secondary) {
             yawPosPid.setTarget(0.0);
             yawDerivShow = yawMotor.getSpeed() * yawPosPid.getkD();
-            yawTarget = calculateAngleError(gimbYawIMU, imuYawSave);
+            yawTarget = calculateAngleError(gimbYawIMU, imuGimbYawSave);
             yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
         }
         break;
 
     case rc:
         if (operatingType == primary) {
-            if (fabs(getJoystick(joystickAxis::rightY)) >= 0.05f) {
-                pitchSave = pitchMotor.getAngle();
-                pitchPosPid.setTarget(0.0);
-                dispPitch = -getJoystick(joystickAxis::rightY) / 10.0f + 0.03f /*+ std::copysign(0.02f, -getJoystick(joystickAxis::rightY))*/;
+            pitchSave = pitchMotor.getAngle();
+            pitchPosPid.setTarget(0.0);
+            dispPitch = getJoystick(joystickAxis::rightY) / 10.0f;
 
-                pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
-                pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
-            }
+            pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchMotor.getAngle() - dispPitch);
+            pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
+
             sendGimbMessage(0);
             // if (getJoystick(joystickAxis::rightX) != 0){
             // dispYaw = -getJoystick(joystickAxis::rightX) / 6.0f;
@@ -223,7 +223,10 @@ void act() {
             // }
         }
         if (operatingType == secondary) {
+            imuGimbYawSave = gimbYawIMU;
+
             yawPosPid.setTarget(0.0);
+            yawDerivShow = yawMotor.getSpeed() * yawPosPid.getkD();
             yawTarget = -calculateAngleError(yawMotor.getAngle(), yawSave);
             yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
         }
