@@ -106,6 +106,9 @@ extern RC_ctrl_t lastRcDataStruct;
 extern bool btnIsRising(btnType btn);
 extern bool btnIsFalling(btnType btn);
 
+extern bool switchIsRising(switchType sw, switchPosition pos);
+extern bool switchIsFalling(switchType sw, switchPosition pos);
+
 extern uint8_t getSwitch(switchType sw);
 extern float getJoystick(joystickAxis joy);
 

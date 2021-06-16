@@ -17,13 +17,13 @@ flywheelMotor flywheel4(&htim2, 4, POWER3_CTRL_GPIO_Port, POWER3_CTRL_Pin);
 void task() {
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+    //HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+    //HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
     osDelay(500);
     flywheel1.initESC();
     flywheel2.initESC();
-    flywheel3.initESC();
-    flywheel4.initESC();
+    //flywheel3.initESC();
+    //flywheel4.initESC();
 
     for (;;) {
         update();
@@ -52,19 +52,19 @@ void act() {
         break;
 
     case running:
-        float target = 45;
-				if(flywheel1.getPower() < target){
-					flywheel1.setPower(flywheel1.getPower() + 0.05f);
-					flywheel2.setPower(flywheel2.getPower() + 0.05f);
-					flywheel3.setPower(flywheel3.getPower() + 0.05f);
-					flywheel4.setPower(flywheel4.getPower() + 0.05f);
-				}
-				else{
-					flywheel1.setPower(target);
-					flywheel2.setPower(target);
-					flywheel3.setPower(target);
-					flywheel4.setPower(target);
-				}
+        float target = 26.15;
+        if(flywheel1.getPower() < target){
+            flywheel1.setPower(flywheel1.getPower() + 0.01f);
+            flywheel2.setPower(flywheel2.getPower() + 0.01f);
+            //flywheel3.setPower(flywheel3.getPower() + 0.05f);
+            //flywheel4.setPower(flywheel4.getPower() + 0.05f);
+        }
+        else{
+            flywheel1.setPower(target);
+            flywheel2.setPower(target);
+            //flywheel3.setPower(target);
+            //flywheel4.setPower(target);
+        }
         //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
         // obviously this will change when we have actual intelligent things to put here
         break;

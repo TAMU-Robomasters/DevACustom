@@ -95,6 +95,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -143,6 +144,8 @@ int main(void)
   HAL_GPIO_WritePin(GPIOG, LED_F_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_G_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOG, LED_H_Pin, GPIO_PIN_SET);
+	
+	HAL_GPIO_WritePin(GPIOH, POWER4_CTRL_Pin, GPIO_PIN_RESET);
 
   /* USER CODE END 2 */
 

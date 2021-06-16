@@ -198,6 +198,10 @@ public:
     //     this->currInput = in;
     // }
 
+    float getIntegral(){
+        return this->errorSum;
+    }
+
     float getDerivative() {
         return this->derivative;
     }

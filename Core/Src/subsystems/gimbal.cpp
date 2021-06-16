@@ -13,8 +13,8 @@ float yawTarget, pitchTarget;
 float roll, pitch, yaw;
 int stateShow;
 
-float yawSave = degToRad(270.0);
-float pitchSave = degToRad(130.0);
+float yawSave = degToRad(180.0);
+float pitchSave = degToRad(270.0);
 
 float yawRx;
 uint8_t gimbMsg[5];
@@ -27,13 +27,14 @@ namespace gimbal {
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
 
+
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 //pidInstance yawPosPid(pidType::position, 150.0, 0.00, 10000.0);
 //pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 2500.0);
-pidInstance yawPosPid(pidType::position, 200.0, 0.00, 2.2);
+pidInstance yawPosPid(pidType::position, 200.0, 0.00, 2.5);
 pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 0.5);
-float kF = 30;
+float kF = 23;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
 gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid, gimbalVelFilter);
@@ -188,7 +189,7 @@ void act() {
 }
 
 double normalizePitchAngle() {
-    return -(pitchMotor.getAngle() - degToRad(115.0));
+    return -(pitchMotor.getAngle() - degToRad(267.0));
 }
 
 double calculateAngleError(double currAngle, double targetAngle) {

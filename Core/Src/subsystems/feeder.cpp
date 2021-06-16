@@ -9,7 +9,12 @@
 #include "stm32f4xx_hal.h"
 
 float f1Output;
+float indexerP;
+float indexerI;
+float indexerD;
 float indexerPidOut, agitatorLeftPidOut, agitatorRightPidOut;
+float unJamTimer;
+float runningTimer;
 
 namespace feeder {
 
@@ -17,9 +22,9 @@ feederStates currState = notRunning;
 	
 filter::Kalman feederVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance velPidAgitatorLeft(pidType::velocity, 0.2, 0.00, 0.01);
-pidInstance velPidAgitatorRight(pidType::velocity, 0.2, 0.00, 0.01);
-pidInstance velPidIndexer(pidType::velocity, 0.5, 0.00, 0.01);
+pidInstance velPidAgitatorLeft(pidType::velocity, 0.7, 0.00, 0.01);
+pidInstance velPidAgitatorRight(pidType::velocity, 0.7, 0.00, 0.01);
+pidInstance velPidIndexer(pidType::velocity, 1.5, 0.000, 0.01);
 
 feederMotor agitatorLeft(userCAN::M2006_AGITATOR_LEFT_ID, velPidAgitatorLeft, feederVelFilter);
 feederMotor agitatorRight(userCAN::M2006_AGITATOR_RIGHT_ID, velPidAgitatorRight, feederVelFilter);
@@ -39,38 +44,70 @@ void task() {
 }
 
 void update() {
-    currState = notRunning;
-    if (getSwitch(switchType::left) == switchPosition::up) {
+    //currState = notRunning;
+    if (switchIsRising(switchType::left, switchPosition::up)) {
         currState = running;
-
-        float feederSpeed = 150;
-
-        velPidAgitatorLeft.setTarget(feederSpeed * (4.75f / 7.0f));
-        velPidAgitatorRight.setTarget(-feederSpeed * (4.75f / 7.0f));
-        velPidIndexer.setTarget(feederSpeed);
+    }
+    if (switchIsFalling(switchType::left, switchPosition::up)){
+        currState = notRunning;
     }
 
-    f1Output = agitatorRight.getSpeed();
-		indexerPidOut = velPidIndexer.getOutput();
-		agitatorLeftPidOut = velPidAgitatorLeft.getOutput();
-		agitatorRightPidOut = velPidAgitatorRight.getOutput();
-
+    //f1Output = agitatorRight.getSpeed();
+    indexerI = velPidIndexer.getIntegral();
+    indexerPidOut = velPidIndexer.getOutput();
+    //agitatorLeftPidOut = velPidAgitatorLeft.getOutput();
+    //agitatorRightPidOut = velPidAgitatorRight.getOutput();
 }
 
 void act() {
     switch (currState) {
-    case notRunning:
+    case notRunning: {
+			  HAL_GPIO_WritePin(GPIOH, POWER4_CTRL_Pin, GPIO_PIN_RESET);	
         agitatorLeft.setPower(0);
         agitatorRight.setPower(0);
         indexer.setPower(0);
         break;
+    }
+    case running: {
+			  HAL_GPIO_WritePin(GPIOH, POWER4_CTRL_Pin, GPIO_PIN_SET);
+        //if (runningTimer <= 2000){
+        float feederSpeed = -25; //Was 150 before speeding 
+        // velPidAgitatorLeft.setTarget(feederSpeed * (2.0f / 7.0f));
+        // velPidAgitatorRight.setTarget(-feederSpeed * (2.0f / 7.0f));
+        velPidIndexer.setTarget(feederSpeed);
 
-    case running:
-        agitatorRight.setPower(velPidAgitatorRight.loop(agitatorRight.getSpeed()));
-        agitatorLeft.setPower(velPidAgitatorLeft.loop(agitatorLeft.getSpeed()));
+        // agitatorRight.setPower(velPidAgitatorRight.loop(agitatorRight.getSpeed()));
+        // agitatorLeft.setPower(velPidAgitatorLeft.loop(agitatorLeft.getSpeed()));
         indexer.setPower(velPidIndexer.loop(indexer.getSpeed()));
-        // obviously this will change when we have actual intelligent things to put here
+
+        runningTimer += 10;
+        //}
+        // else {
+        //     runningTimer = 0;
+        //     currState = unJam;
+        // }
         break;
+    }
+    case unJam: {
+        if(unJamTimer <= 350){
+            // float feederSpeed = -100;
+            //velPidAgitatorLeft.setTarget(feederSpeed * 1.2f);
+            //velPidAgitatorRight.setTarget(-feederSpeed * 1.2f);
+            // velPidIndexer.setTarget(feederSpeed);
+
+            //agitatorRight.setPower(velPidAgitatorRight.loop(agitatorRight.getSpeed()));
+            //agitatorLeft.setPower(velPidAgitatorLeft.loop(agitatorLeft.getSpeed()));
+            // indexer.setPower(velPidIndexer.loop(indexer.getSpeed()));
+
+            unJamTimer += 10;
+					
+        }
+        else {
+            unJamTimer = 0;
+            currState = running;
+        }
+        break;
+    }
     }
 }
 // set power to global variable here, message is actually sent with the others in the CAN task

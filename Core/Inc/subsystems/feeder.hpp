@@ -28,6 +28,7 @@ extern feederMotor indexer;
 
 enum feederStates {
     notRunning,
+		unJam,
     running
 };
 extern feederStates currState;
