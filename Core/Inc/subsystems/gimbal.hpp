@@ -65,5 +65,6 @@ extern double normalizePitchAngle();
 
 extern void sendGimbMessage();
 extern void sendGimbMessage(float y);
+extern void sendGimbMessage(float y, float imuData);
 
 } // namespace gimbal
