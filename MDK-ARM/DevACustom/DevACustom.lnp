@@ -60,6 +60,7 @@
 "devacustom\gimbal.o"
 "devacustom\bsp_imu.o"
 "devacustom\imu_protocol.o"
+"devacustom\ref_protocol.o"
 "devacustom\fatfs.o"
 "devacustom\bsp_driver_sd.o"
 "devacustom\sd_diskio.o"

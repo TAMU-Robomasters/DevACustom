@@ -93,3 +93,5 @@ devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_iterbase.h
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstddef
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_mutex.h
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstring
+devacustom\freertos.o: ../Core/Inc/referee/ref_protocol.hpp
+devacustom\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

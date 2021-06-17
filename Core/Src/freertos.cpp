@@ -38,6 +38,7 @@
 #include "information/rc_protocol.h"
 #include "information/sd_protocol.h"
 #include "information/uart_protocol.hpp"
+#include "referee/ref_protocol.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +58,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+int counter1 = 0;
 /* USER CODE END Variables */
 osThreadId indicatorTaskHandle;
 osThreadId chassisTaskHandle;
@@ -68,6 +69,7 @@ osThreadId rcTaskHandle;
 osThreadId sensorTaskHandle;
 osThreadId canTaskHandle;
 osThreadId uartTaskHandle;
+osThreadId syncSerialTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -81,8 +83,7 @@ void flywheelTaskFunc(void const* argument);
 void feederTaskFunc(void const* argument);
 void canTaskFunc(void const* argument);
 void uartTaskFunc(void const* argument);
-
-int counter1 = 0;
+void syncSerialTaskFunc(void const* argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -155,6 +156,10 @@ void MX_FREERTOS_Init(void) {
     /* definition and creation of uartTask */
     osThreadDef(uartTask, uartTaskFunc, osPriorityNormal, 0, 128);
     uartTaskHandle = osThreadCreate(osThread(uartTask), NULL);
+
+    /* definition and creation of syncSerialTask */
+    osThreadDef(syncSerialTask, syncSerialTaskFunc, osPriorityNormal, 0, 128);
+    syncSerialTaskHandle = osThreadCreate(osThread(syncSerialTask), NULL);
 
     /* USER CODE BEGIN RTOS_THREADS */
     /* add threads, ... */
@@ -321,6 +326,20 @@ void uartTaskFunc(void const* argument) {
     /* Infinite loop */
     userUART::task();
     /* USER CODE END uartTaskFunc */
+}
+
+/* USER CODE BEGIN Header_syncSerialTaskFunc */
+/**
+* @brief Function implementing the syncSerialTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_syncSerialTaskFunc */
+void syncSerialTaskFunc(void const* argument) {
+    /* USER CODE BEGIN syncSerialTaskFunc */
+    /* Infinite loop */
+    userREF::task();
+    /* USER CODE END syncSerialTaskFunc */
 }
 
 /* Private application code --------------------------------------------------*/

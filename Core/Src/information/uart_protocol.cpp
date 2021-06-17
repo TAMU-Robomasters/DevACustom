@@ -19,7 +19,7 @@ using namespace userUART;
 
 int goodReceive = 0;
 volatile uint8_t uart6InBuffer[1];
-volatile uint8_t uart7InBuffer[1];
+//volatile uint8_t uart7InBuffer[1];
 volatile uint8_t uart8InBuffer[1];
 uint8_t transmitString[] = "teehee";
 volatile uint8_t* jetsonMessage = nullptr;
@@ -69,7 +69,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
     }
     if (huart == &huart7) {
         rxCallback7++;
-        HAL_UART_Receive_IT(huart, (uint8_t*)uart7InBuffer, 1);
+        //HAL_UART_Receive_IT(huart, (uint8_t*)uart7InBuffer, 1);
     }
     if (huart == &huart8) {
         rxCallback8++;
@@ -116,7 +116,7 @@ void task() {
     xSemaphoreGive(uart8Semaphore);
 
     HAL_UART_Receive_IT(&huart6, (uint8_t*)uart6InBuffer, 1);
-    HAL_UART_Receive_IT(&huart7, (uint8_t*)uart7InBuffer, 1);
+//    HAL_UART_Receive_IT(&huart7, (uint8_t*)uart7InBuffer, 1);
     HAL_UART_Receive_IT(&huart8, (uint8_t*)uart8InBuffer, 1);
 
     lagTestStart = HAL_GetTick();

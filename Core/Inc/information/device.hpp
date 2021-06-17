@@ -24,7 +24,7 @@
 #define int8_MAX 127
 #define int16_MAX 32768
 
-#define PI 3.14159265358979323846
+#define PI 3.14159265358979323846f
 
 enum operatingTypes {
     primary,

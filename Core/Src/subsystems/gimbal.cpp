@@ -19,11 +19,19 @@ float pitchPowerShow;
 float dispYaw;
 float dispPitch;
 float roll, pitch, yaw;
+float rollSpeed, pitchSpeed, yawSpeed;
+int pitchTemp;
 
 int stateShow;
 
 float rcRightX;
 float rcRightY;
+int keyW;
+int keyA;
+int keyS;
+int keyD;
+int mouseX;
+int mouseY;
 
 float yawSave = degToRad(94.0);
 float pitchSave = degToRad(355.0);
@@ -34,9 +42,6 @@ float yawRx = 0;
 float gimbYawIMU = 0;
 uint8_t gimbMsg[7];
 
-int16_t test;
-uint8_t test1, test2;
-
 namespace gimbal {
 
 gimbalStates currState = notRunning;
@@ -46,8 +51,11 @@ filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 // pidInstance yawPosPid(pidType::position, 95.0, 0.00, 2100.00);
 // pidInstance pitchPosPid(pidType::position, 350.0, 0.00, 6000.0); // not using direct motor speeds
-pidInstance yawPosPid(pidType::position, 150.0, 0.0, 0.6);
-pidInstance pitchPosPid(pidType::position, 350.0, 0.00, 1.0);
+pidInstance yawPosPid(pidType::position, 110.0, 0.0, 1.3);
+pidInstance pitchPosPid(pidType::position, 300.0, 0.00, 1.2);
+pidInstance yawVelPid(pidType::velocity, 0.0, 0.0, 0.0);
+pidInstance pitchVelPid(pidType::velocity, 0.0, 0.0, 0.0);
+
 float kF = 0;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
@@ -80,15 +88,25 @@ void update() {
     roll = userIMU::imuRoll();
     pitch = userIMU::imuPitch();
     yaw = userIMU::imuYaw();
+    rollSpeed = userIMU::imuRollSpeed();
+    pitchSpeed = userIMU::imuPitchSpeed();
+    yawSpeed = userIMU::imuYawSpeed();
 
     if (operatingType == primary) {
-        currState = notRunning; // default state
+        // currState = idle; // default state
 
         pitchAngleShow = radToDeg(pitchMotor.getAngle());
         pitchTargetShow = radToDeg(pitchPosPid.getTarget());
         pitchPidShow = pitchPosPid.getOutput();
+        pitchTemp = pitchMotor.getTemp();
         rcRightX = getJoystick(joystickAxis::rightX);
         rcRightY = getJoystick(joystickAxis::rightY);
+        keyW = GET_BIT(rcDataStruct.key.v, btnW);
+        keyA = GET_BIT(rcDataStruct.key.v, btnA);
+        keyS = GET_BIT(rcDataStruct.key.v, btnS);
+        keyD = GET_BIT(rcDataStruct.key.v, btnD);
+        mouseX = rcDataStruct.mouse.x;
+        mouseY = rcDataStruct.mouse.y;
 
         if (fabs(getJoystick(joystickAxis::rightX)) + fabs(getJoystick(joystickAxis::rightY)) >= 0.05f) {
             currState = rc;
@@ -180,6 +198,7 @@ void act() {
             pitchPosPid.setTarget(0.0);
             pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
+            // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
             sendGimbMessage(0);
         }
         if (operatingType == secondary) {

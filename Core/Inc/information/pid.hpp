@@ -202,6 +202,10 @@ public:
         return this->derivative;
     }
 
+    float getIntegral() {
+        return this->errorSum;
+    }
+
     float getOutput() {
         return this->output;
     }
