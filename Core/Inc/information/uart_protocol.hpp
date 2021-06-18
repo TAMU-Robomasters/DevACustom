@@ -46,6 +46,7 @@ typedef enum {
 typedef enum {
     gimbal = 'g',
     chassis = 'c',
+    chassisPower = 'x',
 } d2dMsgTypes;
 
 template <int maxSize, typename T = uint8_t>

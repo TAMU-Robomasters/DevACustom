@@ -130,26 +130,44 @@ void RCInit() {
     uart_receive_dma_no_it(&DBUS_HUART, dmaData, DBUS_MAX_LEN);
 }
 
-bool btnIsRising(btnType btn){
+bool getBtn(btnType btn) {
+    bool val;
+    switch (btn) {
+    case btnMouseL:
+        val = rcDataStruct.mouse.press_l;
+        break;
+
+    case btnMouseR:
+        val = rcDataStruct.mouse.press_r;
+        break;
+
+    default:
+        val = GET_BIT(rcDataStruct.key.v, btn);
+        break;
+    }
+    return val;
+}
+
+bool btnIsRising(btnType btn) {
     int curr;
     int last;
-    switch (btn){
-        case btnMouseL:
-            curr = rcDataStruct.mouse.press_l;
-            last = lastRcDataStruct.mouse.press_l;
-            break;
-        
-        case btnMouseR:
-            curr = rcDataStruct.mouse.press_r;
-            last = lastRcDataStruct.mouse.press_r;
-            break;
+    switch (btn) {
+    case btnMouseL:
+        curr = rcDataStruct.mouse.press_l;
+        last = lastRcDataStruct.mouse.press_l;
+        break;
 
-        default:
-            curr = GET_BIT(rcDataStruct.key.v, btn);
-            last = GET_BIT(lastRcDataStruct.key.v, btn);
-            break;
+    case btnMouseR:
+        curr = rcDataStruct.mouse.press_r;
+        last = lastRcDataStruct.mouse.press_r;
+        break;
+
+    default:
+        curr = GET_BIT(rcDataStruct.key.v, btn);
+        last = GET_BIT(lastRcDataStruct.key.v, btn);
+        break;
     }
-    return curr-last == 1;
+    return curr - last == 1;
 }
 
 bool btnIsFalling(btnType btn){
@@ -172,6 +190,23 @@ bool btnIsFalling(btnType btn){
             break;
     }
     return last-curr == 1;
+}
+
+float getMouse(mouseAxis axis) {
+    switch (axis) {
+    case x: {
+        return rcDataStruct.mouse.x;
+		}
+
+    case y: {
+        return rcDataStruct.mouse.y;
+		}
+
+    case z: {
+        return rcDataStruct.mouse.z;
+		}
+    }
+    return 0;
 }
 
 bool switchIsRising(switchType sw, switchPosition pos) {

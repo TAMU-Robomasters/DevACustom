@@ -207,6 +207,12 @@ void task() {
                 }
                 break;
             }
+            case chassisPower: {
+                if (userUART::d2dBuffer.getLastWordSize() == 2) {
+                    chassisPowerLimit = d2dMessage[1];
+                }
+                break;
+            }
             case structSync: {
                 lagTestEnd = HAL_GetTick();
                 lagTestRoundTrip = lagTestEnd - lagTestStart;

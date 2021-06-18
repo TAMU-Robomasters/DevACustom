@@ -1,4 +1,5 @@
 #include "subsystems/chassis.hpp"
+#include "imu/imu_protocol.hpp"
 #include "information/can_protocol.hpp"
 #include "information/filters.hpp"
 #include "information/pid.hpp"
@@ -18,6 +19,9 @@ float chasMaxRPM = 200;
 
 float c1Rx, c2Rx, c3Rx, c4Rx;
 uint8_t chassisMsg[7];
+uint8_t chassisPowerMsg[3];
+
+int btnCToggleState = 0;
 
 uint8_t chasStateShow;
 
@@ -30,6 +34,8 @@ CtrlTypes ctrlType = CURRENT;
 // i don't really like this but do i care enough to change it?
 
 filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
+
+// pidInstance chassisTurnPID(pidType::position, 0.2, 0.000, 0.000);
 
 pidInstance velPidC1(pidType::velocity, 0.2, 0.000, 2.000);
 pidInstance velPidC2(pidType::velocity, 0.2, 0.000, 2.000);
@@ -52,7 +58,7 @@ void task() {
         if (operatingType == primary) {
             osDelay(2);
         } else if (operatingType == secondary) {
-            osDelay(15);
+            osDelay(10);
         } else
             osDelay(5);
     }
@@ -62,12 +68,27 @@ void update() {
     struct userUART::chassisMsgStruct* pxChassisRxedPointer;
 
     if (operatingType == primary) {
-        currState = manual;
+        /*if (getSwitch(switchType::right) == switchPosition::up) {
+            currState = spinToWin;
+        } else */
+        if (fabs(getJoystick(joystickAxis::leftX)) > 0 || fabs(getJoystick(joystickAxis::leftY)) > 0 || fabs(getJoystick(joystickAxis::rightX)) > 0) {
+            currState = manual;
+        }
+				// if (getBtn(btnW) || getBtn(btnA) || getBtn(btnS) || getBtn(btnD)){
+				// 		currState = manual;
+				// }
+				else {
+						currState = notRunning;
+				}
+
+        if (btnIsRising(btnC)) {
+            chassisPowerUpdate();
+        }
     }
 
     if (operatingType == secondary) {
         c1Rx = c2Rx = c3Rx = c4Rx = 0;
-        currState = notRunning; // default state if not updated by primary board
+        // currState = notRunning; // default state if not updated by primary board
         angleOutput = radToDeg(angle);
 
         if (userUART::chassisMsgQueue != NULL) {
@@ -122,11 +143,12 @@ void act() {
         if (operatingType == primary) {
             angle = atan2(getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
             magnitude = sqrt(pow(getJoystick(joystickAxis::leftY), 2) + pow(getJoystick(joystickAxis::leftX), 2));
-            rcToPower(angle, magnitude, getJoystick(joystickAxis::rightX));
+            rcToPower(getJoystick(joystickAxis::rightX), getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
+            // rcToPower(getMouse(x)/100, getBtn(btnW) - getBtn(btnS), getBtn(btnA) - getBtn(btnD));
         }
 
         if (operatingType == secondary) {
-            c1SentPower = (c1Motor.getPower() * 16384.0f) / 100.0f;
+            c1SentPower = (c1Motor.getPower() * 16.384f);
             c1Derivative = velPidC1.getDerivative();
 
             velPidC1.setTarget(c1Rx);
@@ -142,10 +164,31 @@ void act() {
         }
         // this will change when we have things to put here
         break;
+
+    case spinToWin:
+        if (operatingType == primary) {
+            rcToPower(0.625, 0, 0);
+        }
+
+        if (operatingType == secondary) {
+            c1SentPower = (chassisPowerLimit / 24) * (M3508_MAX_CURRENT / M3508_MAX_AMPS) * c1Motor.getPower() / 100;
+            c1Derivative = velPidC1.getDerivative();
+
+            velPidC1.setTarget(c1Rx);
+            velPidC2.setTarget(c2Rx);
+            velPidC3.setTarget(c3Rx);
+            velPidC4.setTarget(c4Rx);
+
+            // c1Motor.setPower(velPidC1.getTarget());
+            c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
+            c2Motor.setPower(velPidC2.loop(c2Motor.getSpeed()));
+            c3Motor.setPower(velPidC3.loop(c3Motor.getSpeed()));
+            c4Motor.setPower(velPidC4.loop(c4Motor.getSpeed()));
+        }
     }
 }
 
-void rcToPower(double angle, double magnitude, double yaw) {
+void rcToPower(double rotate, double forward, double strafe) {
     // Computes the appropriate fraction of the wheel's motor power
 
     // Sine and cosine of math.h take angle in radians as input value
@@ -155,10 +198,6 @@ void rcToPower(double angle, double magnitude, double yaw) {
     // motor 4 back right
     float turnBias = 0.7;
 
-    float forward = getJoystick(joystickAxis::leftY);
-    float strafe = getJoystick(joystickAxis::leftX);
-    float rotate = getJoystick(joystickAxis::rightX);
-    
     rotate *= turnBias;
 
     motor1P = forward + rotate - strafe;
@@ -171,7 +210,7 @@ void rcToPower(double angle, double magnitude, double yaw) {
     max = fabs(motor3P) > max ? fabs(motor3P) : max;
     max = fabs(motor4P) > max ? fabs(motor4P) : max;
 
-    if (max > 1){
+    if (max > 1) {
         motor1P /= max;
         motor2P /= max;
         motor3P /= max;
@@ -183,7 +222,7 @@ void rcToPower(double angle, double magnitude, double yaw) {
     motor2P *= chasMaxRPM;
     motor3P *= chasMaxRPM;
     motor4P *= chasMaxRPM;
-		
+
     sendChassisMessage(motor1P, motor2P, motor3P, motor4P);
 }
 
@@ -197,6 +236,34 @@ void sendChassisMessage(float m1, float m2, float m3, float m4) {
     chassisMsg[5] = static_cast<uint8_t>((m4 / valScaler) + int8_MAX);
     chassisMsg[6] = 'e';
     HAL_UART_Transmit(&huart8, (uint8_t*)chassisMsg, sizeof(chassisMsg), 1);
+}
+
+void sendChassisPowerMessage(float power) {
+    chassisPowerMsg[0] = 'x';
+    chassisPowerMsg[1] = static_cast<uint8_t>(power);
+    chassisPowerMsg[2] = 'e';
+    HAL_UART_Transmit(&huart8, (uint8_t*)chassisPowerMsg, sizeof(chassisPowerMsg), 1);
+}
+
+void chassisPowerUpdate() {
+    btnCToggleState = btnCToggleState == 3 ? btnCToggleState = 0 : btnCToggleState++;
+    switch (btnCToggleState) {
+    case 0:
+        sendChassisPowerMessage(40);
+        break;
+
+    case 1:
+        sendChassisPowerMessage(45);
+        break;
+
+    case 2:
+        sendChassisPowerMessage(50);
+        break;
+
+    case 3:
+        sendChassisPowerMessage(55);
+        break;
+    }
 }
 
 } // namespace chassis

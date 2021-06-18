@@ -41,8 +41,9 @@ enum gimbalStates {
     notRunning = 0,
     aimFromCV = 1,
     idle = 2,
-    rc = 3,
-    imuIdle = 4,
+    imuIdle = 3,
+    rcYawLocked = 4,
+    rcYawUnlocked = 5,
 };
 extern gimbalStates currState;
 

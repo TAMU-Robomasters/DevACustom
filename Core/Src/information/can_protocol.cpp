@@ -19,6 +19,10 @@ float lastCANTime;
 float lastCANLoopTime;
 float canFillLevel;
 
+float chassisPowerLimit = 40; // 40W
+
+float chassisPowerScaler = 10;
+
 namespace userCAN {
 
 static device_t* can_devices_ptr;
@@ -97,10 +101,11 @@ device_t* getDevices(void) {
 }
 
 int8_t motor_ControlChassis(float32_t m1, float32_t m2, float32_t m3, float32_t m4, CAN_HandleTypeDef can) {
-    int16_t motor1 = static_cast<int16_t>((m1 * M3508_MAX_CURRENT) / 100); // scalar describes current cap but is named volt for some reason
-    int16_t motor2 = static_cast<int16_t>((m2 * M3508_MAX_CURRENT) / 100);
-    int16_t motor3 = static_cast<int16_t>((m3 * M3508_MAX_CURRENT) / 100);
-    int16_t motor4 = static_cast<int16_t>((m4 * M3508_MAX_CURRENT) / 100);
+    float powerScaler = (chassisPowerLimit / 24) * (M3508_MAX_CURRENT / M3508_MAX_AMPS) * chassisPowerScaler;
+    int16_t motor1 = static_cast<int16_t>((m1 * powerScaler) / 100); // scalar describes current cap but is named volt for some reason
+    int16_t motor2 = static_cast<int16_t>((m2 * powerScaler) / 100);
+    int16_t motor3 = static_cast<int16_t>((m3 * powerScaler) / 100);
+    int16_t motor4 = static_cast<int16_t>((m4 * powerScaler) / 100);
 
     CAN_TxHeaderTypeDef tx_header;
 

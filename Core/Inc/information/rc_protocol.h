@@ -100,8 +100,16 @@ typedef enum {
     btnMouseR,
 } btnType;
 
+typedef enum {
+    x = 0,
+    y = 1,
+    z = 2,
+} mouseAxis;
+
 extern RC_ctrl_t rcDataStruct;
 extern RC_ctrl_t lastRcDataStruct;
+
+extern bool getBtn(btnType btn);
 
 extern bool btnIsRising(btnType btn);
 extern bool btnIsFalling(btnType btn);
@@ -111,6 +119,7 @@ extern bool switchIsFalling(switchType sw, switchPosition pos);
 
 extern uint8_t getSwitch(switchType sw);
 extern float getJoystick(joystickAxis joy);
+extern float getMouse(mouseAxis axis);
 
 extern RC_ctrl_t* getRCData();
 

@@ -158,67 +158,67 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>roll</ItemText>
+          <ItemText>chasStateShow</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pitch</ItemText>
+          <ItemText>c1Rx</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>yaw</ItemText>
+          <ItemText>c2Rx</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rcRightX</ItemText>
+          <ItemText>c3Rx</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rcRightY</ItemText>
+          <ItemText>c4Rx</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>timeSinceLastChassisMessage,0x0A</ItemText>
+          <ItemText>keyW,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>timeSinceLastGimbalMessage,0x0A</ItemText>
+          <ItemText>keyA,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>\\DevACustom\../Core/Src/subsystems/gimbal.cpp\stateShow,0x0A</ItemText>
+          <ItemText>keyS,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>chassisMsg</ItemText>
+          <ItemText>keyD,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>c1Rx</ItemText>
+          <ItemText>mouseX,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>c2Rx</ItemText>
+          <ItemText>mouseY,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>11</count>
           <WinNumber>1</WinNumber>
-          <ItemText>c3Rx</ItemText>
+          <ItemText>timeSinceLastChassisMessage,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>12</count>
           <WinNumber>1</WinNumber>
-          <ItemText>c4Rx</ItemText>
+          <ItemText>timeSinceLastGimbalMessage,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>13</count>
@@ -243,184 +243,21 @@
         <Ww>
           <count>17</count>
           <WinNumber>1</WinNumber>
-          <ItemText>angleOutput</ItemText>
+          <ItemText>c1SentPower</ItemText>
         </Ww>
         <Ww>
           <count>18</count>
           <WinNumber>1</WinNumber>
-          <ItemText>test1,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>19</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>test2,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>20</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>test,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>21</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>gimbMsg</ItemText>
-        </Ww>
-        <Ww>
-          <count>22</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>gimbYawIMU</ItemText>
-        </Ww>
-        <Ww>
-          <count>23</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>yawRx</ItemText>
-        </Ww>
-        <Ww>
-          <count>24</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>chasStateShow,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>25</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>c1SentPower</ItemText>
-        </Ww>
-        <Ww>
-          <count>26</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>rxAnyCallback,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>27</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>rxCallback6,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>28</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>rxCallback7,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>29</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>rxCallback8,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>30</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>uart7InBuffer[0]</ItemText>
-        </Ww>
-        <Ww>
-          <count>31</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>currState</ItemText>
-        </Ww>
-        <Ww>
-          <count>32</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>watchNewMessage</ItemText>
-        </Ww>
-        <Ww>
-          <count>33</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>refWatchVar,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>34</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>serialHeadCheck</ItemText>
-        </Ww>
-        <Ww>
-          <count>35</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>watchCurrHp,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>36</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>watchRobotData</ItemText>
-        </Ww>
-        <Ww>
-          <count>37</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>frameCurrReadByte,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>38</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>frameHeader</ItemText>
-        </Ww>
-        <Ww>
-          <count>39</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>\\DevACustom\../Core/Src/subsystems/chassis.cpp\c3Rx</ItemText>
-        </Ww>
-        <Ww>
-          <count>40</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>pitchTemp,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>41</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>keyW,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>42</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>keyA,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>43</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>keyS,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>44</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>keyD,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>45</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>mouseX,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>46</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>mouseY,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>47</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>rollSpeed</ItemText>
-        </Ww>
-        <Ww>
-          <count>48</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>pitchSpeed</ItemText>
-        </Ww>
-        <Ww>
-          <count>49</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>yawSpeed</ItemText>
-        </Ww>
-        <Ww>
-          <count>50</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>yawPidShow</ItemText>
-        </Ww>
-        <Ww>
-          <count>51</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>pitchPidShow</ItemText>
-        </Ww>
-        <Ww>
-          <count>52</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sendTestVal</ItemText>
+          <ItemText>chassisPowerLimit</ItemText>
         </Ww>
       </WatchWindow1>
+      <WatchWindow2>
+        <Ww>
+          <count>0</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>mouseX</ItemText>
+        </Ww>
+      </WatchWindow2>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>

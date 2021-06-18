@@ -37,7 +37,12 @@ typedef unsigned int uint32_t;
 
 #define CAN_MOTOR_MAX_ENCODER 8191
 
+#define M3508_MAX_AMPS 20 // 20A
+
 #define CAN_MOTOR_CAN_RX_FIFO CAN_RX_FIFO0
+
+extern float chassisPowerLimit;
+extern float chassisPowerScaler;
 
 namespace userCAN {
 

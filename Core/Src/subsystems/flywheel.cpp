@@ -53,8 +53,10 @@ void act() {
 
     case running:
         HAL_GPIO_WritePin(GPIOH, POWER4_CTRL_Pin, GPIO_PIN_SET);
-        flywheel1.setPower(25);
-        flywheel2.setPower(25);
+				// 16 is 15m/s
+				// 25 is 30m/s
+        flywheel1.setPower(16);
+        flywheel2.setPower(16);
         //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
         // obviously this will change when we have actual intelligent things to put here
         break;
