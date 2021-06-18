@@ -6,10 +6,12 @@
 #include "information/rc_protocol.h"
 #include "information/uart_protocol.hpp"
 #include "init.hpp"
+#include "movement/SCurveAcceleration.hpp"
+#include "movement/SCurveMotionProfile.hpp"
 #include <arm_math.h>
 
 #define WHEEL_DIAM 1.62
-#define WHEEL_RADIUS WHEEL_DIAM/2
+#define WHEEL_RADIUS WHEEL_DIAM / 2
 
 float currTime;
 float angle, magnitude;
@@ -27,7 +29,9 @@ uint8_t chassisMsg[5];
 //INCLUDE userDebugFiles/chassis1DisplayValues.ini
 
 namespace chassis {
-	
+
+SCurveMotionProfile::Constraints profileConstraints{1.0, 2.0, 10.0}; // m/s, m/s/s, m/s/s/s
+
 float wheelDiameter = 1.62; // 1.62inches
 
 chassisStates currState = notRunning;
@@ -43,12 +47,12 @@ chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);
 
 void task() {
 
-    // osDelay(500);
+    SCurveMotionProfile movement(profileConstraints, 1); // move 1 meter
 
     for (;;) {
-			
-				updateRailPosition();
-			
+
+        updateRailPosition();
+
         update();
 
         act();
@@ -115,10 +119,10 @@ void act() {
         }
         // this will change when we have things to put here
         break;
-		
-		case patrol:
-				
-				break;
+
+    case profiledMove:
+
+        break;
     }
 }
 
@@ -178,11 +182,11 @@ void sendChassisMessage(float m1) {
     HAL_UART_Transmit(&huart8, (uint8_t*)chassisMsg, sizeof(chassisMsg), 1);
 }
 
-void updateRailPosition(){
-	//delta is in Radians 
-	float deltaChas = gimbal::calculateAngleError(c1Motor.getAngle(),lastChassisAngle) / 19.0f * 22 / 9 * (WHEEL_RADIUS);
-	lastChassisAngle = c1Motor.getAngle();
-	railPosition += deltaChas;
+void updateRailPosition() {
+    //delta is in Radians
+    float deltaChas = gimbal::calculateAngleError(c1Motor.getAngle(), lastChassisAngle) / 19.0f * 22 / 9 * (WHEEL_RADIUS);
+    lastChassisAngle = c1Motor.getAngle();
+    railPosition += deltaChas;
 }
 
 } // namespace chassis

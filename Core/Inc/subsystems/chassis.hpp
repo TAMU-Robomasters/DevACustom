@@ -30,7 +30,7 @@ extern chassisMotor c1Motor;
 enum chassisStates {
     notRunning = 0,
     manual = 1,
-		patrol = 2,
+    profiledMove = 2,
 };
 extern chassisStates currState;
 
