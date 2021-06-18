@@ -104,14 +104,10 @@ void update() {
                     dispPitch = pxAimRxedPointer->disp[1];
 										xStddev = pxAimRxedPointer->stddev[0];
 										yStddev = pxAimRxedPointer->stddev[1];
-										if (dispYaw == 0 && dispPitch == 0){
-											//currState = idle;
-										}
-                    //currState = aimFromCV;
+                    currState = aimFromCV;
                 }
             }
         }
-				sendGimbMessage(dispYaw);
 				sendJetsonMessage(normalizePitchAngle());
 				stateShow = currState;
     }
@@ -159,6 +155,7 @@ void act() {
         // if (operatingType == secondary) {
         yawMotor.setPower(0);
         // }
+				sendGimbMessage(0);
         break;
 
     case aimFromCV:
@@ -169,6 +166,7 @@ void act() {
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
             // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
+						sendGimbMessage(dispYaw);
         }
         if (operatingType == secondary) {
             yawSave = yawMotor.getAngle();
@@ -186,6 +184,7 @@ void act() {
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
             // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
+						sendGimbMessage(0);
         }
         if (operatingType == secondary) {
             yawPosPid.setTarget(0.0);

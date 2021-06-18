@@ -3,7 +3,7 @@
 <title>Static Call Graph - [DevACustom\DevACustom.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image DevACustom\DevACustom.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jun 17 19:27:53 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Jun 18 01:05:59 2021
 <BR><P>
 <H3>Maximum Stack Usage =       1728 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -159,8 +159,8 @@ Function Pointers
 Global Symbols
 </H3>
 <P><STRONG><a name="[91]"></a>__main</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, __main.o(!!!main))
-<BR><BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
-<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
+<BR><BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
+<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
 </UL>
 
 <P><STRONG><a name="[93]"></a>__scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter))
@@ -270,8 +270,8 @@ Global Symbols
 <P><STRONG><a name="[2e3]"></a>__rt_lib_shutdown_user_alloc_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$0000000C))
 
 <P><STRONG><a name="[94]"></a>__rt_entry</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry.o(.ARM.Collect$$rtentry$$00000000))
-<BR><BR>[Called By]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
+<BR><BR>[Called By]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
+<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
 </UL>
 
 <P><STRONG><a name="[2e4]"></a>__rt_entry_presh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000002))
@@ -582,11 +582,11 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;[local to stm32f4xx_hal_uart_c]::UART_SetConfig(__UART_HandleTypeDef*)
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetSysClockFreq
-<LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
 <LI><a href="#[22c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clmt_clust
 <LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
 <LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 <LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
 </UL>
 
 <P><STRONG><a name="[2e9]"></a>_ll_udiv</STRONG> (Thumb, 238 bytes, Stack size 48 bytes, lludivv7m.o(.text), UNUSED)
@@ -617,7 +617,6 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[199]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_FREERTOS_Init()
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sti___11_chassis_cpp_609a5387
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_memcpy
 <LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userCAN::send()
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::gimbalMotor::gimbalMotor(short, pidInstance&, filter::Kalman)
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sti___10_gimbal_cpp_bung
@@ -625,6 +624,7 @@ Global Symbols
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sti___10_feeder_cpp_32287c93
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::canMotor(short, float, float, filter::Kalman, float, float)
 <LI><a href="#[195]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_device_init()
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_memcpy
 </UL>
 
 <P><STRONG><a name="[2eb]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
@@ -678,10 +678,10 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__Heap_Full
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_heap_descriptor
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_atexit
-<LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;operator new(unsigned)
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_exceptions_buffer_init
+<BR>[Called By]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_exceptions_buffer_init
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__cxa_get_globals
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_atexit
+<LI><a href="#[20d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;operator new(unsigned)
 </UL>
 
 <P><STRONG><a name="[b0]"></a>__read_errno</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, _rserrno.o(.text), UNUSED)
@@ -862,8 +862,8 @@ Global Symbols
 <P><STRONG><a name="[bd]"></a>__sig_exit</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, defsig_exit.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sys_exit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_SIGRTMEM
-<LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_SIGABRT
+<BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_SIGABRT
+<LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_SIGRTMEM
 </UL>
 
 <P><STRONG><a name="[bc]"></a>__rt_SIGRTMEM_inner</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, defsig_rtmem_inner.o(.text))
@@ -878,10 +878,10 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 72 + Unknown Stack Size
 <LI>Call Chain = __cxa_get_globals &rArr; __ARM_exceptions_buffer_init &rArr; malloc &rArr; __Heap_Full &rArr; __Heap_ProvideMemory &rArr; free
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
-<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_exceptions_buffer_init
+<BR>[Calls]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_exceptions_buffer_init
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_eh_globals_addr
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;abort
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::terminate()
 </UL>
@@ -2511,8 +2511,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = imu_ahrs_update() &rArr; __hardfp_sqrtf &rArr; __set_errno
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
-<LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
 <LI><a href="#[191]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;inv_sqrt(float)
+<LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userIMU::imuUpdate()
 </UL>
@@ -2529,13 +2529,13 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = mpu_device_init() &rArr; ist8310_init() &rArr; [local to bsp_imu_c]::mpu_master_i2c_auto_read_config(unsigned char, unsigned char, unsigned char) &rArr; mpu_write_byte(unsigned char, unsigned char) &rArr; HAL_SPI_TransmitReceive &rArr; [local to stm32f4xx_hal_spi_c]::SPI_EndRxTxTransaction(__SPI_HandleTypeDef*, unsigned, unsigned) &rArr; [local to stm32f4xx_hal_spi_c]::SPI_WaitFlagStateUntilTimeout(__SPI_HandleTypeDef*, unsigned, FlagStatus, unsigned, unsigned)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 <LI><a href="#[197]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_set_accel_fsr(unsigned char)
 <LI><a href="#[196]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_set_gyro_fsr(unsigned char)
 <LI><a href="#[198]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_offset_call()
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_write_byte(unsigned char, unsigned char)
 <LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_read_byte(unsigned char)
 <LI><a href="#[17d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ist8310_init()
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[19e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userIMU::imuInit()
 </UL>
@@ -2636,8 +2636,8 @@ Global Symbols
 <P><STRONG><a name="[1a8]"></a>imu_attitude_update()</STRONG> (Thumb, 344 bytes, Stack size 16 bytes, bsp_imu.o(i._Z19imu_attitude_updatev))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = imu_attitude_update() &rArr; __hardfp_asinf &rArr; sqrtf &rArr; __set_errno
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
-<LI><a href="#[1a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::atan2(float, float)
+<BR>[Calls]<UL><LI><a href="#[1a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::atan2(float, float)
+<LI><a href="#[1aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asinf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userIMU::imuUpdate()
 </UL>
@@ -2767,8 +2767,8 @@ Global Symbols
 <P><STRONG><a name="[1c3]"></a>feeder::feederMotor::feederMotor(short, pidInstance&, filter::Kalman)</STRONG> (Thumb, 58 bytes, Stack size 48 bytes, feeder.o(i._ZN6feeder11feederMotorC1EsR11pidInstanceN6filter6KalmanE))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = feeder::feederMotor::feederMotor(short, pidInstance&, filter::Kalman) &rArr; canMotor::canMotor(short, float, float, filter::Kalman, float, float) &rArr; __aeabi_ddiv
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::canMotor(short, float, float, filter::Kalman, float, float)
+<BR>[Calls]<UL><LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::canMotor(short, float, float, filter::Kalman, float, float)
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sti___10_feeder_cpp_32287c93
 </UL>
@@ -2779,10 +2779,10 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = feeder::act() &rArr; pidInstance::loop(float) &rArr; __aeabi_d2f
 </UL>
 <BR>[Calls]<UL><LI><a href="#[15a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
-<LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::setPower(double)
 <LI><a href="#[1b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pidInstance::loop(float)
+<LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;feeder::task()
 </UL>
@@ -2810,8 +2810,8 @@ Global Symbols
 <P><STRONG><a name="[1c9]"></a>gimbal::gimbalMotor::gimbalMotor(short, pidInstance&, filter::Kalman)</STRONG> (Thumb, 58 bytes, Stack size 48 bytes, gimbal.o(i._ZN6gimbal11gimbalMotorC1EsR11pidInstanceN6filter6KalmanE))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = gimbal::gimbalMotor::gimbalMotor(short, pidInstance&, filter::Kalman) &rArr; canMotor::canMotor(short, float, float, filter::Kalman, float, float) &rArr; __aeabi_ddiv
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::canMotor(short, float, float, filter::Kalman, float, float)
+<BR>[Calls]<UL><LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::canMotor(short, float, float, filter::Kalman, float, float)
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__sti___10_gimbal_cpp_bung
 </UL>
@@ -2823,7 +2823,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[153]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::update()
+<BR>[Called By]<UL><LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::act()
 </UL>
 
 <P><STRONG><a name="[1cb]"></a>gimbal::sendJetsonMessage(float)</STRONG> (Thumb, 70 bytes, Stack size 24 bytes, gimbal.o(i._ZN6gimbal17sendJetsonMessageEf))
@@ -2849,30 +2849,31 @@ Global Symbols
 <P><STRONG><a name="[1d1]"></a>gimbal::normalizePitchAngle()</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, gimbal.o(i._ZN6gimbal19normalizePitchAngleEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = gimbal::normalizePitchAngle() &rArr; float degToRad&lang;double&rang;(T1) &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float degToRad&lang;double&rang;(T1)
+<BR>[Calls]<UL><LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float degToRad&lang;double&rang;(T1)
 <LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::getAngle()
+<LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::update()
 <LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::act()
 </UL>
 
-<P><STRONG><a name="[1d4]"></a>gimbal::act()</STRONG> (Thumb, 886 bytes, Stack size 56 bytes, gimbal.o(i._ZN6gimbal3actEv))
+<P><STRONG><a name="[1d4]"></a>gimbal::act()</STRONG> (Thumb, 916 bytes, Stack size 56 bytes, gimbal.o(i._ZN6gimbal3actEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = gimbal::act() &rArr; gimbal::calculateAngleError(double, double) &rArr; __hardfp_cos &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
+<BR>[Calls]<UL><LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::getAngle()
+<LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::normalizePitchAngle()
+<LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::calculateAngleError(double, double)
+<LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::sendGimbMessage(float)
+<LI><a href="#[1b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pidInstance::setTarget(double)
+<LI><a href="#[1b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pidInstance::loop(float, float)
+<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::getSpeed()
+<LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::setPower(double)
+<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[1d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[1d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dneg
-<LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::getAngle()
-<LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::normalizePitchAngle()
-<LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::calculateAngleError(double, double)
-<LI><a href="#[1b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pidInstance::setTarget(double)
-<LI><a href="#[1b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pidInstance::loop(float, float)
-<LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::getSpeed()
-<LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::setPower(double)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::task()
 </UL>
@@ -2889,13 +2890,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbalTaskFunc(const void*)
 </UL>
 
-<P><STRONG><a name="[1d9]"></a>gimbal::update()</STRONG> (Thumb, 582 bytes, Stack size 40 bytes, gimbal.o(i._ZN6gimbal6updateEv))
+<P><STRONG><a name="[1d9]"></a>gimbal::update()</STRONG> (Thumb, 560 bytes, Stack size 40 bytes, gimbal.o(i._ZN6gimbal6updateEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = gimbal::update() &rArr; gimbal::calculateAngleError(double, double) &rArr; __hardfp_cos &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 <LI><a href="#[1e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xQueueReceive
-<LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[1dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userIMU::imuUpdate()
 <LI><a href="#[1de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userIMU::imuPitch()
 <LI><a href="#[1dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userIMU::imuRoll()
@@ -2904,9 +2903,10 @@ Global Symbols
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::normalizePitchAngle()
 <LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::calculateAngleError(double, double)
 <LI><a href="#[1cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::sendJetsonMessage(float)
-<LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::sendGimbMessage(float)
 <LI><a href="#[1da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pidInstance::getOutput()
 <LI><a href="#[1db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float radToDeg&lang;float&rang;(T1)
+<LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::task()
 </UL>
@@ -2922,16 +2922,16 @@ Global Symbols
 <P><STRONG><a name="[1e2]"></a>chassis::act()</STRONG> (Thumb, 352 bytes, Stack size 32 bytes, chassis.o(i._ZN7chassis3actEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = chassis::act() &rArr; chassis::rcToPower(double, double, double) &rArr; __hardfp_cos &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
-<LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
-<LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getJoystick(joystickAxis)
+<BR>[Calls]<UL><LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getJoystick(joystickAxis)
 <LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::pow(float, int)
 <LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::getSpeed()
 <LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::rcToPower(double, double, double)
 <LI><a href="#[1c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::setPower(double)
 <LI><a href="#[1b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pidInstance::loop(float)
+<LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2f
+<LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrtf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[18f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::task()
 </UL>
@@ -2960,7 +2960,9 @@ Global Symbols
 <P><STRONG><a name="[1e6]"></a>chassis::rcToPower(double, double, double)</STRONG> (Thumb, 1230 bytes, Stack size 144 bytes, chassis.o(i._ZN7chassis9rcToPowerEddd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = chassis::rcToPower(double, double, double) &rArr; __hardfp_cos &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
+<BR>[Calls]<UL><LI><a href="#[1e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::abs(double)
+<LI><a href="#[1e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::sendChassisMessage(float)
+<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[1e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmpeq
@@ -2969,8 +2971,6 @@ Global Symbols
 <LI><a href="#[1d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[1e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;std::abs(double)
-<LI><a href="#[1e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::sendChassisMessage(float)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::act()
 </UL>
@@ -3022,10 +3022,10 @@ Global Symbols
 <P><STRONG><a name="[1f6]"></a>userCAN::send()</STRONG> (Thumb, 384 bytes, Stack size 88 bytes, can_protocol.o(i._ZN7userCAN4sendEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 212<LI>Call Chain = userCAN::send() &rArr; userCAN::motor_ControlChassis(float, float, float, float, __CAN_HandleTypeDef) &rArr; HAL_CAN_AddTxMessage
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[1f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userCAN::motor_ControlGimbFeed(float, float, float, __CAN_HandleTypeDef)
+<BR>[Calls]<UL><LI><a href="#[1f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userCAN::motor_ControlGimbFeed(float, float, float, __CAN_HandleTypeDef)
 <LI><a href="#[1f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userCAN::motor_ControlChassis(float, float, float, float, __CAN_HandleTypeDef)
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor::getPower()
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[17c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userCAN::task()
 </UL>
@@ -3126,8 +3126,8 @@ Global Symbols
 <P><STRONG><a name="[1fd]"></a>flywheel::act()</STRONG> (Thumb, 232 bytes, Stack size 24 bytes, flywheel.o(i._ZN8flywheel3actEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = flywheel::act() &rArr; pwmMotor::setPower(double) &rArr; pwmMotor::clamp(double) &rArr; __aeabi_cdcmple
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
+<BR>[Calls]<UL><LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
+<LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 </UL>
 <BR>[Called By]<UL><LI><a href="#[19c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flywheel::task()
 </UL>
@@ -3176,11 +3176,11 @@ Global Symbols
 <P><STRONG><a name="[1fc]"></a>pwmMotor::setPower(double)</STRONG> (Thumb, 228 bytes, Stack size 64 bytes, flywheel.o(i._ZN8pwmMotor8setPowerEd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = pwmMotor::setPower(double) &rArr; pwmMotor::clamp(double) &rArr; __aeabi_cdcmple
 </UL>
-<BR>[Calls]<UL><LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
+<BR>[Calls]<UL><LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::clamp(double)
+<LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
 <LI><a href="#[1d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::clamp(double)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::initESC()
 <LI><a href="#[1fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flywheel::act()
@@ -3551,10 +3551,10 @@ Global Symbols
 <P><STRONG><a name="[260]"></a>disk_read</STRONG> (Thumb, 42 bytes, Stack size 24 bytes, diskio.o(i.disk_read))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = disk_read
 </UL>
-<BR>[Called By]<UL><LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;move_window
-<LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
+<BR>[Called By]<UL><LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
 <LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 <LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;move_window
 </UL>
 
 <P><STRONG><a name="[26a]"></a>disk_status</STRONG> (Thumb, 24 bytes, Stack size 16 bytes, diskio.o(i.disk_status))
@@ -3567,20 +3567,20 @@ Global Symbols
 <P><STRONG><a name="[261]"></a>disk_write</STRONG> (Thumb, 42 bytes, Stack size 24 bytes, diskio.o(i.disk_write))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = disk_write
 </UL>
-<BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
+<BR>[Called By]<UL><LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
+<LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 <LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_window
 <LI><a href="#[262]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_fs
-<LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
-<LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 </UL>
 
 <P><STRONG><a name="[1a6]"></a>f_close</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, ff.o(i.f_close))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1488<LI>Call Chain = f_close &rArr; f_sync &rArr; load_obj_dir &rArr; load_xdir &rArr; dir_next &rArr; create_chain &rArr; fill_last_frag &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
+<BR>[Calls]<UL><LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dec_lock
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 <LI><a href="#[24e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;validate
 <LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unlock_fs
-<LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dec_lock
 </UL>
 <BR>[Called By]<UL><LI><a href="#[19d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkOperatingType()
 </UL>
@@ -3588,12 +3588,12 @@ Global Symbols
 <P><STRONG><a name="[1a3]"></a>f_mount</STRONG> (Thumb, 128 bytes, Stack size 40 bytes, ff.o(i.f_mount))
 <BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = f_mount &rArr; find_volume &rArr; lock_fs &rArr; ff_req_grant &rArr; osSemaphoreWait &rArr; xQueueSemaphoreTake &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
 </UL>
-<BR>[Calls]<UL><LI><a href="#[253]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_del_syncobj
+<BR>[Calls]<UL><LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear_lock
+<LI><a href="#[253]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_del_syncobj
 <LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_cre_syncobj
 <LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unlock_fs
 <LI><a href="#[251]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_ldnumber
 <LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
-<LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear_lock
 </UL>
 <BR>[Called By]<UL><LI><a href="#[19d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkOperatingType()
 </UL>
@@ -3601,7 +3601,11 @@ Global Symbols
 <P><STRONG><a name="[1a4]"></a>f_open</STRONG> (Thumb, 1108 bytes, Stack size 1264 bytes, ff.o(i.f_open))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1720<LI>Call Chain = f_open &rArr; dir_register &rArr; dir_find &rArr; dir_read &rArr; load_xdir &rArr; dir_next &rArr; create_chain &rArr; fill_last_frag &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
+<BR>[Calls]<UL><LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
+<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chk_lock
+<LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_read
+<LI><a href="#[259]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fattime
+<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unlock_fs
 <LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
 <LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;st_qword
@@ -3619,10 +3623,6 @@ Global Symbols
 <LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
 <LI><a href="#[258]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enq_lock
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
-<LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
-<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chk_lock
-<LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_read
-<LI><a href="#[259]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fattime
 </UL>
 <BR>[Called By]<UL><LI><a href="#[19d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkOperatingType()
 </UL>
@@ -3630,15 +3630,15 @@ Global Symbols
 <P><STRONG><a name="[1a7]"></a>f_read</STRONG> (Thumb, 672 bytes, Stack size 80 bytes, ff.o(i.f_read))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = f_read &rArr; validate &rArr; unlock_fs &rArr; ff_rel_grant &rArr; osSemaphoreRelease &rArr; xQueueGenericSend &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
 </UL>
-<BR>[Calls]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
+<BR>[Calls]<UL><LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
+<LI><a href="#[22c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clmt_clust
+<LI><a href="#[261]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_write
+<LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_read
+<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 <LI><a href="#[24e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;validate
 <LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unlock_fs
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_cpy
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
-<LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
-<LI><a href="#[22c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clmt_clust
-<LI><a href="#[261]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_write
-<LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_read
 </UL>
 <BR>[Called By]<UL><LI><a href="#[19d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkOperatingType()
 </UL>
@@ -3646,7 +3646,9 @@ Global Symbols
 <P><STRONG><a name="[24d]"></a>f_sync</STRONG> (Thumb, 460 bytes, Stack size 1232 bytes, ff.o(i.f_sync))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1472<LI>Call Chain = f_sync &rArr; load_obj_dir &rArr; load_xdir &rArr; dir_next &rArr; create_chain &rArr; fill_last_frag &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[24e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;validate
+<BR>[Calls]<UL><LI><a href="#[261]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_write
+<LI><a href="#[259]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fattime
+<LI><a href="#[24e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;validate
 <LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unlock_fs
 <LI><a href="#[262]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_fs
 <LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
@@ -3658,24 +3660,22 @@ Global Symbols
 <LI><a href="#[247]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;load_obj_dir
 <LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fill_last_frag
 <LI><a href="#[246]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fill_first_frag
-<LI><a href="#[261]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_write
-<LI><a href="#[259]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fattime
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_close
 </UL>
 
 <P><STRONG><a name="[1a5]"></a>f_write</STRONG> (Thumb, 762 bytes, Stack size 80 bytes, ff.o(i.f_write))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = f_write &rArr; validate &rArr; unlock_fs &rArr; ff_rel_grant &rArr; osSemaphoreRelease &rArr; xQueueGenericSend &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
+<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = f_write &rArr; create_chain &rArr; fill_last_frag &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
-<LI><a href="#[24e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;validate
-<LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unlock_fs
-<LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_cpy
-<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
+<BR>[Calls]<UL><LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
 <LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
 <LI><a href="#[22c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clmt_clust
 <LI><a href="#[261]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_write
 <LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_read
+<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
+<LI><a href="#[24e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;validate
+<LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unlock_fs
+<LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_cpy
 </UL>
 <BR>[Called By]<UL><LI><a href="#[19d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;checkOperatingType()
 </UL>
@@ -3729,14 +3729,14 @@ Global Symbols
 <P><STRONG><a name="[22e]"></a>ff_wtoupper</STRONG> (Thumb, 156 bytes, Stack size 12 bytes, ccsbcs.o(i.ff_wtoupper))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = ff_wtoupper
 </UL>
-<BR>[Called By]<UL><LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xname_sum
+<BR>[Called By]<UL><LI><a href="#[22d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cmp_lfn
+<LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xname_sum
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
-<LI><a href="#[22d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cmp_lfn
 </UL>
 
 <P><STRONG><a name="[259]"></a>get_fattime</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, fatfs.o(i.get_fattime))
-<BR><BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
-<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<BR><BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 </UL>
 
 <P><STRONG><a name="[a2]"></a>main</STRONG> (Thumb, 232 bytes, Stack size 0 bytes, main.o(i.main))
@@ -4410,10 +4410,10 @@ Global Symbols
 <P><STRONG><a name="[2ac]"></a>userUART::circularBuffer&lang;(int)2050, unsigned char&rang;::reset()</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, uart_protocol.o(t._ZN8userUART14circularBufferILi2050EhE5resetEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = userUART::circularBuffer&lang;(int)2050, unsigned char&rang;::reset() &rArr; operator new[] (unsigned) &rArr; operator new(unsigned) &rArr; malloc &rArr; __Heap_Full &rArr; __Heap_ProvideMemory &rArr; free
 </UL>
-<BR>[Calls]<UL><LI><a href="#[20c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;operator new[] (unsigned)
-<LI><a href="#[20a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;operator delete[] (void*)
-<LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userUART::circularBuffer&lang;(int)2050, unsigned char&rang;::getSize()
+<BR>[Calls]<UL><LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userUART::circularBuffer&lang;(int)2050, unsigned char&rang;::getSize()
 <LI><a href="#[2ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userUART::circularBuffer&lang;(int)2050, unsigned char&rang;::dequeue()
+<LI><a href="#[20c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;operator new[] (unsigned)
+<LI><a href="#[20a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;operator delete[] (void*)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[14f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userUART::circularBuffer&lang;(int)2050, unsigned char&rang;::enqueue(unsigned char)
 </UL>
@@ -4463,12 +4463,12 @@ Global Symbols
 <P><STRONG><a name="[304]"></a>userUART::circularBuffer&lang;(int)2050, unsigned char&rang;::~circularBuffer__sub_object()</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, uart_protocol.o(t._ZN8userUART14circularBufferILi2050EhED1Ev), UNUSED)
 
 <P><STRONG><a name="[1d5]"></a>__aeabi_dneg</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, basic.o(x$fpl$basic))
-<BR><BR>[Called By]<UL><LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
+<BR><BR>[Called By]<UL><LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::act()
+<LI><a href="#[1ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
-<LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::act()
 </UL>
 
 <P><STRONG><a name="[305]"></a>_dneg</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, basic.o(x$fpl$basic), UNUSED)
@@ -4506,15 +4506,15 @@ Global Symbols
 <P><STRONG><a name="[1d8]"></a>__aeabi_dadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_dadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[219]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
+<BR>[Called By]<UL><LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::act()
+<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
+<LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::rcToPower(double, double, double)
+<LI><a href="#[219]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[21a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_infnan2
 <LI><a href="#[215]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_infnan
 <LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::act()
-<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
-<LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::rcToPower(double, double, double)
 </UL>
 
 <P><STRONG><a name="[2b4]"></a>_dadd</STRONG> (Thumb, 332 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd), UNUSED)
@@ -4531,12 +4531,12 @@ Global Symbols
 <P><STRONG><a name="[1ea]"></a>__aeabi_ddiv</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, ddiv.o(x$fpl$ddiv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_ddiv
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
-<LI><a href="#[21d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_invalid
-<LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float degToRad&lang;double&rang;(T1)
+<BR>[Called By]<UL><LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float degToRad&lang;double&rang;(T1)
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::canMotor(short, float, float, filter::Kalman, float, float)
 <LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::rcToPower(double, double, double)
+<LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
+<LI><a href="#[21d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_invalid
+<LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
 </UL>
 
 <P><STRONG><a name="[2b7]"></a>_ddiv</STRONG> (Thumb, 552 bytes, Stack size 32 bytes, ddiv.o(x$fpl$ddiv), UNUSED)
@@ -4558,9 +4558,9 @@ Global Symbols
 <P><STRONG><a name="[203]"></a>__aeabi_d2iz</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dfix.o(x$fpl$dfix))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2iz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
+<BR>[Called By]<UL><LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
+<LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[220]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
-<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
 </UL>
 
 <P><STRONG><a name="[2ba]"></a>_dfix</STRONG> (Thumb, 94 bytes, Stack size 32 bytes, dfix.o(x$fpl$dfix), UNUSED)
@@ -4568,9 +4568,9 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[202]"></a>__aeabi_i2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt))
-<BR><BR>[Called By]<UL><LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
-<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
+<BR><BR>[Called By]<UL><LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
 <LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::clamp(double)
+<LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 </UL>
 
 <P><STRONG><a name="[30a]"></a>_dflt</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt), UNUSED)
@@ -4600,16 +4600,16 @@ Global Symbols
 <P><STRONG><a name="[1d6]"></a>__aeabi_dmul</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[219]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
+<BR>[Called By]<UL><LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float degToRad&lang;double&rang;(T1)
+<LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::act()
+<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
+<LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::rcToPower(double, double, double)
+<LI><a href="#[219]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 <LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[217]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 <LI><a href="#[220]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float degToRad&lang;double&rang;(T1)
-<LI><a href="#[1d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::act()
-<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pwmMotor::setPower(double)
-<LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::rcToPower(double, double, double)
 </UL>
 
 <P><STRONG><a name="[2bc]"></a>_dmul</STRONG> (Thumb, 332 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul), UNUSED)
@@ -4649,12 +4649,12 @@ Global Symbols
 <P><STRONG><a name="[1cd]"></a>__aeabi_drsub</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, daddsub_clz.o(x$fpl$drsb))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_drsub
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
+<BR>[Called By]<UL><LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::calculateAngleError(double, double)
+<LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[220]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[1cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::calculateAngleError(double, double)
 </UL>
 
 <P><STRONG><a name="[2bf]"></a>_drsb</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, daddsub_clz.o(x$fpl$drsb), UNUSED)
@@ -4665,12 +4665,12 @@ Global Symbols
 <P><STRONG><a name="[1eb]"></a>__aeabi_dsub</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, daddsub_clz.o(x$fpl$dsub))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dsub
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
+<BR>[Called By]<UL><LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::rcToPower(double, double, double)
+<LI><a href="#[1d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[21f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[21e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
 <LI><a href="#[220]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan
-<LI><a href="#[1e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis::rcToPower(double, double, double)
 </UL>
 
 <P><STRONG><a name="[2c1]"></a>_dsub</STRONG> (Thumb, 464 bytes, Stack size 32 bytes, daddsub_clz.o(x$fpl$dsub), UNUSED)
@@ -5203,17 +5203,17 @@ Local Symbols
 <P><STRONG><a name="[8c]"></a>__sti___11_chassis_cpp_609a5387</STRONG> (Thumb, 154 bytes, Stack size 88 bytes, chassis.o(i.__sti___11_chassis_cpp_609a5387))
 <BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = __sti___11_chassis_cpp_609a5387 &rArr; canMotor::canMotor(short, float, float, filter::Kalman, float, float) &rArr; __aeabi_ddiv
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::canMotor(short, float, float, filter::Kalman, float, float)
+<BR>[Calls]<UL><LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;canMotor::canMotor(short, float, float, filter::Kalman, float, float)
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> chassis.o(.init_array)
 </UL>
 <P><STRONG><a name="[8d]"></a>__sti___10_feeder_cpp_32287c93</STRONG> (Thumb, 170 bytes, Stack size 48 bytes, feeder.o(i.__sti___10_feeder_cpp_32287c93))
 <BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = __sti___10_feeder_cpp_32287c93 &rArr; feeder::feederMotor::feederMotor(short, pidInstance&, filter::Kalman) &rArr; canMotor::canMotor(short, float, float, filter::Kalman, float, float) &rArr; __aeabi_ddiv
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[1c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;feeder::feederMotor::feederMotor(short, pidInstance&, filter::Kalman)
+<BR>[Calls]<UL><LI><a href="#[1c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;feeder::feederMotor::feederMotor(short, pidInstance&, filter::Kalman)
 <LI><a href="#[224]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pidInstance::pidInstance(pidType, float, float, float)
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> feeder.o(.init_array)
 </UL>
@@ -5227,10 +5227,10 @@ Local Symbols
 <P><STRONG><a name="[8f]"></a>__sti___10_gimbal_cpp_bung</STRONG> (Thumb, 156 bytes, Stack size 48 bytes, gimbal.o(i.__sti___10_gimbal_cpp_bung))
 <BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = __sti___10_gimbal_cpp_bung &rArr; gimbal::gimbalMotor::gimbalMotor(short, pidInstance&, filter::Kalman) &rArr; canMotor::canMotor(short, float, float, filter::Kalman, float, float) &rArr; __aeabi_ddiv
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float degToRad&lang;double&rang;(T1)
+<BR>[Calls]<UL><LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;float degToRad&lang;double&rang;(T1)
 <LI><a href="#[1c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal::gimbalMotor::gimbalMotor(short, pidInstance&, filter::Kalman)
 <LI><a href="#[224]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pidInstance::pidInstance(pidType, float, float, float)
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> gimbal.o(.init_array)
 </UL>
@@ -5241,8 +5241,8 @@ Local Symbols
 <P><STRONG><a name="[90]"></a>__sti___17_uart_protocol_cpp_d85d5a4d</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, uart_protocol.o(i.__sti___17_uart_protocol_cpp_d85d5a4d))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = __sti___17_uart_protocol_cpp_d85d5a4d &rArr; __aeabi_atexit &rArr; malloc &rArr; __Heap_Full &rArr; __Heap_ProvideMemory &rArr; free
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_atexit
-<LI><a href="#[225]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userUART::circularBuffer&lang;(int)2050, unsigned char&rang;::circularBuffer(unsigned char)
+<BR>[Calls]<UL><LI><a href="#[225]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;userUART::circularBuffer&lang;(int)2050, unsigned char&rang;::circularBuffer(unsigned char)
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_atexit
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_protocol.o(.init_array)
 </UL>
@@ -5315,8 +5315,8 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;move_window
 </UL>
-<BR>[Called By]<UL><LI><a href="#[25c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;remove_chain
-<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
+<BR>[Called By]<UL><LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
+<LI><a href="#[25c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;remove_chain
 </UL>
 
 <P><STRONG><a name="[228]"></a>check_fs</STRONG> (Thumb, 134 bytes, Stack size 16 bytes, ff.o(i.check_fs))
@@ -5341,8 +5341,8 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[252]"></a>clear_lock</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, ff.o(i.clear_lock))
-<BR><BR>[Called By]<UL><LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
-<LI><a href="#[1a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_mount
+<BR><BR>[Called By]<UL><LI><a href="#[1a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_mount
+<LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
 </UL>
 
 <P><STRONG><a name="[22c]"></a>clmt_clust</STRONG> (Thumb, 86 bytes, Stack size 40 bytes, ff.o(i.clmt_clust))
@@ -5355,12 +5355,12 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[242]"></a>clust2sect</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, ff.o(i.clust2sect))
-<BR><BR>[Called By]<UL><LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
-<LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_sdi
-<LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
-<LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
+<BR><BR>[Called By]<UL><LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
 <LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 <LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
+<LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_sdi
+<LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
 </UL>
 
 <P><STRONG><a name="[22d]"></a>cmp_lfn</STRONG> (Thumb, 148 bytes, Stack size 32 bytes, ff.o(i.cmp_lfn))
@@ -5375,22 +5375,22 @@ Local Symbols
 <P><STRONG><a name="[22f]"></a>create_chain</STRONG> (Thumb, 392 bytes, Stack size 32 bytes, ff.o(i.create_chain))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = create_chain &rArr; fill_last_frag &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
+<BR>[Calls]<UL><LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_bitmap
+<LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
 <LI><a href="#[231]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_bitmap
 <LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fill_last_frag
-<LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_bitmap
 </UL>
-<BR>[Called By]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
-<LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
+<BR>[Called By]<UL><LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
+<LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
 </UL>
 
 <P><STRONG><a name="[234]"></a>create_name</STRONG> (Thumb, 534 bytes, Stack size 56 bytes, ff.o(i.create_name))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = create_name &rArr; ff_convert
 </UL>
-<BR>[Calls]<UL><LI><a href="#[235]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_convert
+<BR>[Calls]<UL><LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chk_chr
+<LI><a href="#[235]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_convert
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_set
-<LI><a href="#[236]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chk_chr
 </UL>
 <BR>[Called By]<UL><LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;follow_path
 </UL>
@@ -5424,7 +5424,8 @@ Local Symbols
 <P><STRONG><a name="[23e]"></a>dir_find</STRONG> (Thumb, 424 bytes, Stack size 56 bytes, ff.o(i.dir_find))
 <BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = dir_find &rArr; dir_read &rArr; load_xdir &rArr; dir_next &rArr; create_chain &rArr; fill_last_frag &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[22e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_wtoupper
+<BR>[Calls]<UL><LI><a href="#[22d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cmp_lfn
+<LI><a href="#[22e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_wtoupper
 <LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xname_sum
 <LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_sfn
 <LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;move_window
@@ -5433,7 +5434,6 @@ Local Symbols
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_sdi
 <LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_read
 <LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
-<LI><a href="#[22d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cmp_lfn
 </UL>
 <BR>[Called By]<UL><LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;follow_path
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
@@ -5442,18 +5442,18 @@ Local Symbols
 <P><STRONG><a name="[23d]"></a>dir_next</STRONG> (Thumb, 302 bytes, Stack size 32 bytes, ff.o(i.dir_next))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = dir_next &rArr; create_chain &rArr; fill_last_frag &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_window
+<BR>[Calls]<UL><LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
+<LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
+<LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_window
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_set
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
-<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
-<LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
 </UL>
-<BR>[Called By]<UL><LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
+<BR>[Called By]<UL><LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_alloc
+<LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
 <LI><a href="#[243]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;load_xdir
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
 <LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_read
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
-<LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_alloc
 </UL>
 
 <P><STRONG><a name="[23f]"></a>dir_read</STRONG> (Thumb, 248 bytes, Stack size 40 bytes, ff.o(i.dir_read))
@@ -5471,7 +5471,9 @@ Local Symbols
 <P><STRONG><a name="[245]"></a>dir_register</STRONG> (Thumb, 542 bytes, Stack size 136 bytes, ff.o(i.dir_register))
 <BR><BR>[Stack]<UL><LI>Max Depth = 456<LI>Call Chain = dir_register &rArr; dir_find &rArr; dir_read &rArr; load_xdir &rArr; dir_next &rArr; create_chain &rArr; fill_last_frag &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_sfn
+<BR>[Calls]<UL><LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_alloc
+<LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_xdir
+<LI><a href="#[240]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sum_sfn
 <LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
 <LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;st_qword
 <LI><a href="#[24c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_lfn
@@ -5485,8 +5487,6 @@ Local Symbols
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_sdi
 <LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
-<LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_alloc
-<LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_xdir
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 </UL>
@@ -5494,15 +5494,15 @@ Local Symbols
 <P><STRONG><a name="[23c]"></a>dir_sdi</STRONG> (Thumb, 182 bytes, Stack size 24 bytes, ff.o(i.dir_sdi))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = dir_sdi &rArr; get_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
-<LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
+<BR>[Calls]<UL><LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
+<LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
 </UL>
-<BR>[Called By]<UL><LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
+<BR>[Called By]<UL><LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_alloc
+<LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
 <LI><a href="#[247]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;load_obj_dir
 <LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;follow_path
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
-<LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_alloc
 </UL>
 
 <P><STRONG><a name="[258]"></a>enq_lock</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, ff.o(i.enq_lock))
@@ -5523,9 +5523,9 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
 </UL>
-<BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
+<BR>[Called By]<UL><LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
-<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
 </UL>
 
 <P><STRONG><a name="[231]"></a>find_bitmap</STRONG> (Thumb, 184 bytes, Stack size 48 bytes, ff.o(i.find_bitmap))
@@ -5539,18 +5539,18 @@ Local Symbols
 <P><STRONG><a name="[255]"></a>find_volume</STRONG> (Thumb, 1212 bytes, Stack size 96 bytes, ff.o(i.find_volume))
 <BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = find_volume &rArr; lock_fs &rArr; ff_req_grant &rArr; osSemaphoreWait &rArr; xQueueSemaphoreTake &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
 </UL>
-<BR>[Calls]<UL><LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;move_window
-<LI><a href="#[269]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lock_fs
-<LI><a href="#[229]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_word
-<LI><a href="#[25a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_qword
-<LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_dword
-<LI><a href="#[251]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_ldnumber
-<LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
+<BR>[Calls]<UL><LI><a href="#[242]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clust2sect
 <LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear_lock
 <LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_fs
 <LI><a href="#[26a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_status
 <LI><a href="#[26c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_ioctl
 <LI><a href="#[26b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_initialize
+<LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;move_window
+<LI><a href="#[269]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lock_fs
+<LI><a href="#[229]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_word
+<LI><a href="#[25a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_qword
+<LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_dword
+<LI><a href="#[251]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_ldnumber
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 <LI><a href="#[1a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_mount
@@ -5559,12 +5559,12 @@ Local Symbols
 <P><STRONG><a name="[256]"></a>follow_path</STRONG> (Thumb, 238 bytes, Stack size 40 bytes, ff.o(i.follow_path))
 <BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = follow_path &rArr; dir_find &rArr; dir_read &rArr; load_xdir &rArr; dir_next &rArr; create_chain &rArr; fill_last_frag &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[25a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_qword
+<BR>[Calls]<UL><LI><a href="#[234]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_name
+<LI><a href="#[25a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_qword
 <LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_dword
 <LI><a href="#[25d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_clust
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_sdi
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
-<LI><a href="#[234]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_name
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 </UL>
@@ -5585,19 +5585,19 @@ Local Symbols
 <LI><a href="#[229]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_word
 <LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_dword
 </UL>
-<BR>[Called By]<UL><LI><a href="#[25c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;remove_chain
-<LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_sdi
-<LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
-<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
+<BR>[Called By]<UL><LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
 <LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 <LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[25c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;remove_chain
+<LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_sdi
+<LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
 </UL>
 
 <P><STRONG><a name="[251]"></a>get_ldnumber</STRONG> (Thumb, 72 bytes, Stack size 16 bytes, ff.o(i.get_ldnumber))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = get_ldnumber
 </UL>
-<BR>[Called By]<UL><LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
-<LI><a href="#[1a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_mount
+<BR>[Called By]<UL><LI><a href="#[1a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_mount
+<LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
 </UL>
 
 <P><STRONG><a name="[25f]"></a>inc_lock</STRONG> (Thumb, 182 bytes, Stack size 8 bytes, ff.o(i.inc_lock))
@@ -5611,36 +5611,36 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[229]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_word
 </UL>
-<BR>[Called By]<UL><LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;follow_path
-<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;follow_path
 </UL>
 
 <P><STRONG><a name="[22a]"></a>ld_dword</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, ff.o(i.ld_dword))
-<BR><BR>[Called By]<UL><LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
+<BR><BR>[Called By]<UL><LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_fs
+<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
 <LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;follow_path
 <LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
-<LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_fs
-<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 </UL>
 
 <P><STRONG><a name="[25a]"></a>ld_qword</STRONG> (Thumb, 98 bytes, Stack size 16 bytes, ff.o(i.ld_qword))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = ld_qword
 </UL>
-<BR>[Called By]<UL><LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;follow_path
+<BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[256]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;follow_path
 <LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
-<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 </UL>
 
 <P><STRONG><a name="[229]"></a>ld_word</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, ff.o(i.ld_word))
-<BR><BR>[Called By]<UL><LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pick_lfn
+<BR><BR>[Called By]<UL><LI><a href="#[22d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cmp_lfn
+<LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_fs
+<LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pick_lfn
 <LI><a href="#[243]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;load_xdir
 <LI><a href="#[25d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_clust
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
 <LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;find_volume
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
-<LI><a href="#[22d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cmp_lfn
-<LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_fs
 </UL>
 
 <P><STRONG><a name="[247]"></a>load_obj_dir</STRONG> (Thumb, 60 bytes, Stack size 16 bytes, ff.o(i.load_obj_dir))
@@ -5678,39 +5678,43 @@ Local Symbols
 <P><STRONG><a name="[22b]"></a>mem_cmp</STRONG> (Thumb, 36 bytes, Stack size 20 bytes, ff.o(i.mem_cmp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = mem_cmp
 </UL>
-<BR>[Called By]<UL><LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
-<LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_fs
+<BR>[Called By]<UL><LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_fs
+<LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
 </UL>
 
 <P><STRONG><a name="[24a]"></a>mem_cpy</STRONG> (Thumb, 26 bytes, Stack size 12 bytes, ff.o(i.mem_cpy))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = mem_cpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
+<BR>[Called By]<UL><LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
+<LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
+<LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
 <LI><a href="#[243]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;load_xdir
 <LI><a href="#[24b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gen_numname
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
-<LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
-<LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 </UL>
 
 <P><STRONG><a name="[237]"></a>mem_set</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, ff.o(i.mem_set))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = mem_set
 </UL>
-<BR>[Called By]<UL><LI><a href="#[262]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_fs
-<LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
-<LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
-<LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_xdir
+<BR>[Called By]<UL><LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_xdir
 <LI><a href="#[234]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_name
 <LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[262]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_fs
+<LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
+<LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
 </UL>
 
 <P><STRONG><a name="[227]"></a>move_window</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, ff.o(i.move_window))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_window
-<LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_read
+<BR>[Calls]<UL><LI><a href="#[260]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_read
+<LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_window
 </UL>
-<BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
+<BR>[Called By]<UL><LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_alloc
+<LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_fs
+<LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_bitmap
+<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 <LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
 <LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
 <LI><a href="#[243]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;load_xdir
@@ -5720,10 +5724,6 @@ Local Symbols
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
 <LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_read
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
-<LI><a href="#[23b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_alloc
-<LI><a href="#[228]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_fs
-<LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_bitmap
-<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 </UL>
 
 <P><STRONG><a name="[244]"></a>pick_lfn</STRONG> (Thumb, 130 bytes, Stack size 32 bytes, ff.o(i.pick_lfn))
@@ -5742,10 +5742,10 @@ Local Symbols
 <LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;move_window
 <LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ld_dword
 </UL>
-<BR>[Called By]<UL><LI><a href="#[25c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;remove_chain
+<BR>[Called By]<UL><LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
+<LI><a href="#[25c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;remove_chain
 <LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fill_last_frag
 <LI><a href="#[246]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fill_first_frag
-<LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_chain
 </UL>
 
 <P><STRONG><a name="[24c]"></a>put_lfn</STRONG> (Thumb, 124 bytes, Stack size 32 bytes, ff.o(i.put_lfn))
@@ -5759,9 +5759,9 @@ Local Symbols
 <P><STRONG><a name="[25c]"></a>remove_chain</STRONG> (Thumb, 270 bytes, Stack size 40 bytes, ff.o(i.remove_chain))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = remove_chain &rArr; get_fat &rArr; move_window &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
+<BR>[Calls]<UL><LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_bitmap
+<LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
 <LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_fat
-<LI><a href="#[226]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;change_bitmap
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 </UL>
@@ -5771,33 +5771,33 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;st_word
 </UL>
-<BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
-<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 </UL>
 
 <P><STRONG><a name="[25b]"></a>st_dword</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, ff.o(i.st_dword))
-<BR><BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
+<BR><BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 <LI><a href="#[262]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_fs
 <LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
-<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 </UL>
 
 <P><STRONG><a name="[248]"></a>st_qword</STRONG> (Thumb, 92 bytes, Stack size 12 bytes, ff.o(i.st_qword))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = st_qword
 </UL>
-<BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
+<BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
-<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 </UL>
 
 <P><STRONG><a name="[239]"></a>st_word</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, ff.o(i.st_word))
-<BR><BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
+<BR><BR>[Called By]<UL><LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_xdir
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 <LI><a href="#[262]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_fs
 <LI><a href="#[249]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;store_xdir
 <LI><a href="#[25e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;st_clust
 <LI><a href="#[24c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_lfn
 <LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_fat
-<LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_xdir
 </UL>
 
 <P><STRONG><a name="[249]"></a>store_xdir</STRONG> (Thumb, 114 bytes, Stack size 24 bytes, ff.o(i.store_xdir))
@@ -5810,9 +5810,9 @@ Local Symbols
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_sdi
 <LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_next
 </UL>
-<BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
+<BR>[Called By]<UL><LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 <LI><a href="#[245]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_register
-<LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 </UL>
 
 <P><STRONG><a name="[240]"></a>sum_sfn</STRONG> (Thumb, 32 bytes, Stack size 12 bytes, ff.o(i.sum_sfn))
@@ -5826,12 +5826,12 @@ Local Symbols
 <P><STRONG><a name="[262]"></a>sync_fs</STRONG> (Thumb, 134 bytes, Stack size 16 bytes, ff.o(i.sync_fs))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = sync_fs &rArr; sync_window &rArr; disk_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_window
+<BR>[Calls]<UL><LI><a href="#[261]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_write
+<LI><a href="#[26c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_ioctl
+<LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sync_window
 <LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;st_word
 <LI><a href="#[25b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;st_dword
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mem_set
-<LI><a href="#[261]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_write
-<LI><a href="#[26c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_ioctl
 </UL>
 <BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 </UL>
@@ -5851,26 +5851,26 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[265]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_rel_grant
 </UL>
-<BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
-<LI><a href="#[24e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;validate
-<LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
+<BR>[Called By]<UL><LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
 <LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 <LI><a href="#[1a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_open
 <LI><a href="#[1a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_mount
 <LI><a href="#[1a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_close
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
+<LI><a href="#[24e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;validate
 </UL>
 
 <P><STRONG><a name="[24e]"></a>validate</STRONG> (Thumb, 82 bytes, Stack size 16 bytes, ff.o(i.validate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = validate &rArr; unlock_fs &rArr; ff_rel_grant &rArr; osSemaphoreRelease &rArr; xQueueGenericSend &rArr; vTaskPlaceOnEventList &rArr; prvAddCurrentTaskToDelayedList &rArr; vListInsert
 </UL>
-<BR>[Calls]<UL><LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unlock_fs
+<BR>[Calls]<UL><LI><a href="#[26a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_status
+<LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unlock_fs
 <LI><a href="#[269]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lock_fs
-<LI><a href="#[26a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_status
 </UL>
-<BR>[Called By]<UL><LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
-<LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
+<BR>[Called By]<UL><LI><a href="#[1a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_write
 <LI><a href="#[1a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 <LI><a href="#[1a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_close
+<LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_sync
 </UL>
 
 <P><STRONG><a name="[26d]"></a>xdir_sum</STRONG> (Thumb, 58 bytes, Stack size 12 bytes, ff.o(i.xdir_sum))
@@ -5885,8 +5885,8 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[22e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ff_wtoupper
 </UL>
-<BR>[Called By]<UL><LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
-<LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_xdir
+<BR>[Called By]<UL><LI><a href="#[238]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;create_xdir
+<LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dir_find
 </UL>
 
 <P><STRONG><a name="[2c0]"></a>_dadd1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, daddsub_clz.o(x$fpl$dadd), UNUSED)
