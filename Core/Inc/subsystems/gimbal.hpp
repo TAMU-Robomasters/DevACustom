@@ -55,5 +55,6 @@ extern double calculateAngleError(double currAngle, double targetAngle);
 
 extern void sendGimbMessage();
 extern void sendGimbMessage(float y);
+extern void sendJetsonMessage(float p);
 
 } // namespace gimbal

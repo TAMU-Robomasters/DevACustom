@@ -7,8 +7,13 @@ float32_t bung = 0;
 float yawAngleShow, yawErrorShow, yawPidShow, yawDerivShow;
 float pitchAngleShow, pitchErrorShow, pitchPidShow, pitchTargetShow;
 float currGimbTime, lastGimbTime, lastGimbLoopTime;
+int pitchTemp, yawTemp;
+
 float dispYaw;
 float dispPitch;
+float xStddev;
+float yStddev;
+
 float yawTarget, pitchTarget;
 float roll, pitch, yaw;
 int stateShow;
@@ -18,6 +23,7 @@ float pitchSave = degToRad(270.0);
 
 float yawRx;
 uint8_t gimbMsg[5];
+uint8_t jetsonMsgOut[4];
 
 int startTime;
 int messagesPerSec;
@@ -33,8 +39,8 @@ filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 //pidInstance yawPosPid(pidType::position, 150.0, 0.00, 10000.0);
 //pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 2500.0);
 pidInstance yawPosPid(pidType::position, 200.0, 0.00, 2.5);
-pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 0.5);
-float kF = 23;
+pidInstance pitchPosPid(pidType::position, 100.0, 0.001, 0.7);
+float kF = 40;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
 gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid, gimbalVelFilter);
@@ -79,9 +85,10 @@ void update() {
 				messagesPerSec = bung/((HAL_GetTick() - startTime)/1000);
 
         pitchAngleShow = radToDeg(pitchMotor.getAngle());
-        pitchTargetShow = (-(pitchMotor.getAngle() - degToRad(115.0)));
+        pitchTargetShow = normalizePitchAngle();
         pitchPidShow = pitchPosPid.getOutput();
-        // pitchErrorShow = radToDeg(normalizePitchAngle());
+        pitchErrorShow = calculateAngleError(pitchMotor.getAngle(), pitchPosPid.getTarget());
+				pitchTemp = pitchMotor.getTemp();
 
         userIMU::imuUpdate();
 
@@ -95,14 +102,17 @@ void update() {
 										bung++;
                     dispYaw = pxAimRxedPointer->disp[0];
                     dispPitch = pxAimRxedPointer->disp[1];
+										xStddev = pxAimRxedPointer->stddev[0];
+										yStddev = pxAimRxedPointer->stddev[1];
 										if (dispYaw == 0 && dispPitch == 0){
-											currState = idle;
+											//currState = idle;
 										}
-                    currState = aimFromCV;
+                    //currState = aimFromCV;
                 }
             }
         }
 				sendGimbMessage(dispYaw);
+				sendJetsonMessage(normalizePitchAngle());
 				stateShow = currState;
     }
 
@@ -217,6 +227,17 @@ void sendGimbMessage(float y) {
     gimbMsg[3] = yawT2;
     gimbMsg[4] = 'e';
     HAL_UART_Transmit(&huart8, (uint8_t*)gimbMsg, sizeof(gimbMsg), 1);
+}
+
+void sendJetsonMessage(float p){
+		int16_t pitchT = static_cast<int16_t>(p * 10000);
+		uint8_t pitchT1 = (pitchT + 32768) >> 8;
+		uint8_t pitchT2 = (pitchT + 32768);
+		jetsonMsgOut[0] = 'p';
+		jetsonMsgOut[1] = pitchT1;
+		jetsonMsgOut[2] = pitchT2;
+		jetsonMsgOut[3] = 'e';
+		HAL_UART_Transmit(&huart7, (uint8_t*)jetsonMsgOut, sizeof(jetsonMsgOut), 1);
 }
 
 } // namespace gimbal

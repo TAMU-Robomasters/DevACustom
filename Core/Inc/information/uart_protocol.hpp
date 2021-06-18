@@ -19,6 +19,7 @@ extern QueueHandle_t chassisMsgQueue;
 struct aimMsgStruct {
     uint8_t prefix;
     float disp[2];
+		float stddev[2];
 };
 
 struct gimbMsgStruct {

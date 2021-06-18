@@ -124,11 +124,14 @@ void task() {
             switch (jetsonMessage[0]) {
             case aimAt: {
 								jetsonMessages++;
-                if (userUART::jetsonBuffer.getLastWordSize() == 5) {
+                if (userUART::jetsonBuffer.getLastWordSize() == 7) {
                     uint16_t x1 = jetsonMessage[1];
                     uint16_t x2 = jetsonMessage[2];
                     uint16_t y1 = jetsonMessage[3];
                     uint16_t y2 = jetsonMessage[4];
+										uint8_t xStddev = jetsonMessage[5];
+										uint8_t yStddev = jetsonMessage[6];
+									
                     uint16_t unsnX = (x1 << 8) + x2;
                     uint16_t unsnY = (y1 << 8) + y2;
                     int16_t snX = (unsnX - 32768);
@@ -139,6 +142,8 @@ void task() {
                     txAimMessage.prefix = jetsonMessage[0];
                     txAimMessage.disp[0] = angleX;
                     txAimMessage.disp[1] = angleY;
+										txAimMessage.stddev[0] = static_cast<float>(xStddev) / 10;
+										txAimMessage.stddev[1] = static_cast<float>(yStddev) / 10;
                     aimMsgPtr = &txAimMessage;
                     xQueueSend(aimMsgQueue, (void*)&aimMsgPtr, (TickType_t)0);
                 }
@@ -149,7 +154,7 @@ void task() {
                 lagTestEnd = HAL_GetTick();
                 lagTestRoundTrip = lagTestEnd - lagTestStart;
                 lagTestStart = HAL_GetTick();
-                HAL_UART_Transmit(&huart6, (uint8_t*)lagTestArray, sizeof(lagTestArray), 50);
+                //HAL_UART_Transmit(&huart6, (uint8_t*)lagTestArray, sizeof(lagTestArray), 50);
                 break;
             }
             }

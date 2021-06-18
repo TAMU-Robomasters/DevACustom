@@ -64,7 +64,7 @@ I (../Core/Inc/information/pid.hpp)(0x60C95D3F)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEC4CC6)
 I (../Core/Inc/subsystems/feeder.hpp)(0x60C93DBD)
 I (../Core/Inc/subsystems/flywheel.hpp)(0x60C7FBEB)
-I (../Core/Inc/subsystems/gimbal.hpp)(0x60C7FC04)
+I (../Core/Inc/subsystems/gimbal.hpp)(0x60CBE34B)
 I (../Core/Inc/imu/imu_protocol.hpp)(0x60C7FC04)
 I (../Core/Inc/imu/bsp_imu.h)(0x60C7FC04)
 I (../Core/Inc/imu/mytype.h)(0x60C7FC04)
@@ -76,7 +76,7 @@ I (../Core/Inc/information/rc_protocol.h)(0x60C941DC)
 I (../Core/Inc/usart.h)(0x60C7FC04)
 I (../Core/Inc/information/sd_protocol.h)(0x60C7FC04)
 I (../Core/Inc/sdio.h)(0x60C7FC04)
-I (../Core/Inc/information/uart_protocol.hpp)(0x60C7FC04)
+I (../Core/Inc/information/uart_protocol.hpp)(0x60CBF150)
 I (C:\Keil_v5\ARM\ARMCC\include\memory)(0x5CEC4CC6)
 I (C:\Keil_v5\ARM\ARMCC\include\new)(0x5CEC4CD2)
 I (C:\Keil_v5\ARM\ARMCC\include\exception)(0x5CEC4CD2)
@@ -1825,9 +1825,9 @@ I (../Core/Inc/init.hpp)(0x60C7FBEB)
 I (../Core/Inc/information/pwm_protocol.hpp)(0x60C7FBEB)
 I (../Core/Inc/information/rc_protocol.h)(0x60C941DC)
 I (../Core/Inc/usart.h)(0x60C7FC04)
-I (../Core/Inc/information/uart_protocol.hpp)(0x60C7FC04)
+I (../Core/Inc/information/uart_protocol.hpp)(0x60CBF150)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEC4CD2)
-I (../Core/Inc/subsystems/gimbal.hpp)(0x60C7FC04)
+I (../Core/Inc/subsystems/gimbal.hpp)(0x60CBE34B)
 I (C:\Keil_v5\ARM\ARMCC\include\memory)(0x5CEC4CC6)
 I (C:\Keil_v5\ARM\ARMCC\include\new)(0x5CEC4CD2)
 I (C:\Keil_v5\ARM\ARMCC\include\exception)(0x5CEC4CD2)
@@ -1903,11 +1903,11 @@ I (../Core/Inc/information/pid.hpp)(0x60C95D3F)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEC4CC6)
 I (../Core/Inc/information/rc_protocol.h)(0x60C941DC)
 I (../Core/Inc/usart.h)(0x60C7FC04)
-I (../Core/Inc/information/uart_protocol.hpp)(0x60C7FC04)
+I (../Core/Inc/information/uart_protocol.hpp)(0x60CBF150)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEC4CD2)
 I (../Core/Inc/subsystems/chassis.hpp)(0x60C7FC04)
 I (../Core/Inc/init.hpp)(0x60C7FBEB)
-I (../Core/Inc/subsystems/gimbal.hpp)(0x60C7FC04)
+I (../Core/Inc/subsystems/gimbal.hpp)(0x60CBE34B)
 I (C:\Keil_v5\ARM\ARMCC\include\memory)(0x5CEC4CC6)
 I (C:\Keil_v5\ARM\ARMCC\include\new)(0x5CEC4CD2)
 I (C:\Keil_v5\ARM\ARMCC\include\exception)(0x5CEC4CD2)
@@ -1985,8 +1985,8 @@ I (../Core/Inc/information/rc_protocol.h)(0x60C941DC)
 I (../Core/Inc/usart.h)(0x60C7FC04)
 I (../Drivers/CMSIS/DSP/Include/arm_math.h)(0x60C7FBEC)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEC4CD2)
-F (..\Core\Src\subsystems\gimbal.cpp)(0x60C9E022)(--cpp -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ../Drivers/CMSIS/DSP/Include/ -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Core/Inc/subsystems -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Drivers/CMSIS/Device/Include -I ../Drivers/CMSIS/Include -I ../FATFS/Target -I ../FATFS/App -I ../Middlewares/Third_Party/FatFs/src --cpp11 --cpp11-I.\RTE\_DevACustom-IC:\Users\lukeb\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\lukeb\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="528" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o devacustom\gimbal.o --omf_browse devacustom\gimbal.crf --depend devacustom\gimbal.d)
-I (../Core/Inc/subsystems/gimbal.hpp)(0x60C7FC04)
+F (..\Core\Src\subsystems\gimbal.cpp)(0x60CC049F)(--cpp -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ../Drivers/CMSIS/DSP/Include/ -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Core/Inc/subsystems -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Drivers/CMSIS/Device/Include -I ../Drivers/CMSIS/Include -I ../FATFS/Target -I ../FATFS/App -I ../Middlewares/Third_Party/FatFs/src --cpp11 --cpp11-I.\RTE\_DevACustom-IC:\Users\lukeb\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\lukeb\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="528" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o devacustom\gimbal.o --omf_browse devacustom\gimbal.crf --depend devacustom\gimbal.d)
+I (../Core/Inc/subsystems/gimbal.hpp)(0x60CBE34B)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x60C7FBED)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x60C7FBED)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5CEC4CD2)
@@ -2053,7 +2053,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x5CEC4CD4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5CEC4CCE)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5CEC4CD2)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5CEC4CD2)
-I (../Core/Inc/information/uart_protocol.hpp)(0x60C7FC04)
+I (../Core/Inc/information/uart_protocol.hpp)(0x60CBF150)
 I (../Core/Inc/subsystems/chassis.hpp)(0x60C7FC04)
 I (../Core/Inc/init.hpp)(0x60C7FBEB)
 I (../Core/Inc/usart.h)(0x60C7FC04)
@@ -2069,7 +2069,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\cstddef)(0x5CEC4CC6)
 I (C:\Keil_v5\ARM\ARMCC\include\rw\_mutex.h)(0x5CEC4CC8)
 I (C:\Keil_v5\ARM\ARMCC\include\cstring)(0x5CEC4CD2)
 F (..\Core\Src\information\circularBuffer.cpp)(0x60C7FC04)(--cpp -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ../Drivers/CMSIS/DSP/Include/ -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Core/Inc/subsystems -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Drivers/CMSIS/Device/Include -I ../Drivers/CMSIS/Include -I ../FATFS/Target -I ../FATFS/App -I ../Middlewares/Third_Party/FatFs/src --cpp11 --cpp11-I.\RTE\_DevACustom-IC:\Users\lukeb\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\lukeb\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="528" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o devacustom\circularbuffer.o --omf_browse devacustom\circularbuffer.crf --depend devacustom\circularbuffer.d)
-I (../Core/Inc/information/uart_protocol.hpp)(0x60C7FC04)
+I (../Core/Inc/information/uart_protocol.hpp)(0x60CBF150)
 I (../Core/Inc/information/can_protocol.hpp)(0x60C7FC04)
 I (../Core/Inc/can.h)(0x60C7FC04)
 I (../Core/Inc/main.h)(0x60C7FC04)
@@ -2132,7 +2132,7 @@ I (../Core/Inc/tim.h)(0x60C7FC04)
 I (../Core/Inc/information/pid.hpp)(0x60C95D3F)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEC4CC6)
 I (../Core/Inc/init.hpp)(0x60C7FBEB)
-I (../Core/Inc/subsystems/gimbal.hpp)(0x60C7FC04)
+I (../Core/Inc/subsystems/gimbal.hpp)(0x60CBE34B)
 I (../Core/Inc/usart.h)(0x60C7FC04)
 I (C:\Keil_v5\ARM\ARMCC\include\memory)(0x5CEC4CC6)
 I (C:\Keil_v5\ARM\ARMCC\include\new)(0x5CEC4CD2)
@@ -2209,9 +2209,9 @@ I (../Core/Inc/information/pid.hpp)(0x60C95D3F)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEC4CC6)
 I (../Core/Inc/init.hpp)(0x60C7FBEB)
 I (../Core/Inc/subsystems/feeder.hpp)(0x60C93DBD)
-I (../Core/Inc/subsystems/gimbal.hpp)(0x60C7FC04)
-F (..\Core\Src\information\uart_protocol.cpp)(0x60C7FC04)(--cpp -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ../Drivers/CMSIS/DSP/Include/ -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Core/Inc/subsystems -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Drivers/CMSIS/Device/Include -I ../Drivers/CMSIS/Include -I ../FATFS/Target -I ../FATFS/App -I ../Middlewares/Third_Party/FatFs/src --cpp11 --cpp11-I.\RTE\_DevACustom-IC:\Users\lukeb\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\lukeb\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="528" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o devacustom\uart_protocol.o --omf_browse devacustom\uart_protocol.crf --depend devacustom\uart_protocol.d)
-I (../Core/Inc/information/uart_protocol.hpp)(0x60C7FC04)
+I (../Core/Inc/subsystems/gimbal.hpp)(0x60CBE34B)
+F (..\Core\Src\information\uart_protocol.cpp)(0x60CBF3CA)(--cpp -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ../Drivers/CMSIS/DSP/Include/ -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Core/Inc/subsystems -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Drivers/CMSIS/Device/Include -I ../Drivers/CMSIS/Include -I ../FATFS/Target -I ../FATFS/App -I ../Middlewares/Third_Party/FatFs/src --cpp11 --cpp11-I.\RTE\_DevACustom-IC:\Users\lukeb\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\lukeb\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="528" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o devacustom\uart_protocol.o --omf_browse devacustom\uart_protocol.crf --depend devacustom\uart_protocol.d)
+I (../Core/Inc/information/uart_protocol.hpp)(0x60CBF150)
 I (../Core/Inc/information/can_protocol.hpp)(0x60C7FC04)
 I (../Core/Inc/can.h)(0x60C7FC04)
 I (../Core/Inc/main.h)(0x60C7FC04)
@@ -2274,7 +2274,7 @@ I (../Core/Inc/tim.h)(0x60C7FC04)
 I (../Core/Inc/information/pid.hpp)(0x60C95D3F)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5CEC4CC6)
 I (../Core/Inc/init.hpp)(0x60C7FBEB)
-I (../Core/Inc/subsystems/gimbal.hpp)(0x60C7FC04)
+I (../Core/Inc/subsystems/gimbal.hpp)(0x60CBE34B)
 I (../Core/Inc/usart.h)(0x60C7FC04)
 I (C:\Keil_v5\ARM\ARMCC\include\memory)(0x5CEC4CC6)
 I (C:\Keil_v5\ARM\ARMCC\include\new)(0x5CEC4CD2)
