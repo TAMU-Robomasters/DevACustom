@@ -8,6 +8,9 @@
 #include "init.hpp"
 #include <arm_math.h>
 
+#define WHEEL_DIAM 1.62
+#define WHEEL_RADIUS WHEEL_DIAM/2
+
 float currTime;
 float angle, magnitude;
 float angleOutput;
@@ -15,12 +18,17 @@ float turning, disp;
 float motor1P, motor2P, motor3P, motor4P;
 float c1SentPower, c1Derivative, c1Output;
 
+double railPosition;
+float lastChassisAngle;
+
 float c1Rx;
 uint8_t chassisMsg[5];
 
 //INCLUDE userDebugFiles/chassis1DisplayValues.ini
 
 namespace chassis {
+	
+float wheelDiameter = 1.62; // 1.62inches
 
 chassisStates currState = notRunning;
 CtrlTypes ctrlType = CURRENT;
@@ -29,6 +37,7 @@ CtrlTypes ctrlType = CURRENT;
 filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 pidInstance velPidC1(pidType::velocity, 0.2, 0.000, 10.000);
+pidInstance posPidChassis(pidType::position, 0.1, 0, 0);
 
 chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);
 
@@ -37,6 +46,9 @@ void task() {
     // osDelay(500);
 
     for (;;) {
+			
+				updateRailPosition();
+			
         update();
 
         act();
@@ -55,7 +67,7 @@ void update() {
     struct userUART::chassisMsgStruct* pxChassisRxedPointer;
 
     if (operatingType == primary) {
-        currState = manual;
+        currState = notRunning;
         // will change later based on RC input and sensor based decision making
     }
 
@@ -85,11 +97,6 @@ void act() {
         c1Motor.setPower(0);
         break;
 
-    case followGimbal:
-        c1Motor.setPower(0);
-        // this will change when we have things to put here
-        break;
-
     case manual:
         if (operatingType == primary) {
             angle = atan2(getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
@@ -108,6 +115,10 @@ void act() {
         }
         // this will change when we have things to put here
         break;
+		
+		case patrol:
+				
+				break;
     }
 }
 
@@ -165,6 +176,13 @@ void sendChassisMessage(float m1) {
     chassisMsg[3] = (m1S + 32768);
     chassisMsg[4] = 'e';
     HAL_UART_Transmit(&huart8, (uint8_t*)chassisMsg, sizeof(chassisMsg), 1);
+}
+
+void updateRailPosition(){
+	//delta is in Radians 
+	float deltaChas = gimbal::calculateAngleError(c1Motor.getAngle(),lastChassisAngle) / 19.0f * 22 / 9 * (WHEEL_RADIUS);
+	lastChassisAngle = c1Motor.getAngle();
+	railPosition += deltaChas;
 }
 
 } // namespace chassis
