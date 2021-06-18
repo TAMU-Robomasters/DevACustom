@@ -82,6 +82,8 @@ devacustom\chassis.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_iterbase.h
 devacustom\chassis.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstddef
 devacustom\chassis.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_mutex.h
 devacustom\chassis.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstring
+devacustom\chassis.o: ../Core/Inc/movement/SCurveAcceleration.hpp
+devacustom\chassis.o: ../Core/Inc/movement/SCurveMotionProfile.hpp
 devacustom\chassis.o: ../Drivers/CMSIS/DSP/Include/arm_math.h
 devacustom\chassis.o: ../Drivers/CMSIS/Include/core_cm4.h
 devacustom\chassis.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

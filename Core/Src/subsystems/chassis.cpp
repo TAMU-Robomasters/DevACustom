@@ -71,7 +71,7 @@ void update() {
     struct userUART::chassisMsgStruct* pxChassisRxedPointer;
 
     if (operatingType == primary) {
-        currState = notRunning;
+        currState = manual;
         // will change later based on RC input and sensor based decision making
     }
 
