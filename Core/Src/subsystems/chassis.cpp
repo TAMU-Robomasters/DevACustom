@@ -74,12 +74,12 @@ void update() {
         if (fabs(getJoystick(joystickAxis::leftX)) > 0 || fabs(getJoystick(joystickAxis::leftY)) > 0 || fabs(getJoystick(joystickAxis::rightX)) > 0) {
             currState = manual;
         }
-				// if (getBtn(btnW) || getBtn(btnA) || getBtn(btnS) || getBtn(btnD)){
-				// 		currState = manual;
-				// }
 				else {
 						currState = notRunning;
 				}
+				// if (getBtn(btnW) || getBtn(btnA) || getBtn(btnS) || getBtn(btnD)){
+				// 		currState = manual;
+				// }
 
         if (btnIsRising(btnC)) {
             chassisPowerUpdate();
