@@ -61,6 +61,8 @@
 "devacustom\sd_protocol.o"
 "devacustom\bsp_imu.o"
 "devacustom\imu_protocol.o"
+"devacustom\decisions.o"
+"devacustom\settledutils.o"
 "devacustom\fatfs.o"
 "devacustom\bsp_driver_sd.o"
 "devacustom\sd_diskio.o"

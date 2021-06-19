@@ -35,11 +35,11 @@ private:
 public:
     SCurveAcceleration(Constraints constraints) : constraints(constraints) {
         // time to jerk up to max acceleration
-        t1 = constraints.jerk <= 0.0f ? 0.0 : constraints.acceleration / constraints.jerk;
+        t1 = constraints.jerk <= 0.0f ? 0.0f : constraints.acceleration / constraints.jerk;
         // velocity at end of jerk up period
-        v1 = constraints.jerk <= 0.0f ? 0.0 : constraints.jerk * (t1 * t1) / 2.0f;
+        v1 = constraints.jerk <= 0.0f ? 0.0f : constraints.jerk * (t1 * t1) / 2.0f;
         // displacement from jerk up period
-        d1 = constraints.jerk <= 0.0f ? 0.0 : constraints.jerk * (t1 * t1 * t1) / 6.0f;
+        d1 = constraints.jerk <= 0.0f ? 0.0f : constraints.jerk * (t1 * t1 * t1) / 6.0f;
 
         // velocity at end of constant acceleration period
         v2 = constraints.velocity - v1;
@@ -69,7 +69,7 @@ public:
         }
 
         if (t < t1) { 
-            return Step(constraints.jerk * (t * t * t) / 6.0f ,constraints.jerk * (t * t) / 2.0, constraints.jerk * t, constraints.jerk);
+            return Step(constraints.jerk * (t * t * t) / 6.0f ,constraints.jerk * (t * t) / 2.0f, constraints.jerk * t, constraints.jerk);
         }
 
         t -= t1;
@@ -117,7 +117,7 @@ public:
 
         if (displacement < d1) {
             float t = std::cbrt(displacement * 6.0f / constraints.jerk);
-            return Step(constraints.jerk * (t * t * t) / 6.0f, constraints.jerk * (t * t) / 2.0, constraints.jerk * t, constraints.jerk);
+            return Step(constraints.jerk * (t * t * t) / 6.0f, constraints.jerk * (t * t) / 2.0f, constraints.jerk * t, constraints.jerk);
         }
 
         displacement -= d1;

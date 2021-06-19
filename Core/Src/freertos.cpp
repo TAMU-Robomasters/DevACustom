@@ -38,6 +38,7 @@
 #include "information/rc_protocol.h"
 #include "information/sd_protocol.h"
 #include "information/uart_protocol.hpp"
+#include "logic/decisions.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -64,10 +65,9 @@ osThreadId chassisTaskHandle;
 osThreadId gimbalTaskHandle;
 osThreadId flywheelTaskHandle;
 osThreadId feederTaskHandle;
-osThreadId rcTaskHandle;
-osThreadId sensorTaskHandle;
 osThreadId canTaskHandle;
 osThreadId uartTaskHandle;
+osThreadId decisionsTaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -81,6 +81,7 @@ void flywheelTaskFunc(void const* argument);
 void feederTaskFunc(void const* argument);
 void canTaskFunc(void const* argument);
 void uartTaskFunc(void const* argument);
+void decisionTaskFunc(void const* argument);
 
 int counter1 = 0;
 
@@ -156,6 +157,10 @@ void MX_FREERTOS_Init(void) {
     osThreadDef(uartTask, uartTaskFunc, osPriorityNormal, 0, 128);
     uartTaskHandle = osThreadCreate(osThread(uartTask), NULL);
 
+    /* definition and creation of decisionsTask */
+    osThreadDef(decisionsTask, decisionTaskFunc, osPriorityNormal, 0, 128);
+    decisionsTaskHandle = osThreadCreate(osThread(decisionsTask), NULL);
+
     /* USER CODE BEGIN RTOS_THREADS */
     /* add threads, ... */
     vTaskSuspend(chassisTaskHandle);
@@ -164,6 +169,7 @@ void MX_FREERTOS_Init(void) {
     vTaskSuspend(feederTaskHandle);
     vTaskSuspend(canTaskHandle);
     vTaskSuspend(uartTaskHandle);
+    vTaskSuspend(decisionsTaskHandle);
     /* USER CODE END RTOS_THREADS */
 }
 
@@ -187,6 +193,7 @@ void indicatorTaskFunc(void const* argument) {
     vTaskResume(feederTaskHandle);
     vTaskResume(canTaskHandle);
     vTaskResume(uartTaskHandle);
+    vTaskResume(decisionsTaskHandle);
 
     HAL_GPIO_TogglePin(GPIOG, LED_A_Pin);
     for (;;) {
@@ -321,6 +328,26 @@ void uartTaskFunc(void const* argument) {
     /* Infinite loop */
     userUART::task();
     /* USER CODE END uartTaskFunc */
+}
+
+/* USER CODE BEGIN Header_decisionTaskFunc */
+/**
+* @brief Function implementing the decisionsTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_decisionTaskFunc */
+void decisionTaskFunc(void const* argument) {
+    /* USER CODE BEGIN decisionTaskFunc */
+    /* Infinite loop */
+    if (operatingType == primary) {
+        decisions::task();
+    } else {
+        for (;;) {
+            osDelay(100);
+        }
+    }
+    /* USER CODE END decisionTaskFunc */
 }
 
 /* Private application code --------------------------------------------------*/

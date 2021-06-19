@@ -16,8 +16,8 @@ public:
 };
 
 enum flywheelStates {
-    notRunning,
-    running
+    notRunning = 0,
+    running = 1,
 };
 extern flywheelStates currState;
 

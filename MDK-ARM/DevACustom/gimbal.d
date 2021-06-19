@@ -85,3 +85,7 @@ devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_iterbase.h
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstddef
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_mutex.h
 devacustom\gimbal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstring
+devacustom\gimbal.o: ../Core/Inc/subsystems/feeder.hpp
+devacustom\gimbal.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+devacustom\gimbal.o: ../Core/Inc/subsystems/flywheel.hpp
+devacustom\gimbal.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h

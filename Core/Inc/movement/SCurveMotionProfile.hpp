@@ -18,7 +18,7 @@ private:
     float accelerationDisplacement;
 
 public:
-    SCurveMotionProfile(Constraints constraints, float displacement) : constraints(constraints), accelerationProfile(constraints), displacement(displacement) {
+    SCurveMotionProfile(Constraints constraints, float displacement) : accelerationProfile(constraints), constraints(constraints), displacement(displacement) {
         accelerationTime = accelerationProfile.totalTime();
         accelerationDisplacement = accelerationProfile.totalDisplacement();
         cruiseDisplacement = displacement - accelerationDisplacement * 2.0f;

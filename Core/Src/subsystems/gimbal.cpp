@@ -2,6 +2,8 @@
 #include "imu/imu_protocol.hpp"
 #include "information/uart_protocol.hpp"
 #include "init.hpp"
+#include "subsystems/feeder.hpp"
+#include "subsystems/flywheel.hpp"
 
 float32_t bung = 0;
 float yawAngleShow, yawErrorShow, yawPidShow, yawDerivShow;
@@ -16,7 +18,7 @@ float yStddev;
 
 float yawTarget, pitchTarget;
 float roll, pitch, yaw;
-int stateShow;
+int gimbStateShow;
 
 float yawSave = degToRad(180.0);
 float pitchSave = degToRad(270.0);
@@ -28,11 +30,13 @@ uint8_t jetsonMsgOut[4];
 int startTime;
 int messagesPerSec;
 
+float jetsonMessageTimeout = 0;
+float dev2devGimbTimeout = 0;
+
 namespace gimbal {
 
 gimbalStates currState = notRunning;
 CtrlTypes ctrlType = VOLTAGE;
-
 
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
@@ -46,8 +50,8 @@ gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
 gimbalMotor pitchMotor(userCAN::GM6020_PIT_ID, pitchPosPid, gimbalVelFilter);
 
 void task() {
-	
-		startTime = HAL_GetTick();
+
+    startTime = HAL_GetTick();
 
     for (;;) {
         update();
@@ -81,14 +85,13 @@ void update() {
 
     if (operatingType == primary) {
         // currState = idle; // default state
-			
-				messagesPerSec = bung/((HAL_GetTick() - startTime)/1000);
+        messagesPerSec = bung / ((HAL_GetTick() - startTime) / 1000);
 
         pitchAngleShow = radToDeg(pitchMotor.getAngle());
         pitchTargetShow = normalizePitchAngle();
         pitchPidShow = pitchPosPid.getOutput();
         pitchErrorShow = calculateAngleError(pitchMotor.getAngle(), pitchPosPid.getTarget());
-				pitchTemp = pitchMotor.getTemp();
+        pitchTemp = pitchMotor.getTemp();
 
         userIMU::imuUpdate();
 
@@ -96,20 +99,37 @@ void update() {
         pitch = userIMU::imuPitch();
         yaw = userIMU::imuYaw();
 
+        if (jetsonMessageTimeout > 3000) {
+						dispYaw = 0;
+						dispPitch = 0;
+            currState = originalIdle;
+						flywheel::currState = flywheel::flywheelStates::notRunning;
+            feeder::currState = feeder::feederStates::notRunning;
+        }
+
         if (userUART::aimMsgQueue != NULL) {
             if (xQueueReceive(userUART::aimMsgQueue, &(pxAimRxedPointer), (TickType_t)0) == pdPASS) {
                 if (pxAimRxedPointer->prefix == userUART::jetsonMsgTypes::aimAt) {
-										bung++;
+                    bung++;
                     dispYaw = pxAimRxedPointer->disp[0];
                     dispPitch = pxAimRxedPointer->disp[1];
-										xStddev = pxAimRxedPointer->stddev[0];
-										yStddev = pxAimRxedPointer->stddev[1];
+                    xStddev = pxAimRxedPointer->stddev[0];
+                    yStddev = pxAimRxedPointer->stddev[1];
                     currState = aimFromCV;
+                    if (xStddev == 1) {
+                        flywheel::currState = flywheel::flywheelStates::running;
+                        feeder::currState = feeder::feederStates::running;
+                    } else {
+                        flywheel::currState = flywheel::flywheelStates::notRunning;
+                        feeder::currState = feeder::feederStates::notRunning;
+                    }
+                    jetsonMessageTimeout = 0;
                 }
             }
         }
-				// sendJetsonMessage(normalizePitchAngle());
-				stateShow = currState;
+        // sendJetsonMessage(normalizePitchAngle());
+        gimbStateShow = currState;
+				jetsonMessageTimeout += 2;
     }
 
     if (operatingType == secondary) {
@@ -117,23 +137,30 @@ void update() {
 
         yawAngleShow = radToDeg(yawMotor.getAngle());
         yawPidShow = yawPosPid.getOutput();
-			
-			  userIMU::imuUpdate();
+
+        userIMU::imuUpdate();
 
         roll = userIMU::imuRoll();
         pitch = userIMU::imuPitch();
         yaw = userIMU::imuYaw();
+			
+				if (dev2devGimbTimeout > 50){
+						currState = notRunning;
+						yawRx = 0;
+				}
 
         if (userUART::gimbMsgQueue != NULL) {
             if (xQueueReceive(userUART::gimbMsgQueue, &(pxGimbRxedPointer), (TickType_t)0) == pdPASS) {
                 if (pxGimbRxedPointer->prefix == userUART::d2dMsgTypes::gimbal) {
-										bung++;
+                    bung++;
                     currState = pxGimbRxedPointer->state;
                     yawRx = pxGimbRxedPointer->yaw;
+
                 }
             }
         }
-				stateShow = currState;
+        gimbStateShow = currState;
+				dev2devGimbTimeout += 10;
     }
 
     //HAL_UART_Transmit(&huart6, (uint8_t*)"sacke", sizeof("sacke"), 50);
@@ -148,17 +175,18 @@ void update() {
 
 void act() {
     switch (currState) {
-    case notRunning:
+    case notRunning: {
         // if (operatingType == primary) {
         pitchMotor.setPower(0);
         // }
         // if (operatingType == secondary) {
         yawMotor.setPower(0);
         // }
-				sendGimbMessage(0);
+        sendGimbMessage(0);
         break;
+		}
 
-    case aimFromCV:
+    case aimFromCV: {
         if (operatingType == primary) {
             pitchSave = pitchMotor.getAngle();
             pitchPosPid.setTarget(0.0);
@@ -166,7 +194,7 @@ void act() {
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
             // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
-						sendGimbMessage(dispYaw);
+            sendGimbMessage(dispYaw);
         }
         if (operatingType == secondary) {
             yawSave = yawMotor.getAngle();
@@ -176,15 +204,16 @@ void act() {
             yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
         }
         break;
+			}
 
-    case idle:
+    case idle: {
         if (operatingType == primary) {
             pitchPosPid.setTarget(0.0);
             pitchTarget = -calculateAngleError(pitchMotor.getAngle(), pitchSave);
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             // pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(115.0));
             // pitchMotor.setPower(-kF * cos(normalizePitchAngle()));
-						sendGimbMessage(0);
+            sendGimbMessage(0);
         }
         if (operatingType == secondary) {
             yawPosPid.setTarget(0.0);
@@ -194,6 +223,23 @@ void act() {
             yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
         }
         break;
+			}
+
+    case originalIdle: {
+        if (operatingType == primary) {
+            pitchPosPid.setTarget(0.0);
+            pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(300.0));
+            pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
+            sendGimbMessage(0);
+        }
+        if (operatingType == secondary) {
+            yawPosPid.setTarget(0.0);
+            yawDerivShow = yawMotor.getSpeed() * yawPosPid.getkD();
+            yawTarget = -calculateAngleError(yawMotor.getAngle(), degToRad(180.0));
+            yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
+        }
+        break;
+			}
     }
 }
 
@@ -228,15 +274,15 @@ void sendGimbMessage(float y) {
     HAL_UART_Transmit(&huart8, (uint8_t*)gimbMsg, sizeof(gimbMsg), 1);
 }
 
-void sendJetsonMessage(float p){
-		int16_t pitchT = static_cast<int16_t>(p * 10000);
-		uint8_t pitchT1 = (pitchT + 32768) >> 8;
-		uint8_t pitchT2 = (pitchT + 32768);
-		jetsonMsgOut[0] = 'p';
-		jetsonMsgOut[1] = pitchT1;
-		jetsonMsgOut[2] = pitchT2;
-		jetsonMsgOut[3] = 'e';
-		HAL_UART_Transmit(&huart7, (uint8_t*)jetsonMsgOut, sizeof(jetsonMsgOut), 1);
+void sendJetsonMessage(float p) {
+    int16_t pitchT = static_cast<int16_t>(p * 10000);
+    uint8_t pitchT1 = (pitchT + 32768) >> 8;
+    uint8_t pitchT2 = (pitchT + 32768);
+    jetsonMsgOut[0] = 'p';
+    jetsonMsgOut[1] = pitchT1;
+    jetsonMsgOut[2] = pitchT2;
+    jetsonMsgOut[3] = 'e';
+    HAL_UART_Transmit(&huart7, (uint8_t*)jetsonMsgOut, sizeof(jetsonMsgOut), 1);
 }
 
 } // namespace gimbal

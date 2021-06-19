@@ -8,10 +8,8 @@
 #include "init.hpp"
 #include "movement/SCurveAcceleration.hpp"
 #include "movement/SCurveMotionProfile.hpp"
+#include "logic/settledUtils.hpp"
 #include <arm_math.h>
-
-#define WHEEL_DIAM 1.62
-#define WHEEL_RADIUS WHEEL_DIAM / 2
 
 float currTime;
 float angle, magnitude;
@@ -26,11 +24,16 @@ float lastChassisAngle;
 float c1Rx;
 uint8_t chassisMsg[5];
 
+int chasStateShow;
+
 //INCLUDE userDebugFiles/chassis1DisplayValues.ini
 
 namespace chassis {
 
-SCurveMotionProfile::Constraints profileConstraints{1.0, 2.0, 10.0}; // m/s, m/s/s, m/s/s/s
+float velTarget = 0;
+float posTarget = 0;
+
+SCurveMotionProfile::Constraints profileConstraints{0.25, 2.0, 10.0}; // m/s, m/s/s, m/s/s/s
 
 float wheelDiameter = 1.62; // 1.62inches
 
@@ -41,7 +44,7 @@ CtrlTypes ctrlType = CURRENT;
 filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 pidInstance velPidC1(pidType::velocity, 0.2, 0.000, 10.000);
-pidInstance posPidChassis(pidType::position, 0.1, 0, 0);
+pidInstance posPidChassis(pidType::position, 0.05, 0, 0);
 
 chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);
 
@@ -76,7 +79,7 @@ void update() {
     }
 
     if (operatingType == secondary) {
-        currState = notRunning; // default state if not updated by primary board
+        // currState = notRunning; // default state if not updated by primary board
         angleOutput = radToDeg(angle);
 
         if (userUART::chassisMsgQueue != NULL) {
@@ -91,6 +94,7 @@ void update() {
     }
 
     currTime = HAL_GetTick();
+		chasStateShow = currState;
 
     //velPidC1.setTarget(100);
 }
@@ -120,8 +124,23 @@ void act() {
         // this will change when we have things to put here
         break;
 
-    case profiledMove:
+    case toTargetVel:
+        if (operatingType == secondary) {
+            velPidC1.setTarget(c1Rx);
+            c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
+        }
+        break;
+				
+		case toTargetPos:
+				if (operatingType == secondary){
+						posPidChassis.setTarget(c1Rx);
+						c1Motor.setPower(posPidChassis.loop(railPosition, c1Motor.getSpeed()));
+					  c1SentPower = (c1Motor.getPower() * 16384.0f) / 100.0f;
+				}
+				break;
 
+    case yield:
+        // hands control off to decisions task
         break;
     }
 }
@@ -184,9 +203,31 @@ void sendChassisMessage(float m1) {
 
 void updateRailPosition() {
     // delta is in Radians
-    float deltaChas = gimbal::calculateAngleError(c1Motor.getAngle(), lastChassisAngle) / 19.0f * (22 / 9) * (WHEEL_RADIUS);
+    float deltaChas = gimbal::calculateAngleError(c1Motor.getAngle(), lastChassisAngle) * M3508_GEAR_RATIO * CHASSIS_GEAR_RATIO * WHEEL_RADIUS;
     lastChassisAngle = c1Motor.getAngle();
     railPosition += deltaChas;
+}
+
+void profiledMove(float distance) {
+    SCurveMotionProfile movement(profileConstraints, distance);
+		currState = toTargetVel;
+    for (float t = 0; t <= movement.totalTime(); t += 0.01f) { // 0.01 second, 10ms steps
+        auto step = movement.stepAtTime(t);                    // you have step.velocity, step.acceleration, etc, so move ur motors
+
+        velTarget = static_cast<float>(METERSPS_TO_RPM(step.velocity));
+        c1Output = velTarget;
+        sendChassisMessage(velTarget);
+
+        osDelay(10); // 10ms
+    }
+		currState = yield;
+}
+
+void positionMove(float distance){
+		posTarget = distance;
+		currState = toTargetPos;
+		sendChassisMessage(posTarget);
+		// waitUntilSettled(position, railPosition, posTarget, 1);
 }
 
 } // namespace chassis

@@ -27,9 +27,9 @@ extern feederMotor agitatorRight;
 extern feederMotor indexer;
 
 enum feederStates {
-    notRunning,
-		unJam,
-    running
+    notRunning = 0,
+    running = 1,
+    unJam = 2,
 };
 extern feederStates currState;
 

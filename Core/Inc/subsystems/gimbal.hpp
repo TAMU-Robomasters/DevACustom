@@ -33,6 +33,7 @@ enum gimbalStates {
     notRunning = 0,
     aimFromCV = 1,
     idle = 2,
+    originalIdle = 3,
 };
 extern gimbalStates currState;
 

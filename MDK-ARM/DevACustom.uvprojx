@@ -10,7 +10,7 @@
       <TargetName>DevACustom</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -339,7 +339,7 @@
               <MiscControls>--cpp11</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F427xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Drivers/CMSIS/DSP/Include/;             ../Core/Inc;             ../Drivers/STM32F4xx_HAL_Driver/Inc;             ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;             ../Middlewares/Third_Party/FreeRTOS/Source/include;             ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;             ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;             ../Core/Inc/subsystems;             ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;             ../Drivers/CMSIS/Device/Include;             ../Drivers/CMSIS/Include;   ../FATFS/Target;   ../FATFS/App;   ../Middlewares/Third_Party/FatFs/src</IncludePath>
+              <IncludePath>../Drivers/CMSIS/DSP/Include/;              ../Core/Inc;              ../Drivers/STM32F4xx_HAL_Driver/Inc;              ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;              ../Middlewares/Third_Party/FreeRTOS/Source/include;              ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;              ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;              ../Core/Inc/subsystems;              ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;              ../Drivers/CMSIS/Device/Include;              ../Drivers/CMSIS/Include;    ../FATFS/Target;    ../FATFS/App;    ../Middlewares/Third_Party/FatFs/src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -934,6 +934,21 @@
               <FileName>imu_protocol.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Core\Src\imu\imu_protocol.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Core/Src/logic</GroupName>
+          <Files>
+            <File>
+              <FileName>decisions.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\Src\logic\decisions.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>settledUtils.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\Src\logic\settledUtils.cpp</FilePath>
             </File>
           </Files>
         </Group>

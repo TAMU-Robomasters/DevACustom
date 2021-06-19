@@ -93,3 +93,4 @@ devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_iterbase.h
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstddef
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rw/_mutex.h
 devacustom\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cstring
+devacustom\freertos.o: ../Core/Inc/logic/decisions.hpp
