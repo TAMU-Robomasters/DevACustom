@@ -142,8 +142,8 @@ void task() {
                     txAimMessage.prefix = jetsonMessage[0];
                     txAimMessage.disp[0] = angleX;
                     txAimMessage.disp[1] = angleY;
-										txAimMessage.stddev[0] = static_cast<float>(xStddev) / 10;
-										txAimMessage.stddev[1] = static_cast<float>(yStddev) / 10;
+										txAimMessage.stddev[0] = static_cast<float>(xStddev);
+										txAimMessage.stddev[1] = static_cast<float>(yStddev);
                     aimMsgPtr = &txAimMessage;
                     xQueueSend(aimMsgQueue, (void*)&aimMsgPtr, (TickType_t)0);
                 }
