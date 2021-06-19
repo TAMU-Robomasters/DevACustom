@@ -183,8 +183,8 @@ void sendChassisMessage(float m1) {
 }
 
 void updateRailPosition() {
-    //delta is in Radians
-    float deltaChas = gimbal::calculateAngleError(c1Motor.getAngle(), lastChassisAngle) / 19.0f * 22 / 9 * (WHEEL_RADIUS);
+    // delta is in Radians
+    float deltaChas = gimbal::calculateAngleError(c1Motor.getAngle(), lastChassisAngle) / 19.0f * (22 / 9) * (WHEEL_RADIUS);
     lastChassisAngle = c1Motor.getAngle();
     railPosition += deltaChas;
 }
