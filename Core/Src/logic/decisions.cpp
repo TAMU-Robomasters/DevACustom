@@ -11,14 +11,20 @@ void task() {
 
     for (;;) {
         position++;
-        //chassis::currState = chassis::chassisStates::yield;
-        //chassis::positionMove(6); // to 6in on the rail
+        chassis::currState = chassis::chassisStates::yield;
+        // chassis::velocityMove(5, 1000); // to 6in on the rail
+				osDelay(1000);
+        // chassis::velocityMove(-5, 1000); // to 6in on the rail
+				osDelay(1000);
+        // chassis::velocityMove(5, 1000); // to 6in on the rail
+				osDelay(1000);
         // chassis::currState = chassis::chassisStates::yield;
         // chassis::profiledMove(IN_TO_METER(9)); // 5in
         // chassis::currState = chassis::chassisStates::notRunning;
-        // position++;
-
-        osDelay(5000);
+        position++;
+			  // chassis::velocityMove(-5, 1000); // to 6in on the rail
+				osDelay(1000);
+        // osDelay(10000);
     }
 }
 

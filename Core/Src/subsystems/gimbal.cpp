@@ -40,10 +40,9 @@ CtrlTypes ctrlType = VOLTAGE;
 
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-//pidInstance yawPosPid(pidType::position, 150.0, 0.00, 10000.0);
-//pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 2500.0);
-pidInstance yawPosPid(pidType::position, 150.0, 0.00, 2.5);
 pidInstance pitchPosPid(pidType::position, 75.0, 0.001, 1.3);
+pidInstance yawPosPid(pidType::position, 150.0, 0.00, 2.5);
+// pidInstance pitchPosPid(pidType::position, 100.0, 0.001, 0.7);
 float kF = 40;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
@@ -103,7 +102,7 @@ void update() {
 						dispYaw = 0;
 						dispPitch = 0;
             currState = originalIdle;
-						flywheel::currState = flywheel::flywheelStates::notRunning;
+						// flywheel::currState = flywheel::flywheelStates::notRunning;
             feeder::currState = feeder::feederStates::notRunning;
         }
 
@@ -117,10 +116,12 @@ void update() {
                     yStddev = pxAimRxedPointer->stddev[1];
                     currState = aimFromCV;
                     if (xStddev == 1) {
-                        flywheel::currState = flywheel::flywheelStates::running;
+												//if (feeder::currState == feeder::feederStates::notRunning) {
+												//}
+                        // flywheel::currState = flywheel::flywheelStates::running;
                         feeder::currState = feeder::feederStates::running;
                     } else {
-                        flywheel::currState = flywheel::flywheelStates::notRunning;
+                        // flywheel::currState = flywheel::flywheelStates::notRunning;
                         feeder::currState = feeder::feederStates::notRunning;
                     }
 										//if (yStddev == 1) {
@@ -233,15 +234,22 @@ void act() {
     case originalIdle: {
         if (operatingType == primary) {
             pitchPosPid.setTarget(0.0);
-            pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(300.0));
+            pitchTarget = -calculateAngleError(pitchMotor.getAngle(), degToRad(305.0));
             pitchMotor.setPower(pitchPosPid.loop(pitchTarget, pitchMotor.getSpeed()) + (-kF * cos(normalizePitchAngle())));
             sendGimbMessage(0);
         }
         if (operatingType == secondary) {
-            yawPosPid.setTarget(0.0);
-            yawDerivShow = yawMotor.getSpeed() * yawPosPid.getkD();
-            yawTarget = -calculateAngleError(yawMotor.getAngle(), degToRad(220.0));
-            yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
+            //yawPosPid.setTarget(0.0);
+            //yawDerivShow = yawMotor.getSpeed() * yawPosPid.getkD();
+            //yawTarget = -calculateAngleError(yawMotor.getAngle(), degToRad(220.0));
+            //yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
+						
+						//yawSave = yawMotor.getAngle();
+            //yawPosPid.setTarget(0.0);
+            //yawTarget = -calculateAngleError(yawMotor.getAngle(), yawMotor.getAngle() + 0.1f);
+						//yawPidShow = yawPosPid.getOutput();
+            //yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
+						yawMotor.setPower(7);
         }
         break;
 			}

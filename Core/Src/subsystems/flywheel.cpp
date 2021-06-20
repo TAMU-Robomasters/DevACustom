@@ -36,6 +36,7 @@ void task() {
 }
 
 void update() {
+		currState = running;
 		if (getSwitch(switchType::right) == switchPosition::up){
 				currState = notRunning;
 				if (getSwitch(switchType::left) == switchPosition::up || getSwitch(switchType::left) == switchPosition::mid) {

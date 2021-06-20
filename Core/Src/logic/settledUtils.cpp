@@ -4,16 +4,16 @@
 #include <arm_math.h>
 
 bool isSettled(settleType st, float curr, float target, float tolerance) {
-    switch (st) {
-    case position:
+    // switch (st) {
+    // case position:
         if (fabs(curr - target) < tolerance) {
-            return true;
-        }
-        break;
+           return true;
+				}
+    //    break;
 
-    case velocity:
-        break;
-    }
+    // case velocity:
+    //    break;
+    // }
     return false;
 }
 

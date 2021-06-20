@@ -24,7 +24,12 @@ float lastChassisAngle;
 float c1Rx;
 uint8_t chassisMsg[5];
 
+float posTargetShow = 0;
+
 int chasStateShow;
+
+bool chassisPosSettled = false;
+float dist = 0;
 
 //INCLUDE userDebugFiles/chassis1DisplayValues.ini
 
@@ -37,14 +42,14 @@ SCurveMotionProfile::Constraints profileConstraints{0.25, 2.0, 10.0}; // m/s, m/
 
 float wheelDiameter = 1.62; // 1.62inches
 
-chassisStates currState = notRunning;
+chassisStates currState = manual;
 CtrlTypes ctrlType = CURRENT;
 // i don't really like this but do i care enough to change it?
 
 filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 pidInstance velPidC1(pidType::velocity, 0.2, 0.000, 5.000);
-pidInstance posPidChassis(pidType::position, 0.05, 0, 0);
+pidInstance posPidChassis(pidType::position, 1.5, 0, 0);
 
 chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);
 
@@ -74,7 +79,7 @@ void update() {
     struct userUART::chassisMsgStruct* pxChassisRxedPointer;
 
     if (operatingType == primary) {
-        currState = manual;
+        // currState = manual;
         // will change later based on RC input and sensor based decision making
     }
 
@@ -134,8 +139,15 @@ void act() {
 		case toTargetPos:
 				if (operatingType == secondary){
 						posPidChassis.setTarget(c1Rx);
-						c1Motor.setPower(posPidChassis.loop(railPosition, c1Motor.getSpeed()));
-					  c1SentPower = (c1Motor.getPower() * 16384.0f) / 100.0f;
+						chassisPosSettled = isSettled(position, railPosition, posTarget, 0.5);
+						dist = fabs(railPosition - c1Rx);
+						if(!isSettled(position, railPosition, c1Rx, 0.5)){
+							  //c1Motor.setPower(velPidC1.loop(c1Motor.getSpeed()));
+								c1Motor.setPower(-posPidChassis.loop(railPosition, c1Motor.getSpeed()));
+								c1SentPower = c1Motor.getPower();
+						} else {
+								currState = notRunning;
+						}
 				}
 				break;
 
@@ -203,7 +215,7 @@ void sendChassisMessage(float m1) {
 
 void updateRailPosition() {
     // delta is in Radians
-    float deltaChas = gimbal::calculateAngleError(c1Motor.getAngle(), lastChassisAngle) * M3508_GEAR_RATIO * CHASSIS_GEAR_RATIO * WHEEL_RADIUS;
+    float deltaChas = gimbal::calculateAngleError(c1Motor.getAngle(), lastChassisAngle) * (1.0 / 19.0) * (44.0 / 18.0) * WHEEL_RADIUS;
     lastChassisAngle = c1Motor.getAngle();
     railPosition += deltaChas;
 }
@@ -225,9 +237,23 @@ void profiledMove(float distance) {
 
 void positionMove(float distance){
 		posTarget = distance;
+		posTargetShow = posTarget;
 		currState = toTargetPos;
 		sendChassisMessage(posTarget);
 		// waitUntilSettled(position, railPosition, posTarget, 1);
+}
+
+void velocityMove(float velocity, float time){
+		velTarget = velocity;
+		currTime = time;
+		currState = toTargetVel;
+		while (currTime > 0){
+			  sendChassisMessage(velTarget);
+				time -= 10;
+				osDelay(10);
+		}
+		currState = notRunning;
+		sendChassisMessage(0);
 }
 
 } // namespace chassis

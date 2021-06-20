@@ -24,7 +24,7 @@
 
 #define METERSPS_TO_RPM(pv) ((pv * 461.539f))
 
-#define RAIL_LEN 66.0 // 66in
+#define RAIL_LEN 60.0 // 60in
 
 extern double railPosition;
 extern float lastChassisAngle;
@@ -85,5 +85,7 @@ extern void updateRailPosition();
 extern void profiledMove(float distance);
 
 extern void positionMove(float distance);
+
+extern void velocityMove (float velocity, float time);
 
 } // namespace chassis

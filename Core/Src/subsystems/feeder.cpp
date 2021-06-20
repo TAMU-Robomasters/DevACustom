@@ -73,7 +73,7 @@ void act() {
     case running: {
 			  HAL_GPIO_WritePin(GPIOH, POWER4_CTRL_Pin, GPIO_PIN_SET);
         //if (runningTimer <= 2000){
-        float feederSpeed = -20; //Was 150 before speeding   
+        float feederSpeed = -25; //Was 150 before speeding   
         // velPidAgitatorLeft.setTarget(feederSpeed * (2.0f / 7.0f));
         // velPidAgitatorRight.setTarget(-feederSpeed * (2.0f / 7.0f));
         velPidIndexer.setTarget(feederSpeed);
