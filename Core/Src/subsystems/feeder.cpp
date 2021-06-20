@@ -30,9 +30,13 @@ void task() {
 }
 
 void update() {
-    if (getSwitch(switchType::left) == switchPosition::up) {
+    // if (getSwitch(switchType::left) == switchPosition::up) {
+    //     currState = running;
+    // } else {
+    //     currState = notRunning;
+    // }
+    if (getBtn(btnType::btnMouseL)) {
         currState = running;
-        velPidF1.setTarget(40);
     } else {
         currState = notRunning;
     }
@@ -47,6 +51,7 @@ void act() {
         break;
 
     case running:
+			  velPidF1.setTarget(40);
         f1Motor.setPower(velPidF1.loop(f1Motor.getSpeed()));
         // f1Motor.setPower(20);
         // obviously this will change when we have actual intelligent things to put here

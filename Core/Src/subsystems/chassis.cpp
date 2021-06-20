@@ -15,7 +15,7 @@ float angleOutput;
 float turning, disp;
 float motor1P, motor2P, motor3P, motor4P = 0;
 float c1SentPower, c1Derivative, c1Output;
-float chasMaxRPM = 200;
+float chasMaxRPM = 250;
 
 float c1Rx, c2Rx, c3Rx, c4Rx;
 uint8_t chassisMsg[7];
@@ -71,15 +71,17 @@ void update() {
         /*if (getSwitch(switchType::right) == switchPosition::up) {
             currState = spinToWin;
         } else */
-        if (fabs(getJoystick(joystickAxis::leftX)) > 0 || fabs(getJoystick(joystickAxis::leftY)) > 0 || fabs(getJoystick(joystickAxis::rightX)) > 0) {
+        //if (fabs(getJoystick(joystickAxis::leftX)) > 0 || fabs(getJoystick(joystickAxis::leftY)) > 0 || fabs(getJoystick(joystickAxis::rightX)) > 0) {
+        //    currState = manual;
+        //}
+        if (fabs(getJoystick(joystickAxis::leftX)) > 0 || fabs(getJoystick(joystickAxis::leftY)) > 0 || fabs(getJoystick(joystickAxis::rightX)) > 0 || fabs(getMouse(mouseAxis::x)) > 0) {
             currState = manual;
+        } else {
+            currState = notRunning;
         }
-				else {
-						currState = notRunning;
-				}
-				// if (getBtn(btnW) || getBtn(btnA) || getBtn(btnS) || getBtn(btnD)){
-				// 		currState = manual;
-				// }
+        // if (getBtn(btnW) || getBtn(btnA) || getBtn(btnS) || getBtn(btnD)){
+        // 		currState = manual;
+        // }
 
         if (btnIsRising(btnC)) {
             chassisPowerUpdate();
@@ -143,8 +145,9 @@ void act() {
         if (operatingType == primary) {
             angle = atan2(getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
             magnitude = sqrt(pow(getJoystick(joystickAxis::leftY), 2) + pow(getJoystick(joystickAxis::leftX), 2));
-            rcToPower(getJoystick(joystickAxis::rightX), getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
-            // rcToPower(getMouse(x)/100, getBtn(btnW) - getBtn(btnS), getBtn(btnA) - getBtn(btnD));
+            // rcToPower(getJoystick(joystickAxis::rightX), getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
+            // rcToPower(getMouse(mouseAxis::x) * 0.01f, getBtn(btnW) - getBtn(btnS), getBtn(btnA) - getBtn(btnD));
+            rcToPower(getMouse(mouseAxis::x) * 0.01f, getJoystick(joystickAxis::leftY), getJoystick(joystickAxis::leftX));
         }
 
         if (operatingType == secondary) {

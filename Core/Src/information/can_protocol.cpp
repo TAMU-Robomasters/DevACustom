@@ -101,7 +101,8 @@ device_t* getDevices(void) {
 }
 
 int8_t motor_ControlChassis(float32_t m1, float32_t m2, float32_t m3, float32_t m4, CAN_HandleTypeDef can) {
-    float powerScaler = (chassisPowerLimit / 24) * (M3508_MAX_CURRENT / M3508_MAX_AMPS) * chassisPowerScaler;
+    // float powerScaler = (chassisPowerLimit / 24) * (M3508_MAX_CURRENT / M3508_MAX_AMPS) * chassisPowerScaler;
+    float powerScaler = M3508_MAX_CURRENT;
     int16_t motor1 = static_cast<int16_t>((m1 * powerScaler) / 100); // scalar describes current cap but is named volt for some reason
     int16_t motor2 = static_cast<int16_t>((m2 * powerScaler) / 100);
     int16_t motor3 = static_cast<int16_t>((m3 * powerScaler) / 100);

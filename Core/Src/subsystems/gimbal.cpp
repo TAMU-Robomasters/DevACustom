@@ -56,7 +56,7 @@ filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 pidInstance yawPosPid(pidType::position, 150.0, 0.0, 0.5);
 pidInstance pitchPosPid(pidType::position, 300.0, 0.00, 1.2);
 pidInstance yawVelPid(pidType::velocity, 3, 0.0, 0.0);
-pidInstance pitchVelPid(pidType::velocity, 10, 0.0, 0.0);
+pidInstance pitchVelPid(pidType::velocity, 7, 0.0, 0.00);
 
 float kF = 0;
 
@@ -114,7 +114,10 @@ void update() {
         sendTestVal = static_cast<int16_t>((userIMU::imuYawSpeed() / 100) / valScaler);
 
         currState = imuIdle;
-        if (fabs(getJoystick(joystickAxis::rightX)) > 0 || fabs(getJoystick(joystickAxis::rightY)) > 0) {
+        // if (fabs(getJoystick(joystickAxis::rightX)) > 0 || fabs(getJoystick(joystickAxis::rightY)) > 0) {
+        //     currState = rcYawLocked;
+        // }
+        if (fabs(getMouse(mouseAxis::y)) > 0) {
             currState = rcYawLocked;
         }
         // if (getSwitch(switchType::right) == switchPosition::up) {
@@ -240,8 +243,9 @@ void act() {
 
     case rcYawLocked: {
         if (operatingType == primary) {
-            dispPitch = getJoystick(joystickAxis::rightY) * 15.0f;
-            pitchVelPid.setTarget(-dispPitch);
+            // dispPitch = getJoystick(joystickAxis::rightY) * 15.0f;
+            dispPitch = getMouse(mouseAxis::y) * 0.1f;
+            pitchVelPid.setTarget(dispPitch);
             pitchMotor.setPower(-pitchVelPid.loop(userIMU::imuPitchSpeed()) + (-kF * cos(normalizePitchAngle())));
             sendGimbMessage(0, userIMU::imuYawSpeed() / 100.0f);
         }

@@ -3,6 +3,8 @@
 #include "init.hpp"
 #include <arm_math.h>
 
+int flywheelPowerState = 0;
+
 namespace flywheel {
 
 flywheelStates currState = notRunning;
@@ -31,16 +33,26 @@ void task() {
         act();
         // set power to global variable here, message is actually sent with the others in the CAN task
 
-        osDelay(10);
+        osDelay(2);
     }
 }
 
 void update() {
-    if (getSwitch(switchType::left) == switchPosition::up || getSwitch(switchType::left) == switchPosition::mid) {
+    // if (getSwitch(switchType::left) == switchPosition::up || getSwitch(switchType::left) == switchPosition::mid) {
+    //     currState = running;
+    // } else {
+    //     currState = notRunning;
+    // }
+    if (getBtn(btnType::btnMouseR)) {
         currState = running;
     } else {
         currState = notRunning;
     }
+		
+		if (btnIsRising(btnType::btnG)){
+				flywheelPowerState++;
+				flywheelPowerState = flywheelPowerState > 1 ? 0 : flywheelPowerState;
+		}
 }
 
 void act() {
@@ -53,10 +65,10 @@ void act() {
 
     case running:
         HAL_GPIO_WritePin(GPIOH, POWER4_CTRL_Pin, GPIO_PIN_SET);
-				// 16 is 15m/s
+				// 16 is 15m/s (Using 17.5 now)
 				// 25 is 30m/s
-        flywheel1.setPower(16);
-        flywheel2.setPower(16);
+        flywheel1.setPower(17 + flywheelPowerState * 7.5);
+        flywheel2.setPower(17 + flywheelPowerState * 7.5);
         //calcSlewDRpm(flywheel1.getPower(), flywheel2.getPower(), 10, 40);
         // obviously this will change when we have actual intelligent things to put here
         break;
