@@ -35,15 +35,15 @@ float dev2devGimbTimeout = 0;
 
 namespace gimbal {
 
-gimbalStates currState = notRunning;
+gimbalStates currState = originalIdle;
 CtrlTypes ctrlType = VOLTAGE;
 
 filter::Kalman gimbalVelFilter(0.05, 16.0, 1023.0, 0.0);
 
 //pidInstance yawPosPid(pidType::position, 150.0, 0.00, 10000.0);
 //pidInstance pitchPosPid(pidType::position, 100.0, 0.0, 2500.0);
-pidInstance yawPosPid(pidType::position, 200.0, 0.00, 2.5);
-pidInstance pitchPosPid(pidType::position, 100.0, 0.001, 0.7);
+pidInstance yawPosPid(pidType::position, 150.0, 0.00, 2.5);
+pidInstance pitchPosPid(pidType::position, 75.0, 0.001, 1.3);
 float kF = 40;
 
 gimbalMotor yawMotor(userCAN::GM6020_YAW_ID, yawPosPid, gimbalVelFilter);
@@ -99,7 +99,7 @@ void update() {
         pitch = userIMU::imuPitch();
         yaw = userIMU::imuYaw();
 
-        if (jetsonMessageTimeout > 3000) {
+        if (jetsonMessageTimeout > 3000 || yStddev == 1) {
 						dispYaw = 0;
 						dispPitch = 0;
             currState = originalIdle;
@@ -123,6 +123,11 @@ void update() {
                         flywheel::currState = flywheel::flywheelStates::notRunning;
                         feeder::currState = feeder::feederStates::notRunning;
                     }
+										//if (yStddev == 1) {
+										//		flywheel::currState = flywheel::flywheelStates::notRunning;
+                    //    feeder::currState = feeder::feederStates::notRunning;
+										//		currState = originalIdle;
+										//}
                     jetsonMessageTimeout = 0;
                 }
             }
@@ -235,7 +240,7 @@ void act() {
         if (operatingType == secondary) {
             yawPosPid.setTarget(0.0);
             yawDerivShow = yawMotor.getSpeed() * yawPosPid.getkD();
-            yawTarget = -calculateAngleError(yawMotor.getAngle(), degToRad(180.0));
+            yawTarget = -calculateAngleError(yawMotor.getAngle(), degToRad(220.0));
             yawMotor.setPower(yawPosPid.loop(yawTarget, yawMotor.getSpeed()));
         }
         break;

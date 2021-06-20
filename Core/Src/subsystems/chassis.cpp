@@ -43,7 +43,7 @@ CtrlTypes ctrlType = CURRENT;
 
 filter::Kalman chassisVelFilter(0.05, 16.0, 1023.0, 0.0);
 
-pidInstance velPidC1(pidType::velocity, 0.2, 0.000, 10.000);
+pidInstance velPidC1(pidType::velocity, 0.2, 0.000, 5.000);
 pidInstance posPidChassis(pidType::position, 0.05, 0, 0);
 
 chassisMotor c1Motor(userCAN::M3508_M1_ID, velPidC1, chassisVelFilter);

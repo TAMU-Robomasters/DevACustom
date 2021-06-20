@@ -41,16 +41,18 @@ void task() {
 
         osDelay(10);
     }
-}
+}  
 
 void update() {
     //currState = notRunning;
-    if (switchIsRising(switchType::left, switchPosition::up)) {
+		if (getSwitch(switchType::right) == switchPosition::up){
+			if (getSwitch(switchType::left) == switchPosition::up) {
         currState = running;
-    }
-    if (switchIsFalling(switchType::left, switchPosition::up)){
+			}
+			else {
         currState = notRunning;
-    }
+			}
+		}
 
     //f1Output = agitatorRight.getSpeed();
     indexerI = velPidIndexer.getIntegral();
@@ -71,7 +73,7 @@ void act() {
     case running: {
 			  HAL_GPIO_WritePin(GPIOH, POWER4_CTRL_Pin, GPIO_PIN_SET);
         //if (runningTimer <= 2000){
-        float feederSpeed = -25; //Was 150 before speeding 
+        float feederSpeed = -20; //Was 150 before speeding   
         // velPidAgitatorLeft.setTarget(feederSpeed * (2.0f / 7.0f));
         // velPidAgitatorRight.setTarget(-feederSpeed * (2.0f / 7.0f));
         velPidIndexer.setTarget(feederSpeed);
